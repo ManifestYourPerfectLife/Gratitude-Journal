@@ -205,11 +205,12 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
     <div class="welcome-msg">
       Welcome.<br>
       You are <strong>one journal entry closer</strong> to manifesting the perfect life.<br><br>
-      What name shall we honor you by?
+      What name shall we honor you by?<br><br>
+      <span style="font-size:13px;color:rgba(201,149,58,0.5);font-style:normal;font-family:Jost,sans-serif;letter-spacing:1px;">✦ This is a one-time request — we will never ask again.</span>
     </div>
     <input type="text" class="welcome-input" id="welcome-name" placeholder="Enter your name..." maxlength="50"/>
     <button class="welcome-btn" onclick="saveName()">Begin My Journey ✦</button>
-    <div class="welcome-skip" onclick="skipName()">Skip for now</div>
+    
   </div>
 </div>
 
@@ -413,7 +414,12 @@ function init(){
 
 function saveName(){
   const name=document.getElementById('welcome-name').value.trim();
-  if(!name){document.getElementById('welcome-name').focus();return;}
+  if(!name){
+    document.getElementById('welcome-name').style.borderColor='rgba(230,57,70,0.6)';
+    document.getElementById('welcome-name').placeholder='Please enter your name to continue...';
+    document.getElementById('welcome-name').focus();
+    return;
+  }
   localStorage.setItem(NAME_KEY, name);
   document.getElementById('welcome-overlay').style.display='none';
 }
