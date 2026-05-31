@@ -363,7 +363,10 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
   </div>
 
   <!-- FOOTER -->
-  <div class="brand-footer">
+  <div style="text-align:center;padding:8px 0 0;">
+      <span onclick="localStorage.removeItem('mtpl_user_name');document.getElementById('welcome-name').value='';document.getElementById('welcome-overlay').style.display='flex';" style="font-size:11px;color:rgba(201,149,58,0.35);cursor:pointer;letter-spacing:1px;font-family:Jost,sans-serif;text-decoration:underline;">Update your name</span>
+    </div>
+    <div class="brand-footer">
     <a href="mailto:YouAre@ManifestingThePerfectLife.org" class="footer-email">
       <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#9b59b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,4 12,13 2,4"/></svg>
       <span class="footer-email-text">
@@ -424,10 +427,7 @@ function saveName(){
   document.getElementById('welcome-overlay').style.display='none';
 }
 
-function skipName(){
-  localStorage.setItem(NAME_KEY,'Anonymous');
-  document.getElementById('welcome-overlay').style.display='none';
-}
+
 function todayStr(){return new Date().toISOString().split('T')[0];}
 function formatDate(ds){const d=new Date(ds+'T12:00:00');return d.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});}
 function setGreeting(){
