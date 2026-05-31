@@ -363,7 +363,8 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
   </div>
 
   <!-- FOOTER -->
-  <div style="text-align:center;padding:8px 0 0;">
+  <div style="text-align:center;padding:12px 0 0;display:flex;flex-direction:column;align-items:center;gap:10px;">
+      <span onclick="document.getElementById('f-gratitude').value='';document.getElementById('f-mental').value='';document.getElementById('f-spiritual').value='';document.getElementById('f-physical').value='';document.getElementById('f-business').value='';" style="font-size:11px;color:rgba(201,149,58,0.35);cursor:pointer;letter-spacing:1px;font-family:Jost,sans-serif;text-decoration:underline;">Clear fields</span>
       <span onclick="localStorage.removeItem('mtpl_user_name');document.getElementById('welcome-name').value='';document.getElementById('welcome-overlay').style.display='flex';" style="font-size:11px;color:rgba(201,149,58,0.35);cursor:pointer;letter-spacing:1px;font-family:Jost,sans-serif;text-decoration:underline;">Update your name</span>
     </div>
     <div class="brand-footer">
