@@ -197,6 +197,20 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
 </head>
 <body>
 
+<!-- REMINDER MODAL -->
+<div class="welcome-overlay" id="reminder-modal" style="display:none">
+  <div class="welcome-modal">
+    <span class="welcome-lotus">⏰</span>
+    <div class="welcome-title">Daily Journal Reminder</div>
+    <div class="welcome-msg" style="font-size:16px;">
+      What time would you like your daily reminder to journal?
+    </div>
+    <input type="time" class="welcome-input" id="reminder-time" value="09:00" style="font-family:Jost,sans-serif;letter-spacing:1px;"/>
+    <button class="welcome-btn" onclick="createReminder()">Set My Reminder ✦</button>
+    <div class="welcome-skip" onclick="closeReminder()" style="cursor:pointer;">Cancel</div>
+  </div>
+</div>
+
 <!-- WELCOME MODAL -->
 <div class="welcome-overlay" id="welcome-overlay" style="display:none">
   <div class="welcome-modal">
@@ -249,6 +263,7 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
       <div class="header-badges">
         <div class="badge badge-streak" id="streak-badge" style="display:none"></div>
         <div class="badge badge-count" id="count-badge">0 entries</div>
+        <div class="badge badge-reminder" id="reminder-badge" onclick="addReminder()" style="background:rgba(155,89,182,0.15);border:1px solid rgba(155,89,182,0.3);color:#c79ae0;cursor:pointer;">⏰ Daily Reminder</div>
         <div class="badge badge-sheets not-set" id="sheets-badge" onclick="openModal()">📊 Connect Sheets</div>
       </div>
     </div>
@@ -404,6 +419,52 @@ function getMoonPhase() {
   if (age < 23.99) return { emoji: '🌗', name: 'Last Quarter', blurb: 'Let go, forgive & clear space' };
   if (age < 27.68) return { emoji: '🌘', name: 'Waning Crescent', blurb: 'Rest, reflect & prepare to begin again' };
   return { emoji: '🌑', name: 'New Moon', blurb: 'Set intentions & plant new seeds' };
+}
+
+function addReminder(){
+  // Create a daily recurring calendar event at 9 AM
+  const title='Time to Journal - Manifesting The Perfect Life';
+  const details='Take a moment to align, believe, and create. Open your gratitude journal: '+window.location.href;
+  // Build an .ics calendar file for a daily 9 AM reminder
+  const now=new Date();
+  const dtstart=new Date(now.getFullYear(),now.getMonth(),now.getDate(),9,0,0);
+  const pad=(n)=>String(n).padStart(2,'0');
+  const fmt=(d)=>d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'T'+pad(d.getHours())+pad(d.getMinutes())+'00';
+  const ics='BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Manifesting The Perfect Life//Journal//EN\nBEGIN:VEVENT\nDTSTART:'+fmt(dtstart)+'\nRRULE:FREQ=DAILY\nSUMMARY:'+title+'\nDESCRIPTION:'+details+'\nBEGIN:VALARM\nTRIGGER:PT0M\nACTION:DISPLAY\nDESCRIPTION:'+title+'\nEND:VALARM\nEND:VEVENT\nEND:VCALENDAR';
+  const blob=new Blob([ics],{type:'text/calendar'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download='journal-reminder.ics';a.click();
+  URL.revokeObjectURL(url);
+}
+
+function addReminder(){
+  document.getElementById('reminder-modal').style.display='flex';
+}
+
+function createReminder(){
+  const timeVal=document.getElementById('reminder-time').value;
+  if(!timeVal){document.getElementById('reminder-time').focus();return;}
+  const parts=timeVal.split(':');
+  const hour=parseInt(parts[0]);
+  const minute=parseInt(parts[1]);
+  const title='Time to Journal - Manifesting The Perfect Life';
+  const details='Take a moment to align, believe, and create. Open your gratitude journal: '+window.location.href;
+  const now=new Date();
+  const dtstart=new Date(now.getFullYear(),now.getMonth(),now.getDate(),hour,minute,0);
+  const pad=(n)=>String(n).padStart(2,'0');
+  const fmt=(d)=>d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'T'+pad(d.getHours())+pad(d.getMinutes())+'00';
+  const ics='BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Manifesting The Perfect Life//Journal//EN\nBEGIN:VEVENT\nDTSTART:'+fmt(dtstart)+'\nRRULE:FREQ=DAILY\nSUMMARY:'+title+'\nDESCRIPTION:'+details+'\nBEGIN:VALARM\nTRIGGER:PT0M\nACTION:DISPLAY\nDESCRIPTION:'+title+'\nEND:VALARM\nEND:VEVENT\nEND:VCALENDAR';
+  const blob=new Blob([ics],{type:'text/calendar'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download='journal-reminder.ics';a.click();
+  URL.revokeObjectURL(url);
+  document.getElementById('reminder-modal').style.display='none';
+}
+
+function closeReminder(){
+  document.getElementById('reminder-modal').style.display='none';
 }
 
 function init(){
