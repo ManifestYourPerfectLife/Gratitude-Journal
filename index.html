@@ -275,7 +275,7 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
         <div class="badge badge-streak" id="streak-badge" style="display:none"></div>
         <div class="badge badge-count" id="count-badge">0 entries</div>
         <div class="badge badge-reminder" id="reminder-badge" onclick="addReminder()" style="background:rgba(155,89,182,0.15);border:1px solid rgba(155,89,182,0.3);color:#c79ae0;cursor:pointer;">⏰ Daily Reminder</div>
-        <div class="badge" id="install-badge" onclick="installApp()" style="display:none;background:rgba(201,149,58,0.15);border:1px solid rgba(201,149,58,0.3);color:var(--gold-light);cursor:pointer;">📲 Add to Home Screen</div>
+        <div class="badge" id="install-badge" onclick="installApp()" style="background:rgba(201,149,58,0.15);border:1px solid rgba(201,149,58,0.3);color:var(--gold-light);cursor:pointer;">📲 Add to Home Screen</div>
         <div class="badge badge-sheets not-set" id="sheets-badge" onclick="openModal()">📊 Connect Sheets</div>
       </div>
     </div>
@@ -493,22 +493,18 @@ window.addEventListener('appinstalled', () => {
 });
 
 async function installApp() {
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isAndroid = /android/i.test(navigator.userAgent);
   if (deferredPrompt) {
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
     deferredPrompt = null;
-    document.getElementById('install-badge').style.display = 'none';
+  } else if (isIOS) {
+    alert('📱 iPhone:\n\n1. Make sure you are in Safari\n2. Tap the Share button ↑ at the bottom\n3. Scroll down and tap "Add to Home Screen"\n4. Tap Add in the top right\n\nYour journal icon will appear on your home screen!');
+  } else if (isAndroid) {
+    alert('📱 Android:\n\n1. Make sure you are in Chrome\n2. Tap the three dots ⋮ in the top right\n3. Tap "Add to Home Screen"\n4. Tap Add\n\nYour journal icon will appear on your home screen!');
   } else {
-    // Show manual instructions if prompt not available
-    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-    const isAndroid = /android/i.test(navigator.userAgent);
-    if (isIOS) {
-      alert('📱 iPhone: Open in Safari → tap the Share button ↑ → tap "Add to Home Screen" → tap Add');
-    } else if (isAndroid) {
-      alert('📱 Android: Tap the three dots ⋮ in Chrome → tap "Add to Home Screen" → tap Add');
-    } else {
-      alert('Open this journal in Safari (iPhone) or Chrome (Android) to add it to your home screen!');
-    }
+    alert('📱 To add to your home screen:\n\niPhone: Open in Safari → Share ↑ → Add to Home Screen\nAndroid: Open in Chrome → Menu ⋮ → Add to Home Screen');
   }
 }
 
