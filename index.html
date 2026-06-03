@@ -232,6 +232,8 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
       <span style="font-size:13px;color:rgba(201,149,58,0.5);font-style:normal;font-family:Jost,sans-serif;letter-spacing:1px;">✦ This is just for your journal. We will never ask again.</span>
     </div>
     <input type="text" class="welcome-input" id="welcome-name" placeholder="Enter your name..." maxlength="50"/>
+    <input type="email" class="welcome-input" id="welcome-email" placeholder="Enter your email address..." style="margin-top:10px;"/>
+    <div id="email-error" style="font-size:11px;color:#e63946;text-align:center;margin-top:-6px;margin-bottom:6px;min-height:14px;"></div>
     <button class="welcome-btn" onclick="saveName()">Begin My Journey ✦</button>
     
   </div>
@@ -390,7 +392,7 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
   <!-- FOOTER -->
   <div style="text-align:center;padding:12px 0 0;display:flex;flex-direction:column;align-items:center;gap:10px;">
       <span onclick="document.getElementById('f-gratitude').value='';document.getElementById('f-mental').value='';document.getElementById('f-spiritual').value='';document.getElementById('f-physical').value='';document.getElementById('f-business').value='';" style="font-size:11px;color:rgba(201,149,58,0.35);cursor:pointer;letter-spacing:1px;font-family:Jost,sans-serif;text-decoration:underline;">Clear fields</span>
-      <span onclick="localStorage.removeItem('mtpl_user_name');document.getElementById('welcome-name').value='';document.getElementById('welcome-overlay').style.display='flex';" style="font-size:11px;color:rgba(201,149,58,0.35);cursor:pointer;letter-spacing:1px;font-family:Jost,sans-serif;text-decoration:underline;">Update your name</span>
+      <span onclick="localStorage.removeItem('mtpl_user_name');localStorage.removeItem('mtpl_user_email');document.getElementById('welcome-name').value='';document.getElementById('welcome-email').value='';document.getElementById('welcome-overlay').style.display='flex';" style="font-size:11px;color:rgba(201,149,58,0.35);cursor:pointer;letter-spacing:1px;font-family:Jost,sans-serif;text-decoration:underline;">Update your name</span>
     </div>
     <div class="brand-footer">
     <a href="mailto:YouAre@ManifestingThePerfectLife.org" class="footer-email">
@@ -522,14 +524,43 @@ function init(){
 
 function saveName(){
   const name=document.getElementById('welcome-name').value.trim();
+  const email=document.getElementById('welcome-email').value.trim();
+  const emailRegex=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // Validate name
   if(!name){
     document.getElementById('welcome-name').style.borderColor='rgba(230,57,70,0.6)';
     document.getElementById('welcome-name').placeholder='Please enter your name to continue...';
     document.getElementById('welcome-name').focus();
     return;
   }
+
+  // Validate email
+  if(!email){
+    document.getElementById('email-error').textContent='Please enter your email address.';
+    document.getElementById('welcome-email').style.borderColor='rgba(230,57,70,0.6)';
+    document.getElementById('welcome-email').focus();
+    return;
+  }
+  if(!emailRegex.test(email)){
+    document.getElementById('email-error').textContent='Please enter a valid email address (e.g. name@example.com)';
+    document.getElementById('welcome-email').style.borderColor='rgba(230,57,70,0.6)';
+    document.getElementById('welcome-email').focus();
+    return;
+  }
+
+  // All good — save both
   localStorage.setItem(NAME_KEY, name);
+  localStorage.setItem('mtpl_user_email', email);
   document.getElementById('welcome-overlay').style.display='none';
+
+  // Send email + name to Google Sheet immediately
+  const sheetUrl=localStorage.getItem(SHEET_URL_KEY)||HARDCODED_SHEET_URL;
+  if(sheetUrl){
+    fetch(sheetUrl, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({type:'registration', name:name, email:email, date:todayStr()})
+    }).catch(()=>{});
+  }
 }
 
 
@@ -569,6 +600,7 @@ async function saveEntry(){
   if(!g){document.getElementById('f-gratitude').focus();return;}
   const entry={id:Date.now(),date:todayStr(),
     name:localStorage.getItem(NAME_KEY)||'Anonymous',
+    email:localStorage.getItem('mtpl_user_email')||'',
     gratitude:g,
     mental:document.getElementById('f-mental').value.trim(),
     spiritual:document.getElementById('f-spiritual').value.trim(),
