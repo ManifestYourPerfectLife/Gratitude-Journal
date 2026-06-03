@@ -202,7 +202,7 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
 .splash{position:fixed;inset:0;background:#08060f;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;
   animation:splashFade 0.8s ease 3.2s forwards;}
 @keyframes splashFade{0%{opacity:1;}100%{opacity:0;pointer-events:none;visibility:hidden;}}
-.splash-logo{width:240px;height:240px;object-fit:contain;border-radius:50%;margin-bottom:12px;animation:splashScale 0.8s cubic-bezier(0.175,0.885,0.32,1.275) 0s both;}
+.splash-logo{width:240px;height:240px;object-fit:contain;border-radius:50%;margin:0 auto 12px auto;display:block;animation:splashScale 0.8s cubic-bezier(0.175,0.885,0.32,1.275) 0s both;}
 @keyframes splashScale{0%{transform:scale(0.5);opacity:0;}100%{transform:scale(1);opacity:1;}}
 .splash-title{font-family:'Cinzel',serif;font-size:22px;color:var(--gold-light);letter-spacing:3px;text-align:center;line-height:1.4;margin-bottom:10px;animation:splashUp 0.7s ease 0.7s both;}
 .splash-abc{font-size:11px;letter-spacing:4px;color:rgba(201,149,58,0.55);text-transform:uppercase;text-align:center;animation:splashUp 0.7s ease 0.9s both;}
