@@ -2,7 +2,8 @@
   "name": "Manifest Your Perfect Life — Gratitude Journal",
   "short_name": "Manifest Journal",
   "description": "Your daily gratitude journal. Align. Believe. Create.",
-  "start_url": "/Gratitude-Journal/",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#08060f",
   "theme_color": "#08060f",
@@ -22,3 +23,5 @@
     }
   ]
 }
+
+
