@@ -27,6 +27,42 @@ setTimeout(function(){
   if(splash) splash.remove();
 }, 4200);
 
+
+// Legacy & Premium unlock
+const LEGACY_CODE = 'MTPL-LEGACY-2024';
+const PREMIUM_CODE = 'MTPL-PREMIUM-2025';
+const UNLOCK_KEY = 'mtpl_unlock_tier';
+
+function initUnlock(){
+  const tier = localStorage.getItem(UNLOCK_KEY);
+  if(tier === 'legacy'){
+    document.getElementById('legacy-badge').style.display='';
+    document.getElementById('unlock-badge').style.display='none';
+  } else if(tier === 'premium'){
+    document.getElementById('premium-badge').style.display='';
+    document.getElementById('unlock-badge').style.display='none';
+  }
+}
+
+function submitUnlockCode(){
+  const code = document.getElementById('unlock-code-input').value.trim().toUpperCase();
+  if(code === LEGACY_CODE){
+    localStorage.setItem(UNLOCK_KEY,'legacy');
+    document.getElementById('unlock-modal').style.display='none';
+    document.getElementById('legacy-badge').style.display='';
+    document.getElementById('unlock-badge').style.display='none';
+    alert('Welcome, Legacy Member! You have been honored.');
+  } else if(code === PREMIUM_CODE){
+    localStorage.setItem(UNLOCK_KEY,'premium');
+    document.getElementById('unlock-modal').style.display='none';
+    document.getElementById('premium-badge').style.display='';
+    document.getElementById('unlock-badge').style.display='none';
+    alert('Welcome to Premium! Your features are unlocked.');
+  } else {
+    document.getElementById('unlock-error').textContent='Invalid code. Please check and try again.';
+  }
+}
+
 // Check for existing users missing email
 function checkEmailPrompt(){
   const name = localStorage.getItem(NAME_KEY);
@@ -238,6 +274,24 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
 .footer-email{display:inline-flex;flex-direction:column;align-items:center;gap:10px;text-decoration:none;}
 .footer-email-text{font-size:14px;font-family:'Cinzel',serif;letter-spacing:1px;}
 
+/* LEGACY & PREMIUM */
+.badge-legacy{background:linear-gradient(135deg,rgba(201,149,58,0.3),rgba(240,217,168,0.15));border:1px solid rgba(201,149,58,0.5);color:var(--gold-light);font-family:'Cinzel',serif;letter-spacing:1px;}
+.badge-premium{background:linear-gradient(135deg,rgba(155,89,182,0.3),rgba(107,79,160,0.15));border:1px solid rgba(155,89,182,0.5);color:#e0c8f8;font-family:'Cinzel',serif;letter-spacing:1px;}
+.unlock-modal{position:fixed;inset:0;background:rgba(8,6,15,0.9);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(8px);}
+.unlock-box{background:linear-gradient(160deg,#0f0a1e,#1e0a35);border:1px solid rgba(201,149,58,0.25);border-radius:20px;padding:32px 24px;max-width:420px;width:100%;text-align:center;}
+.unlock-icon{font-size:40px;margin-bottom:12px;}
+.unlock-title{font-family:'Cinzel',serif;font-size:18px;color:var(--gold-light);letter-spacing:2px;margin-bottom:8px;}
+.unlock-sub{font-size:13px;color:rgba(240,217,168,0.45);margin-bottom:20px;line-height:1.6;}
+.unlock-input{width:100%;background:rgba(255,255,255,0.08);border:1.5px solid rgba(201,149,58,0.3);border-radius:10px;padding:12px 16px;font-family:'Cinzel',serif;font-size:14px;color:var(--gold-light);outline:none;text-align:center;letter-spacing:3px;margin-bottom:10px;}
+.unlock-error{font-size:11px;color:#e63946;min-height:16px;margin-bottom:8px;}
+.unlock-btn{width:100%;padding:12px;background:linear-gradient(135deg,#1e0a35,#3d1f5c);border:1px solid rgba(201,149,58,0.4);border-radius:10px;color:var(--gold-light);font-size:14px;font-family:'Cinzel',serif;letter-spacing:2px;cursor:pointer;margin-bottom:8px;}
+.unlock-cancel{font-size:11px;color:rgba(201,149,58,0.35);cursor:pointer;letter-spacing:1px;font-family:'Jost',sans-serif;}
+.coming-soon-card{background:rgba(255,255,255,0.04);border:1px dashed rgba(155,89,182,0.25);border-radius:14px;padding:20px;margin-bottom:16px;text-align:center;position:relative;overflow:hidden;}
+.coming-soon-label{position:absolute;top:10px;right:10px;background:rgba(155,89,182,0.2);border:1px solid rgba(155,89,182,0.3);border-radius:20px;padding:2px 10px;font-size:10px;color:#c79ae0;letter-spacing:1px;}
+.coming-soon-icon{font-size:28px;margin-bottom:8px;}
+.coming-soon-title{font-family:'Cinzel',serif;font-size:13px;color:rgba(240,217,168,0.4);margin-bottom:4px;}
+.coming-soon-desc{font-size:11px;color:rgba(240,217,168,0.25);line-height:1.5;}
+
 /* SPLASH SCREEN */
 .splash{position:fixed;inset:0;background:#08060f;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;
   animation:splashFade 0.8s ease 3.2s forwards;}
@@ -294,6 +348,19 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
 </style>
 </head>
 <body>
+
+<!-- UNLOCK MODAL -->
+<div class="unlock-modal" id="unlock-modal" style="display:none">
+  <div class="unlock-box">
+    <div class="unlock-icon">&#x1F451;</div>
+    <div class="unlock-title">Enter Your Code</div>
+    <div class="unlock-sub">Have a Legacy or Premium unlock code? Enter it below to unlock your exclusive features.</div>
+    <input type="text" class="unlock-input" id="unlock-code-input" placeholder="MTPL-XXXX-XXXX" maxlength="20"/>
+    <div class="unlock-error" id="unlock-error"></div>
+    <button class="unlock-btn" onclick="submitUnlockCode()">Unlock &#x2736;</button>
+    <div class="unlock-cancel" onclick="document.getElementById('unlock-modal').style.display='none'">Cancel</div>
+  </div>
+</div>
 
 <!-- SPLASH SCREEN -->
 <div class="splash" id="splash">
@@ -385,6 +452,9 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
         <div class="badge badge-streak" id="streak-badge" style="display:none"></div>
         <div class="badge badge-count" id="count-badge">0 entries</div>
         <div class="badge badge-reminder" id="reminder-badge" onclick="addReminder()" style="background:rgba(155,89,182,0.15);border:1px solid rgba(155,89,182,0.3);color:#c79ae0;cursor:pointer;">⏰ Daily Reminder</div>
+        <div class="badge badge-legacy" id="legacy-badge" style="display:none;">&#x1F451; Legacy</div>
+        <div class="badge badge-premium" id="premium-badge" style="display:none;">&#x2736; Premium</div>
+        <div class="badge" id="unlock-badge" onclick="document.getElementById('unlock-modal').style.display='flex'" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.35);cursor:pointer;">&#x1F511; Unlock</div>
         <div class="badge" id="install-badge" onclick="installApp()" style="background:rgba(201,149,58,0.15);border:1px solid rgba(201,149,58,0.3);color:var(--gold-light);cursor:pointer;">📲 Add to Home Screen</div>
         <div class="badge badge-sheets not-set" id="sheets-badge" onclick="openModal()">📊 Connect Sheets</div>
       </div>
@@ -496,7 +566,35 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
       <div class="bar-row"><div class="bar-head"><span>💪 Physical</span><span id="pct-physical">—</span></div><div class="bar-track"><div class="bar-fill bar-physical" id="bar-physical" style="width:0%"></div></div></div>
       <div class="bar-row" style="margin-bottom:0"><div class="bar-head"><span>🚀 Business</span><span id="pct-business">—</span></div><div class="bar-track"><div class="bar-fill bar-business" id="bar-business" style="width:0%"></div></div></div>
     </div>
-    <div class="notice notice-info" id="patterns-notice" style="display:none">Write a few more entries to see your patterns emerge. 🌱</div>
+    <div class="notice notice-info" id="patterns-notice" style="display:none">Write a few more entries to see your patterns emerge.</div>
+
+    <div style="margin-top:20px;">
+      <div class="section-label">Premium Features</div>
+      <div class="coming-soon-card">
+        <div class="coming-soon-label">Coming Soon</div>
+        <div class="coming-soon-icon">&#x1F4CA;</div>
+        <div class="coming-soon-title">Deep Analytics</div>
+        <div class="coming-soon-desc">Time of day insights, day of week patterns, mood trends and more</div>
+      </div>
+      <div class="coming-soon-card">
+        <div class="coming-soon-label">Coming Soon</div>
+        <div class="coming-soon-icon">&#x1F4E7;</div>
+        <div class="coming-soon-title">Personalized Prompts</div>
+        <div class="coming-soon-desc">Custom email prompts based on what you manifest most</div>
+      </div>
+      <div class="coming-soon-card">
+        <div class="coming-soon-label">Coming Soon</div>
+        <div class="coming-soon-icon">&#x1F4C4;</div>
+        <div class="coming-soon-title">Monthly PDF Reports</div>
+        <div class="coming-soon-desc">Beautiful monthly summaries of your manifestation journey</div>
+      </div>
+      <div class="coming-soon-card">
+        <div class="coming-soon-label">Coming Soon</div>
+        <div class="coming-soon-icon">&#x1F525;</div>
+        <div class="coming-soon-title">Streak Rewards</div>
+        <div class="coming-soon-desc">Earn badges and rewards for consistency</div>
+      </div>
+    </div>
   </div>
 
   <!-- FOOTER -->
@@ -620,7 +718,7 @@ async function installApp() {
 
 function init(){
   try{entries=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}catch{entries=[];}
-  setGreeting();updateBadges();loadTodayForm();renderLog();renderPatterns();updateSheetsBadge();checkEmailPrompt();
+  setGreeting();updateBadges();loadTodayForm();renderLog();renderPatterns();updateSheetsBadge();checkEmailPrompt();initUnlock();
   // Show welcome modal on first visit
   const name=localStorage.getItem(NAME_KEY);
   if(!name){
@@ -670,7 +768,7 @@ function saveName(){
 }
 
 
-function todayStr(){return new Date().toISOString().split('T')[0];}
+function todayStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function formatDate(ds){const d=new Date(ds+'T12:00:00');return d.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});}
 function setGreeting(){
   const h=new Date().getHours();
@@ -692,7 +790,10 @@ function calcStreak(){
 }
 function loadTodayForm(){
   const te=entries.find(e=>e.date===todayStr());
-  if(te){['gratitude','mental','spiritual','physical','business'].forEach(k=>{document.getElementById('f-'+k).value=te[k]||'';});
+  if(te){['gratitude','mental','spiritual','physical','business','mental_checkin','spiritual_checkin','physical_checkin','proud'].forEach(k=>{
+    const el=document.getElementById('f-'+k.replace('_','-'));
+    if(el) el.value=te[k]||'';
+  });
   document.getElementById('today-notice').style.display='';
   document.getElementById('save-btn').textContent="Update Today's Entry";}
 }
@@ -707,11 +808,18 @@ async function saveEntry(){
   const entry={id:Date.now(),date:todayStr(),
     name:localStorage.getItem(NAME_KEY)||'Anonymous',
     email:localStorage.getItem('mtpl_user_email')||'',
+    time_of_day:(()=>{const h=new Date().getHours();return h<12?'Morning':h<17?'Afternoon':h<21?'Evening':'Night'})(),
+    day_of_week:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][new Date().getDay()],
+    entry_count:entries.length+1,
     gratitude:g,
     mental:document.getElementById('f-mental').value.trim(),
     spiritual:document.getElementById('f-spiritual').value.trim(),
     physical:document.getElementById('f-physical').value.trim(),
-    business:document.getElementById('f-business').value.trim()};
+    business:document.getElementById('f-business').value.trim(),
+    mental_checkin:document.getElementById('f-mental-checkin').value.trim(),
+    spiritual_checkin:document.getElementById('f-spiritual-checkin').value.trim(),
+    physical_checkin:document.getElementById('f-physical-checkin').value.trim(),
+    proud:document.getElementById('f-proud').value.trim()};
   entries=entries.filter(e=>e.date!==todayStr());entries.unshift(entry);
   localStorage.setItem(STORAGE_KEY,JSON.stringify(entries));
   updateBadges();renderLog();renderPatterns();
