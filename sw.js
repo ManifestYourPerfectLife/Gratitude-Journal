@@ -1,46 +1,43 @@
-// Manifest Your Perfect Life — Service Worker
-const CACHE_NAME = 'mtpl-journal-v1';
-const urlsToCache = [
-  '/Gratitude-Journal/',
-  '/Gratitude-Journal/index.html'
-];
+const CACHE_NAME = 'mtpl-journal-v2';
  
 self.addEventListener('install', function(event) {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(function(cache) {
-      return cache.addAll(urlsToCache);
-    })
-  );
-});
- 
-self.addEventListener('fetch', function(event) {
-  event.respondWith(
-    caches.match(event.request).then(function(response) {
-      if (response) { return response; }
-      return fetch(event.request).then(function(response) {
-        if (!response || response.status !== 200 || response.type !== 'basic') {
-          return response;
-        }
-        const responseToCache = response.clone();
-        caches.open(CACHE_NAME).then(function(cache) {
-          cache.put(event.request, responseToCache);
-        });
-        return response;
-      });
-    })
-  );
+  self.skipWaiting();
 });
  
 self.addEventListener('activate', function(event) {
   event.waitUntil(
     caches.keys().then(function(cacheNames) {
       return Promise.all(
-        cacheNames.filter(function(cacheName) {
-          return cacheName !== CACHE_NAME;
-        }).map(function(cacheName) {
-          return caches.delete(cacheName);
+        cacheNames.map(function(cacheName) {
+          if (cacheName !== CACHE_NAME) {
+            return caches.delete(cacheName);
+          }
         })
       );
+    }).then(function() {
+      return self.clients.claim();
     })
   );
 });
+ 
+self.addEventListener('fetch', function(event) {
+  // Network first — always try to get fresh content
+  event.respondWith(
+    fetch(event.request)
+      .then(function(response) {
+        // Cache the fresh response
+        if (response && response.status === 200) {
+          const responseToCache = response.clone();
+          caches.open(CACHE_NAME).then(function(cache) {
+            cache.put(event.request, responseToCache);
+          });
+        }
+        return response;
+      })
+      .catch(function() {
+        // If offline, fall back to cache
+        return caches.match(event.request);
+      })
+  );
+});
+ 
