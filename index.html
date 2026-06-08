@@ -803,8 +803,9 @@ function updateSheetsBadge(){
   else{badge.textContent='📊 Connect Sheets';badge.classList.add('not-set');}
 }
 async function saveEntry(){
-  const g=document.getElementById('f-gratitude').value.trim();
-  if(!g){document.getElementById('f-gratitude').focus();return;}
+  const val=id=>{const el=document.getElementById(id);return el?el.value.trim():'';};
+  const g=val('f-gratitude');
+  if(!g){const gel=document.getElementById('f-gratitude');if(gel)gel.focus();return;}
   const entry={id:Date.now(),date:todayStr(),
     name:localStorage.getItem(NAME_KEY)||'Anonymous',
     email:localStorage.getItem('mtpl_user_email')||'',
@@ -812,16 +813,16 @@ async function saveEntry(){
     day_of_week:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][new Date().getDay()],
     entry_count:entries.length+1,
     gratitude:g,
-    mental:document.getElementById('f-mental').value.trim(),
-    spiritual:document.getElementById('f-spiritual').value.trim(),
-    physical:document.getElementById('f-physical').value.trim(),
-    business:document.getElementById('f-business').value.trim(),
+    mental:val('f-mental'),
+    spiritual:val('f-spiritual'),
+    physical:val('f-physical'),
+    business:val('f-business'),
     unlock_tier:localStorage.getItem(UNLOCK_KEY)||'Free',
-    sync_id:entry.id||entry.date,
-    mental_checkin:document.getElementById('f-mental-checkin').value.trim(),
-    spiritual_checkin:document.getElementById('f-spiritual-checkin').value.trim(),
-    physical_checkin:document.getElementById('f-physical-checkin').value.trim(),
-    proud:document.getElementById('f-proud').value.trim()};
+    mental_checkin:val('f-mental-checkin'),
+    spiritual_checkin:val('f-spiritual-checkin'),
+    physical_checkin:val('f-physical-checkin'),
+    proud:val('f-proud')};
+  entry.sync_id=entry.id||entry.date;
   entries=entries.filter(e=>e.date!==todayStr());entries.unshift(entry);
   localStorage.setItem(STORAGE_KEY,JSON.stringify(entries));
   updateBadges();renderLog();renderPatterns();
