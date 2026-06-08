@@ -816,6 +816,7 @@ async function saveEntry(){
     spiritual:document.getElementById('f-spiritual').value.trim(),
     physical:document.getElementById('f-physical').value.trim(),
     business:document.getElementById('f-business').value.trim(),
+    unlock_tier:localStorage.getItem(UNLOCK_KEY)||'Free',
     mental_checkin:document.getElementById('f-mental-checkin').value.trim(),
     spiritual_checkin:document.getElementById('f-spiritual-checkin').value.trim(),
     physical_checkin:document.getElementById('f-physical-checkin').value.trim(),
