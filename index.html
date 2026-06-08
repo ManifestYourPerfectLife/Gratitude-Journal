@@ -1,8 +1,3 @@
-
-
-raw
-Manifest your perfect life gratitude journal shared · HTML
-Syntax highlighting has been disabled due to code size.
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -822,6 +817,7 @@ async function saveEntry(){
     physical:document.getElementById('f-physical').value.trim(),
     business:document.getElementById('f-business').value.trim(),
     unlock_tier:localStorage.getItem(UNLOCK_KEY)||'Free',
+    sync_id:entry.id||entry.date,
     mental_checkin:document.getElementById('f-mental-checkin').value.trim(),
     spiritual_checkin:document.getElementById('f-spiritual-checkin').value.trim(),
     physical_checkin:document.getElementById('f-physical-checkin').value.trim(),
