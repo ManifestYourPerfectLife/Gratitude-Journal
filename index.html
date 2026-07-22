@@ -28,18 +28,15 @@ setTimeout(function(){
 }, 4200);
 
 
-// Legacy & Premium unlock
-const LEGACY_CODE = 'MTPL-LEGACY-2024';
-const PREMIUM_CODE = 'MTPL-PREMIUM-2025';
+// Ascension Code unlock
+const LEGACY_CODE = 'ASCEND-LEGACY';
+const PREMIUM_CODE = 'ASCEND-PREMIUM';
 const UNLOCK_KEY = 'mtpl_unlock_tier';
 
 function initUnlock(){
   const tier = localStorage.getItem(UNLOCK_KEY);
-  if(tier === 'legacy'){
-    document.getElementById('legacy-badge').style.display='';
-    document.getElementById('unlock-badge').style.display='none';
-  } else if(tier === 'premium'){
-    document.getElementById('premium-badge').style.display='';
+  if(tier === 'legacy' || tier === 'premium'){
+    document.getElementById('ascension-badge').style.display='';
     document.getElementById('unlock-badge').style.display='none';
   }
 }
@@ -49,15 +46,17 @@ function submitUnlockCode(){
   if(code === LEGACY_CODE){
     localStorage.setItem(UNLOCK_KEY,'legacy');
     document.getElementById('unlock-modal').style.display='none';
-    document.getElementById('legacy-badge').style.display='';
+    document.getElementById('ascension-badge').style.display='';
     document.getElementById('unlock-badge').style.display='none';
-    alert('Welcome, Legacy Member! You have been honored.');
+    if(typeof renderJournalsStorefront==='function')renderJournalsStorefront();
+    alert('Welcome — you have ascended. ✦ Your journal is unlocked.');
   } else if(code === PREMIUM_CODE){
     localStorage.setItem(UNLOCK_KEY,'premium');
     document.getElementById('unlock-modal').style.display='none';
-    document.getElementById('premium-badge').style.display='';
+    document.getElementById('ascension-badge').style.display='';
     document.getElementById('unlock-badge').style.display='none';
-    alert('Welcome to Premium! Your features are unlocked.');
+    if(typeof renderJournalsStorefront==='function')renderJournalsStorefront();
+    alert('Welcome — you have ascended. ✦ Your journal is unlocked.');
   } else {
     document.getElementById('unlock-error').textContent='Invalid code. Please check and try again.';
   }
@@ -274,9 +273,8 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
 .footer-email{display:inline-flex;flex-direction:column;align-items:center;gap:10px;text-decoration:none;}
 .footer-email-text{font-size:14px;font-family:'Cinzel',serif;letter-spacing:1px;}
 
-/* LEGACY & PREMIUM */
-.badge-legacy{background:linear-gradient(135deg,rgba(201,149,58,0.3),rgba(240,217,168,0.15));border:1px solid rgba(201,149,58,0.5);color:var(--gold-light);font-family:'Cinzel',serif;letter-spacing:1px;}
-.badge-premium{background:linear-gradient(135deg,rgba(155,89,182,0.3),rgba(107,79,160,0.15));border:1px solid rgba(155,89,182,0.5);color:#e0c8f8;font-family:'Cinzel',serif;letter-spacing:1px;}
+/* ASCENSION CODE */
+.badge-ascension{background:linear-gradient(135deg,rgba(201,149,58,0.3),rgba(155,89,182,0.2));border:1px solid rgba(201,149,58,0.5);color:var(--gold-light);font-family:'Cinzel',serif;letter-spacing:1px;}
 .unlock-modal{position:fixed;inset:0;background:rgba(8,6,15,0.9);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(8px);}
 .unlock-box{background:linear-gradient(160deg,#0f0a1e,#1e0a35);border:1px solid rgba(201,149,58,0.25);border-radius:20px;padding:32px 24px;max-width:420px;width:100%;text-align:center;}
 .unlock-icon{font-size:40px;margin-bottom:12px;}
@@ -340,6 +338,40 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
 .btn-primary{flex:1;padding:11px;background:linear-gradient(135deg,var(--plum),#5a3090);border:none;border-radius:10px;color:var(--gold-light);font-size:14px;font-family:'Cinzel',serif;cursor:pointer;letter-spacing:1px;}
 .btn-secondary{padding:11px 18px;background:transparent;border:1px solid var(--border);border-radius:10px;color:var(--muted);font-size:14px;font-family:'Jost',sans-serif;cursor:pointer;}
 
+/* JOURNALS STOREFRONT */
+.store-card{background:rgba(255,255,255,0.7);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:14px;}
+.store-card-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px;}
+.store-icon{font-size:26px;line-height:1;flex-shrink:0;}
+.store-title{font-family:'Cinzel',serif;font-size:14px;color:var(--plum);letter-spacing:0.5px;}
+.store-sub{font-size:12px;color:var(--muted);margin-top:3px;}
+.store-tag{margin-left:auto;font-size:10px;padding:3px 10px;border-radius:20px;white-space:nowrap;align-self:flex-start;}
+.store-tag-included{background:rgba(74,124,111,0.12);border:1px solid rgba(74,124,111,0.25);color:var(--sage);}
+.store-tag-locked{background:rgba(155,89,182,0.12);border:1px solid rgba(155,89,182,0.3);color:#7a4a9a;font-family:'Cinzel',serif;letter-spacing:0.5px;}
+.store-btn{width:100%;padding:11px;background:linear-gradient(135deg,#1e0a35,#3d1f5c);border:1px solid rgba(201,149,58,0.3);border-radius:10px;color:var(--gold-light);font-size:13px;font-family:'Cinzel',serif;letter-spacing:1px;cursor:pointer;}
+.store-btn-open{background:linear-gradient(135deg,var(--sage),#3a6a5f);border-color:rgba(74,124,111,0.4);}
+
+/* MANIFEST JOURNAL */
+.sub-nav{display:flex;gap:6px;overflow-x:auto;margin-bottom:16px;padding-bottom:4px;}
+.sub-nav-btn{flex-shrink:0;background:rgba(255,255,255,0.6);border:1px solid var(--border);border-radius:20px;padding:7px 14px;font-size:11.5px;color:var(--muted);font-family:'Jost',sans-serif;cursor:pointer;white-space:nowrap;}
+.sub-nav-btn.active{background:var(--plum);border-color:var(--plum);color:var(--gold-light);}
+.manifest-tab{display:none;}.manifest-tab.active{display:block;}
+.quote-line{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:var(--sage);border-left:2px solid var(--gold);padding-left:12px;margin:8px 0 18px;}
+.chakra-card{background:rgba(255,255,255,0.65);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;}
+.chakra-card-title{font-family:'Cinzel',serif;font-size:13px;color:var(--plum);margin-bottom:2px;}
+.chakra-card-sub{font-size:11px;color:var(--muted);margin-bottom:10px;}
+.chakra-scale{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px;}
+.chakra-scale button{width:26px;height:26px;border-radius:50%;border:1px solid var(--border);background:rgba(255,255,255,0.6);font-family:'Jost',sans-serif;font-size:11px;cursor:pointer;color:var(--text);}
+.chakra-scale button.active{background:var(--purple);color:#fff;border-color:var(--purple);}
+.ref-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:6px;}
+.ref-table th,.ref-table td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--border);vertical-align:top;}
+.ref-table th{font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);}
+.meal-card{background:rgba(255,255,255,0.6);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:10px;}
+.meal-card-title{font-family:'Cinzel',serif;font-size:13px;color:var(--plum);}
+.meal-card ul{margin:6px 0 6px 18px;font-size:12px;color:var(--text);}
+.meal-card-foods{font-size:11px;color:var(--muted);}
+.log-row{display:flex;gap:8px;margin-bottom:8px;}
+.log-row input{flex:1;font-size:13px;padding:9px 10px;}
+
 @media(max-width:480px){
   .main{padding:20px 14px 60px;}
   .stats-grid{gap:8px;}.stat-val{font-size:22px;}
@@ -353,9 +385,9 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
 <div class="unlock-modal" id="unlock-modal" style="display:none">
   <div class="unlock-box">
     <div class="unlock-icon">&#x1F451;</div>
-    <div class="unlock-title">Enter Your Code</div>
-    <div class="unlock-sub">Have a Legacy or Premium unlock code? Enter it below to unlock your exclusive features.</div>
-    <input type="text" class="unlock-input" id="unlock-code-input" placeholder="MTPL-XXXX-XXXX" maxlength="20"/>
+    <div class="unlock-title">Enter Your Ascension Code</div>
+    <div class="unlock-sub">Have an Ascension Code? Enter it below to unlock your exclusive features.</div>
+    <input type="text" class="unlock-input" id="unlock-code-input" placeholder="ASCEND-XXXXXXX" maxlength="20"/>
     <div class="unlock-error" id="unlock-error"></div>
     <button class="unlock-btn" onclick="submitUnlockCode()">Unlock &#x2736;</button>
     <div class="unlock-cancel" onclick="document.getElementById('unlock-modal').style.display='none'">Cancel</div>
@@ -452,8 +484,7 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
         <div class="badge badge-streak" id="streak-badge" style="display:none"></div>
         <div class="badge badge-count" id="count-badge">0 entries</div>
         <div class="badge badge-reminder" id="reminder-badge" onclick="addReminder()" style="background:rgba(155,89,182,0.15);border:1px solid rgba(155,89,182,0.3);color:#c79ae0;cursor:pointer;">⏰ Daily Reminder</div>
-        <div class="badge badge-legacy" id="legacy-badge" style="display:none;">&#x1F451; Legacy</div>
-        <div class="badge badge-premium" id="premium-badge" style="display:none;">&#x2736; Premium</div>
+        <div class="badge badge-ascension" id="ascension-badge" style="display:none;">&#x2728; Ascended &#x2728;</div>
         <div class="badge" id="unlock-badge" onclick="document.getElementById('unlock-modal').style.display='flex'" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.35);cursor:pointer;">&#x1F511; Unlock</div>
         <div class="badge" id="install-badge" onclick="installApp()" style="background:rgba(201,149,58,0.15);border:1px solid rgba(201,149,58,0.3);color:var(--gold-light);cursor:pointer;">📲 Add to Home Screen</div>
         <div class="badge badge-sheets not-set" id="sheets-badge" onclick="openModal()">📊 Connect Sheets</div>
@@ -462,7 +493,8 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
     <div class="nav">
       <button class="nav-btn active" onclick="switchView('journal')">📝 Today</button>
       <button class="nav-btn" onclick="switchView('log')">📖 Log</button>
-      <button class="nav-btn" onclick="switchView('patterns')">✦ Patterns</button>
+      <button class="nav-btn" onclick="switchView('patterns')">✦ Accountability</button>
+      <button class="nav-btn" onclick="switchView('journals')">🌙 Journals</button>
     </div>
   </div>
 </div>
@@ -569,7 +601,7 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
     <div class="notice notice-info" id="patterns-notice" style="display:none">Write a few more entries to see your patterns emerge.</div>
 
     <div style="margin-top:20px;">
-      <div class="section-label">Premium Features</div>
+      <div class="section-label">Ascension Features</div>
       <div class="coming-soon-card">
         <div class="coming-soon-label">Coming Soon</div>
         <div class="coming-soon-icon">&#x1F4CA;</div>
@@ -594,6 +626,96 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
         <div class="coming-soon-title">Streak Rewards</div>
         <div class="coming-soon-desc">Earn badges and rewards for consistency</div>
       </div>
+    </div>
+  </div>
+
+  <!-- JOURNALS STOREFRONT VIEW -->
+  <div class="view" id="view-journals">
+
+    <div class="section-label">Your Journals</div>
+    <div class="store-card" id="store-card-gratitude">
+      <div class="store-card-top">
+        <div class="store-icon">🌱</div>
+        <div>
+          <div class="store-title">Gratitude Journal</div>
+          <div class="store-sub">Daily Gratitude &middot; Intentions &middot; Accountability</div>
+        </div>
+        <div class="store-tag store-tag-included">Included</div>
+      </div>
+      <button class="store-btn" onclick="switchView('journal')">Open Journal</button>
+    </div>
+
+    <div class="store-card" id="store-card-manifest">
+      <div class="store-card-top">
+        <div class="store-icon">🌙</div>
+        <div>
+          <div class="store-title">7 Week Chakra Journal</div>
+          <div class="store-sub">Chakra Re-Alignments &middot; Moon Affirmations &middot; Manifestation Log</div>
+        </div>
+        <div class="store-tag store-tag-locked" id="manifest-tag">Ascension Code</div>
+      </div>
+      <div id="manifest-locked-msg" style="font-size:12.5px;color:var(--muted);line-height:1.6;margin:6px 0 12px;">
+        Unlock the 7 Week Chakra Journal with your Ascension Code to access chakra re-alignments and moon affirmations.
+      </div>
+      <button class="store-btn" id="manifest-unlock-btn" onclick="document.getElementById('unlock-modal').style.display='flex'">Enter Unlock Code</button>
+      <button class="store-btn store-btn-open" id="manifest-open-btn" style="display:none" onclick="switchView('manifest')">Open 7 Week Chakra Journal</button>
+    </div>
+
+  </div>
+
+  <!-- MANIFEST JOURNAL VIEW (gated) -->
+  <div class="view" id="view-manifest">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+      <span onclick="switchView('journals')" style="font-size:12px;color:var(--purple);cursor:pointer;font-family:'Jost',sans-serif;letter-spacing:0.5px;">&larr; Journals</span>
+      <span id="manifest-moon-badge" style="font-size:12px;color:var(--muted);"></span>
+    </div>
+
+    <div class="sub-nav">
+      <button class="sub-nav-btn active" onclick="switchManifestTab('ritual')">Moon Affirmations</button>
+      <button class="sub-nav-btn" onclick="switchManifestTab('checkin')">Chakra Re-Alignments</button>
+      <button class="sub-nav-btn" onclick="switchManifestTab('reference')">Reference</button>
+      <button class="sub-nav-btn" onclick="switchManifestTab('log')">Manifestation Log</button>
+    </div>
+
+    <!-- MOON RITUAL -->
+    <div class="manifest-tab active" id="manifest-tab-ritual">
+      <div class="section-label" id="ritual-title">Moon Affirmations</div>
+      <div class="quote-line" id="ritual-quote"></div>
+      <div id="ritual-fields"></div>
+    </div>
+
+    <!-- WEEKLY CHAKRA CHECK-IN -->
+    <div class="manifest-tab" id="manifest-tab-checkin">
+      <div class="section-label">Weekly Chakra Re-Alignment</div>
+      <div id="chakra-checkin-fields"></div>
+      <div class="field" style="margin-top:6px;">
+        <div class="section-label">My chakra intention for this week</div>
+        <textarea id="chakra-intention" rows="2" onchange="saveChakraCheckin()"></textarea>
+      </div>
+    </div>
+
+    <!-- REFERENCE + MEALS -->
+    <div class="manifest-tab" id="manifest-tab-reference">
+      <div class="section-label">Chakra Reference Guide</div>
+      <div id="chakra-reference-table"></div>
+      <div class="section-label" style="margin-top:22px;">Chakra-Aligned Meal Guide</div>
+      <div class="notice notice-info" style="margin-bottom:14px;">✦ Items marked are available through Blossom's Medicinal Gardens</div>
+      <div id="chakra-meals-list"></div>
+    </div>
+
+    <!-- MANIFESTATION LOG -->
+    <div class="manifest-tab" id="manifest-tab-log">
+      <div class="section-label">What I Called In / What Arrived</div>
+      <div id="manifest-log-fields"></div>
+      <div class="field" style="margin-top:6px;">
+        <div class="section-label">What I am still becoming</div>
+        <textarea id="manifest-becoming" rows="2" onchange="saveManifestLog()"></textarea>
+      </div>
+      <div class="field" style="margin-top:10px;">
+        <div class="section-label">This period I am most grateful for</div>
+        <textarea id="manifest-grateful" rows="2" onchange="saveManifestLog()"></textarea>
+      </div>
+      <div class="quote-line" style="margin-top:16px;">Everything you have asked for is already on its way. Trust the becoming. ✦</div>
     </div>
   </div>
 
@@ -630,15 +752,15 @@ function getMoonPhase() {
   const ag = (jd - 2451550.1) / 29.530588853;
   const phase = ag - Math.floor(ag);
   const age = phase * 29.530588853;
-  if (age < 1.85) return { emoji: '🌑', name: 'New Moon', blurb: 'Set intentions & plant new seeds' };
-  if (age < 5.54) return { emoji: '🌒', name: 'Waxing Crescent', blurb: 'Take inspired action on your wishes' };
-  if (age < 9.22) return { emoji: '🌓', name: 'First Quarter', blurb: 'Push through resistance & commit' };
-  if (age < 12.91) return { emoji: '🌔', name: 'Waxing Gibbous', blurb: 'Refine, adjust & trust the process' };
-  if (age < 16.61) return { emoji: '🌕', name: 'Full Moon', blurb: 'Celebrate wins & release what no longer serves' };
-  if (age < 20.30) return { emoji: '🌖', name: 'Waning Gibbous', blurb: 'Express gratitude & share your gifts' };
-  if (age < 23.99) return { emoji: '🌗', name: 'Last Quarter', blurb: 'Let go, forgive & clear space' };
-  if (age < 27.68) return { emoji: '🌘', name: 'Waning Crescent', blurb: 'Rest, reflect & prepare to begin again' };
-  return { emoji: '🌑', name: 'New Moon', blurb: 'Set intentions & plant new seeds' };
+  if (age < 1.85) return { emoji: '🌑', name: 'New Moon', blurb: 'Set intentions & plant new seeds', ritual: 'new' };
+  if (age < 5.54) return { emoji: '🌒', name: 'Waxing Crescent', blurb: 'Take inspired action on your wishes', ritual: 'waxing' };
+  if (age < 9.22) return { emoji: '🌓', name: 'First Quarter', blurb: 'Push through resistance & commit', ritual: 'waxing' };
+  if (age < 12.91) return { emoji: '🌔', name: 'Waxing Gibbous', blurb: 'Refine, adjust & trust the process', ritual: 'waxing' };
+  if (age < 16.61) return { emoji: '🌕', name: 'Full Moon', blurb: 'Celebrate wins & release what no longer serves', ritual: 'full' };
+  if (age < 20.30) return { emoji: '🌖', name: 'Waning Gibbous', blurb: 'Express gratitude & share your gifts', ritual: 'waning' };
+  if (age < 23.99) return { emoji: '🌗', name: 'Last Quarter', blurb: 'Let go, forgive & clear space', ritual: 'waning' };
+  if (age < 27.68) return { emoji: '🌘', name: 'Waning Crescent', blurb: 'Rest, reflect & prepare to begin again', ritual: 'waning' };
+  return { emoji: '🌑', name: 'New Moon', blurb: 'Set intentions & plant new seeds', ritual: 'new' };
 }
 
 function addReminder(){
@@ -719,6 +841,7 @@ async function installApp() {
 function init(){
   try{entries=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}catch{entries=[];}
   setGreeting();updateBadges();loadTodayForm();renderLog();renderPatterns();updateSheetsBadge();checkEmailPrompt();initUnlock();
+  renderJournalsStorefront();renderChakraCheckin();renderChakraReference();renderChakraMeals();renderManifestLog();renderMoonRitual();
   // Show welcome modal on first visit
   const name=localStorage.getItem(NAME_KEY);
   if(!name){
@@ -941,9 +1064,179 @@ function switchView(id){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('view-'+id).classList.add('active');
-  document.querySelectorAll('.nav-btn')[['journal','log','patterns'].indexOf(id)].classList.add('active');
+  const navIdx=['journal','log','patterns','journals'].indexOf(id==='manifest'?'journals':id);
+  if(navIdx>-1)document.querySelectorAll('.nav-btn')[navIdx].classList.add('active');
   if(id==='patterns')renderPatterns();
+  if(id==='journals')renderJournalsStorefront();
+  if(id==='manifest'){
+    if(!manifestUnlocked()){switchView('journals');return;}
+    renderMoonRitual();renderChakraCheckin();
+  }
 }
+/* ===================== MANIFEST JOURNAL (Ascension Code) ===================== */
+const CHAKRA_KEY='mtpl_chakra_checkin_v1', MANIFEST_LOG_KEY='mtpl_manifest_log_v1', RITUAL_KEY='mtpl_moon_ritual_v1';
+
+function manifestUnlocked(){
+  const tier=localStorage.getItem(UNLOCK_KEY);
+  return tier==='legacy'||tier==='premium';
+}
+
+function weekStartKey(){
+  const d=new Date();const day=d.getDay();const diff=d.getDate()-day+(day===0?-6:1);
+  const monday=new Date(d.setDate(diff));
+  return monday.toISOString().slice(0,10);
+}
+
+function renderJournalsStorefront(){
+  const unlocked=manifestUnlocked();
+  const tier=localStorage.getItem(UNLOCK_KEY);
+  document.getElementById('manifest-tag').textContent=unlocked?'✨ Ascended ✨':'Ascension Code';
+  document.getElementById('manifest-locked-msg').style.display=unlocked?'none':'';
+  document.getElementById('manifest-unlock-btn').style.display=unlocked?'none':'';
+  document.getElementById('manifest-open-btn').style.display=unlocked?'':'none';
+}
+
+function switchManifestTab(id){
+  document.querySelectorAll('.manifest-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.sub-nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('manifest-tab-'+id).classList.add('active');
+  document.querySelectorAll('.sub-nav-btn')[['ritual','checkin','reference','log'].indexOf(id)].classList.add('active');
+}
+
+/* ---- Moon Ritual ---- */
+const RITUAL_CONTENT={
+  new:{title:'New Moon',sub:'Set Intentions · Plant Seeds · Begin',quote:'I trust the rhythm of the moon as I trust the rhythm of my own becoming.',
+    fields:[['intentions','My intentions for this cycle'],['callingIn','I am calling in'],['boldAction','One bold action I will take'],['affirmation','My new moon affirmation'],['leavingBehind','What I am leaving behind']]},
+  waxing:{title:'Waxing Moon',sub:'Build Momentum · Take Action · Grow',quote:'I trust the rhythm of the moon as I trust the rhythm of my own becoming.',
+    fields:[['actions','Actions I am taking toward my intentions'],['growing','What is building and growing'],['focus','Where I need to stay focused'],['affirmation','My momentum affirmation'],['support','Support I need right now']]},
+  full:{title:'Full Moon',sub:'Receive · Celebrate · Release',quote:'I trust the rhythm of the moon as I trust the rhythm of my own becoming.',
+    fields:[['received','What I have received this cycle'],['releasing','What I am releasing'],['grateful','What I am grateful for'],['affirmation','My full moon affirmation'],['revealed','What this moon revealed']]},
+  waning:{title:'Waning Moon',sub:'Reflect · Integrate · Surrender',quote:'I trust the rhythm of the moon as I trust the rhythm of my own becoming.',
+    fields:[['learned','What I learned this cycle'],['grew','How I grew'],['integrating','What I am integrating'],['affirmation','My surrender affirmation'],['seeds','Seeds for the next cycle']]}
+};
+function ritualStorageKey(){const m=getMoonPhase();return m.ritual+':'+todayStr();}
+function renderMoonRitual(){
+  const m=getMoonPhase();
+  document.getElementById('manifest-moon-badge').textContent=m.emoji+' '+m.name;
+  const content=RITUAL_CONTENT[m.ritual];
+  document.getElementById('ritual-title').textContent=content.title+' — '+content.sub;
+  document.getElementById('ritual-quote').textContent=content.quote;
+  let all={};try{all=JSON.parse(localStorage.getItem(RITUAL_KEY)||'{}');}catch{all={};}
+  const key=ritualStorageKey();
+  const data=all[key]||{};
+  const wrap=document.getElementById('ritual-fields');
+  wrap.innerHTML=content.fields.map(([fkey,label])=>`
+    <div class="field" style="margin-bottom:14px;">
+      <div class="section-label">${label}</div>
+      <div class="voice-field">
+        <textarea rows="2" id="ritual-${fkey}" onchange="saveMoonRitual()">${esc(data[fkey]||'')}</textarea>
+        <button class="mic-btn" onclick="startVoice('ritual-${fkey}', this)">🎙️</button>
+      </div>
+    </div>`).join('');
+}
+function saveMoonRitual(){
+  const m=getMoonPhase();const content=RITUAL_CONTENT[m.ritual];
+  let all={};try{all=JSON.parse(localStorage.getItem(RITUAL_KEY)||'{}');}catch{all={};}
+  const key=ritualStorageKey();
+  const data={};content.fields.forEach(([fkey])=>{const el=document.getElementById('ritual-'+fkey);if(el)data[fkey]=el.value;});
+  all[key]=data;localStorage.setItem(RITUAL_KEY,JSON.stringify(all));
+}
+
+/* ---- Weekly Chakra Check-In ---- */
+const CHAKRAS=[
+  {key:'root',label:'Root',sanskrit:'Muladhara',element:'Earth',affirmation:'I Am Grounded. I Am Safe.',symptoms:'Anxiety, fatigue, fear'},
+  {key:'sacral',label:'Sacral',sanskrit:'Svadhisthana',element:'Water',affirmation:'I Am Creative. I Flow.',symptoms:'Creative blocks, numbness'},
+  {key:'solar',label:'Solar Plexus',sanskrit:'Manipura',element:'Fire',affirmation:'I Am Powerful. I Am Worthy.',symptoms:'Low confidence, poor digestion'},
+  {key:'heart',label:'Heart',sanskrit:'Anahata',element:'Air',affirmation:'I Am Love. I Am Open.',symptoms:'Grief, closed heart, resentment'},
+  {key:'throat',label:'Throat',sanskrit:'Vishuddha',element:'Ether',affirmation:'I Speak My Truth.',symptoms:'Difficulty speaking truth'},
+  {key:'third-eye',label:'Third Eye',sanskrit:'Ajna',element:'Light',affirmation:'I See Clearly. I Trust.',symptoms:'Fogginess, distrust of self'},
+  {key:'crown',label:'Crown',sanskrit:'Sahasrara',element:'Thought',affirmation:'I Am Divinely Connected.',symptoms:'Disconnection, purposelessness'}
+];
+function renderChakraCheckin(){
+  let all={};try{all=JSON.parse(localStorage.getItem(CHAKRA_KEY)||'{}');}catch{all={};}
+  const wk=weekStartKey();const data=all[wk]||{};
+  document.getElementById('chakra-intention').value=data.intention||'';
+  const wrap=document.getElementById('chakra-checkin-fields');
+  wrap.innerHTML=CHAKRAS.map(c=>{
+    const cd=data[c.key]||{rating:0,feels:''};
+    const scale=Array.from({length:10},(_,i)=>i+1).map(n=>
+      `<button type="button" class="${cd.rating===n?'active':''}" onclick="setChakraRating('${c.key}',${n})">${n}</button>`).join('');
+    return `<div class="chakra-card">
+      <div class="chakra-card-title">${c.label}</div>
+      <div class="chakra-card-sub">${c.sanskrit}</div>
+      <div class="chakra-scale">${scale}</div>
+      <input type="text" placeholder="How it feels" id="chakra-feels-${c.key}" value="${esc(cd.feels||'')}" onchange="saveChakraCheckin()"/>
+    </div>`;
+  }).join('');
+}
+function setChakraRating(key,n){
+  let all={};try{all=JSON.parse(localStorage.getItem(CHAKRA_KEY)||'{}');}catch{all={};}
+  const wk=weekStartKey();all[wk]=all[wk]||{};all[wk][key]=all[wk][key]||{};all[wk][key].rating=n;
+  localStorage.setItem(CHAKRA_KEY,JSON.stringify(all));
+  renderChakraCheckin();
+}
+function saveChakraCheckin(){
+  let all={};try{all=JSON.parse(localStorage.getItem(CHAKRA_KEY)||'{}');}catch{all={};}
+  const wk=weekStartKey();all[wk]=all[wk]||{};
+  all[wk].intention=document.getElementById('chakra-intention').value;
+  CHAKRAS.forEach(c=>{
+    const feelsEl=document.getElementById('chakra-feels-'+c.key);
+    if(feelsEl){all[wk][c.key]=all[wk][c.key]||{};all[wk][c.key].feels=feelsEl.value;}
+  });
+  localStorage.setItem(CHAKRA_KEY,JSON.stringify(all));
+}
+
+/* ---- Reference + Meals (static, read-only) ---- */
+function renderChakraReference(){
+  document.getElementById('chakra-reference-table').innerHTML=`<table class="ref-table"><thead><tr>
+    <th>Chakra</th><th>Sanskrit</th><th>Element</th><th>Affirmation</th><th>Symptoms When Off</th></tr></thead><tbody>
+    ${CHAKRAS.map(c=>`<tr><td><strong>${c.label}</strong></td><td>${c.sanskrit}</td><td>${c.element}</td><td>${c.affirmation}</td><td>${c.symptoms}</td></tr>`).join('')}
+    </tbody></table>`;
+}
+const CHAKRA_MEALS=[
+  {name:'Root',sub:'Muladhara · Earth',meals:['Red lentil soup with turmeric','Beet + carrot salad','Black bean tacos'],foods:'Root vegetables, red foods, protein-rich legumes, earthy grains'},
+  {name:'Sacral',sub:'Svadhisthana · Water',meals:['Mango + turmeric smoothie','Coconut curry with orange','Salmon with papaya salsa'],foods:'Orange foods, sweet fruits, healthy fats, hibiscus, damiana, maca'},
+  {name:'Solar Plexus',sub:'Manipura · Fire',meals:['Turmeric golden milk latte','Lemon ginger stir-fry','Yellow dal with cumin'],foods:'Yellow foods, fermented foods, whole grains, ginger, turmeric, black pepper'},
+  {name:'Heart',sub:'Anahata · Air',meals:['Green smoothie with matcha','Spinach + avocado salad',"Bliss Molecule elixir ✦"],foods:'Leafy greens, green herbs, raw cacao, maca, rose petals, hawthorn berry'},
+  {name:'Throat',sub:'Vishuddha · Ether',meals:['Blueberry + sage smoothie','Coconut water with lemon','Sage & Citrus mocktail ✦'],foods:'Blue/purple foods, hydrating foods, sea vegetables, elderberry, sage, thyme'},
+  {name:'Third Eye',sub:'Ajna · Light',meals:['Mystical Third Eye elixir ✦','Purple cabbage + walnut salad','Lavender + blueberry chia pudding'],foods:'Purple foods, omega-3 foods, mugwort, gotu kola, ginkgo, dark leafy herbs'},
+  {name:'Crown',sub:'Sahasrara · Thought',meals:['Lunar Lullaby ceremonial tea ✦','White mushroom + truffle risotto','Fasting or light mono-meal'],foods:'Light clean foods, fasting, white/violet foods, lavender, chamomile, valerian, frankincense'}
+];
+function renderChakraMeals(){
+  document.getElementById('chakra-meals-list').innerHTML=CHAKRA_MEALS.map(r=>`
+    <div class="meal-card">
+      <div class="meal-card-title">${r.name} <span style="color:var(--muted);font-family:'Jost',sans-serif;font-size:11px;">${r.sub}</span></div>
+      <ul>${r.meals.map(m=>`<li>${m}</li>`).join('')}</ul>
+      <div class="meal-card-foods">${r.foods}</div>
+    </div>`).join('');
+}
+
+/* ---- Manifestation Log ---- */
+function renderManifestLog(){
+  let data={};try{data=JSON.parse(localStorage.getItem(MANIFEST_LOG_KEY)||'{}');}catch{data={};}
+  const calledIn=data.calledIn||Array(8).fill('');
+  const arrived=data.arrived||Array(8).fill('');
+  document.getElementById('manifest-becoming').value=data.becoming||'';
+  document.getElementById('manifest-grateful').value=data.grateful||'';
+  document.getElementById('manifest-log-fields').innerHTML=calledIn.map((v,i)=>`
+    <div class="log-row">
+      <input type="text" placeholder="${i+1}. Called in / intended" value="${esc(v)}" onchange="saveManifestLog()" id="log-calledin-${i}"/>
+      <input type="text" placeholder="${i+1}. What arrived" value="${esc(arrived[i]||'')}" onchange="saveManifestLog()" id="log-arrived-${i}"/>
+    </div>`).join('');
+}
+function saveManifestLog(){
+  const calledIn=[],arrived=[];
+  for(let i=0;i<8;i++){
+    calledIn.push(document.getElementById('log-calledin-'+i)?.value||'');
+    arrived.push(document.getElementById('log-arrived-'+i)?.value||'');
+  }
+  const data={calledIn,arrived,
+    becoming:document.getElementById('manifest-becoming').value,
+    grateful:document.getElementById('manifest-grateful').value};
+  localStorage.setItem(MANIFEST_LOG_KEY,JSON.stringify(data));
+}
+/* ===================== END MANIFEST JOURNAL ===================== */
+
 init();
 </script>
 
