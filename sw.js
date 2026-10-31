@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mtpl-journal-v2';
+const CACHE_NAME = 'mtpl-journal-v3';
  
 self.addEventListener('install', function(event) {
   self.skipWaiting();
@@ -21,6 +21,8 @@ self.addEventListener('activate', function(event) {
 });
  
 self.addEventListener('fetch', function(event) {
+  // Never cache or intercept purchase/unlock requests or paid content
+  if (event.request.method !== 'GET' || event.request.headers.has('Authorization')) { return; }
   // Network first — always try to get fresh content
   event.respondWith(
     fetch(event.request)

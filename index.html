@@ -350,6 +350,54 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
 .store-btn{width:100%;padding:11px;background:linear-gradient(135deg,#1e0a35,#3d1f5c);border:1px solid rgba(201,149,58,0.3);border-radius:10px;color:var(--gold-light);font-size:13px;font-family:'Cinzel',serif;letter-spacing:1px;cursor:pointer;}
 .store-btn-open{background:linear-gradient(135deg,var(--sage),#3a6a5f);border-color:rgba(74,124,111,0.4);}
 
+/* 7-WEEK CHAKRA CHALLENGE */
+.ch-hero{background:linear-gradient(135deg,#2d1045,#4b2370);color:var(--gold-light);border-radius:16px;padding:18px;margin-bottom:14px;text-align:center;border-bottom:3px solid var(--gold);}
+.ch-hero h2{font-family:'Cinzel',serif;font-size:17px;letter-spacing:1px;margin-bottom:4px;}
+.ch-hero p{font-size:12.5px;opacity:.85;line-height:1.5;}
+.ch-card{background:rgba(255,255,255,0.75);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:12px;}
+.ch-card h3{font-family:'Cinzel',serif;font-size:13px;color:var(--plum);margin-bottom:8px;letter-spacing:.5px;}
+.ch-opts{display:flex;flex-direction:column;gap:8px;}
+.ch-opt{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:#fff;cursor:pointer;font-size:13px;}
+.ch-opt.on{border-color:var(--plum);background:var(--lavender-light);box-shadow:inset 3px 0 0 var(--gold);}
+.ch-note{font-size:11.5px;color:var(--muted);line-height:1.5;margin-top:6px;}
+.ch-offers{display:grid;gap:10px;}
+.ch-offer{border:1px solid var(--border);border-radius:12px;padding:12px;background:#fff;}
+.ch-offer.best{border-color:var(--gold);box-shadow:0 0 0 2px rgba(201,149,58,.25);}
+.ch-offer .nm{font-family:'Cinzel',serif;font-size:13px;color:var(--plum);}
+.ch-offer .pr{font-size:20px;color:var(--plum);font-family:'Cinzel',serif;margin:2px 0;}
+.ch-offer .pr s{font-size:13px;color:var(--muted);margin-right:6px;}
+.ch-offer .ds{font-size:11.5px;color:var(--muted);line-height:1.5;margin-bottom:8px;}
+.ch-tag{display:inline-block;font-size:10px;background:var(--gold);color:#fff;border-radius:10px;padding:1px 8px;margin-left:6px;letter-spacing:.5px;}
+.ch-btn{width:100%;padding:10px;background:linear-gradient(135deg,#1e0a35,#3d1f5c);border:1px solid rgba(201,149,58,.3);border-radius:10px;color:var(--gold-light);font-size:12.5px;font-family:'Cinzel',serif;letter-spacing:1px;cursor:pointer;}
+.ch-btn[disabled]{opacity:.55;cursor:default;}
+.ch-link{font-size:12px;color:var(--purple);cursor:pointer;text-decoration:underline;}
+.ch-tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px;padding-bottom:4px;}
+.ch-tab{flex-shrink:0;border:none;border-radius:20px;padding:7px 14px;font-size:11.5px;color:#fff;font-family:'Jost',sans-serif;cursor:pointer;opacity:.75;text-shadow:0 1px 1px rgba(0,0,0,.3);}
+.ch-tab.on{opacity:1;font-weight:600;box-shadow:0 0 0 2px var(--cream),0 0 0 4px var(--tc);}
+.ch-tab.crown{background:linear-gradient(120deg,#ece6f8,#cfe3f5,#f3d6ec,#d6f3e6,#f7efc9)!important;color:var(--plum);text-shadow:none;}
+.ch-days{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-bottom:12px;}
+.ch-day{border:1px solid var(--border);border-radius:10px;padding:8px 10px;background:#fff;cursor:pointer;font-size:12px;line-height:1.4;}
+.ch-day b{display:block;color:var(--cc);font-size:12.5px;}
+.ch-day.on{outline:2px solid var(--cc);}
+.ch-day.locked{background:rgba(255,255,255,.55);color:var(--muted);}
+.ch-pill{display:inline-block;font-size:10px;border-radius:10px;padding:0 7px;margin-top:3px;}
+.ch-pill.free{background:rgba(74,124,111,.15);color:var(--sage);}
+.ch-pill.moon{background:var(--lavender-light);color:var(--plum);}
+.ch-detail{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:14px;border-top:4px solid var(--cc);}
+.ch-detail h3{font-family:'Cinzel',serif;color:var(--plum);font-size:15px;margin-bottom:2px;}
+.ch-strip{background:color-mix(in srgb,var(--cc) 10%,#fdf7ef);border-left:4px solid var(--cc);padding:8px 10px;border-radius:4px;margin:8px 0;font-size:12.5px;line-height:1.5;}
+.ch-cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.ch-col{border:1px solid color-mix(in srgb,var(--cc) 40%,#e8dcc8);border-radius:10px;padding:8px 10px;font-size:12.5px;}
+.ch-col .t{font-weight:600;color:#fff;background:var(--cc);border-radius:4px;padding:1px 8px;margin-bottom:6px;font-size:11px;letter-spacing:1.5px;display:inline-block;}
+.ch-col b{display:block;margin-top:6px;font-size:12.5px;color:var(--plum);}
+.ch-col ul{padding-left:16px;margin-top:2px;}
+.ch-soon{border:1px dashed var(--gold);border-radius:12px;padding:12px;text-align:center;background:rgba(201,149,58,.06);}
+.ch-soon .ic{font-size:22px;}
+.ch-soon .tt{font-family:'Cinzel',serif;font-size:13px;color:var(--plum);}
+.ch-soon .ss{font-size:11.5px;color:var(--muted);}
+.ch-lock{text-align:center;padding:18px 10px;}
+@media(max-width:560px){.ch-cols{grid-template-columns:1fr;}}
+
 /* MANIFEST JOURNAL */
 .sub-nav{display:flex;gap:6px;overflow-x:auto;margin-bottom:16px;padding-bottom:4px;}
 .sub-nav-btn{flex-shrink:0;background:rgba(255,255,255,0.6);border:1px solid var(--border);border-radius:20px;padding:7px 14px;font-size:11.5px;color:var(--muted);font-family:'Jost',sans-serif;cursor:pointer;white-space:nowrap;}
@@ -661,6 +709,42 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
       <button class="store-btn store-btn-open" id="manifest-open-btn" style="display:none" onclick="switchView('manifest')">Open 7 Week Chakra Journal</button>
     </div>
 
+    <div class="store-card" id="store-card-challenge">
+      <div class="store-card-top">
+        <div class="store-icon">🪷</div>
+        <div>
+          <div class="store-title">7-Week Knee-Friendly Chakra Challenge</div>
+          <div class="store-sub">49 Days &middot; SHORT &amp; LONG Practices &middot; Moon-Aligned</div>
+        </div>
+        <div class="store-tag store-tag-locked" id="challenge-tag">Free Day 1s</div>
+      </div>
+      <div style="font-size:12.5px;color:var(--muted);line-height:1.6;margin:6px 0 12px;">Try Day 1 of every week free. Unlock a single week or the full challenge.</div>
+      <button class="store-btn" onclick="switchView('challenge')">Open the Challenge</button>
+    </div>
+
+  </div>
+
+  <!-- CHAKRA CHALLENGE VIEW -->
+  <div class="view" id="view-challenge">
+    <div style="margin-bottom:14px;"><span onclick="switchView('journals')" style="font-size:12px;color:var(--purple);cursor:pointer;font-family:'Jost',sans-serif;letter-spacing:0.5px;">&larr; Journals</span></div>
+    <div class="ch-hero"><h2>7-Week Knee-Friendly Chakra Challenge</h2><p>One chakra a week. Daily practice with a SHORT and a LONG version, gentle on the knees. Align &middot; Believe &middot; Create.</p></div>
+    <div id="ch-start"></div>
+    <div id="ch-offers"></div>
+    <div class="ch-tabs" id="ch-tabs"></div>
+    <div class="ch-days" id="ch-days"></div>
+    <div id="ch-detail"></div>
+    <div class="ch-soon"><div class="ic">📦</div><div class="tt">Affirmation Box &middot; Coming Soon</div><div class="ss">Crystals, herbs and oils for each chakra week, plus herb and oil infographics. Stay tuned.</div></div>
+    <div id="ch-code-modal" class="unlock-modal" style="display:none">
+      <div class="unlock-box">
+        <div class="unlock-icon">&#x1F511;</div>
+        <div class="unlock-title">Enter Your Challenge Code</div>
+        <div class="unlock-sub">Your code arrives by email after purchase.</div>
+        <input type="text" class="unlock-input" id="ch-code-input" placeholder="Your code" maxlength="40"/>
+        <div class="unlock-error" id="ch-code-error"></div>
+        <button class="unlock-btn" onclick="chRedeem()">Unlock &#x2736;</button>
+        <div class="unlock-cancel" onclick="document.getElementById('ch-code-modal').style.display='none'">Cancel</div>
+      </div>
+    </div>
   </div>
 
   <!-- MANIFEST JOURNAL VIEW (gated) -->
@@ -1064,10 +1148,11 @@ function switchView(id){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('view-'+id).classList.add('active');
-  const navIdx=['journal','log','patterns','journals'].indexOf(id==='manifest'?'journals':id);
+  const navIdx=['journal','log','patterns','journals'].indexOf((id==='manifest'||id==='challenge')?'journals':id);
   if(navIdx>-1)document.querySelectorAll('.nav-btn')[navIdx].classList.add('active');
   if(id==='patterns')renderPatterns();
   if(id==='journals')renderJournalsStorefront();
+  if(id==='challenge')renderChallenge();
   if(id==='manifest'){
     if(!manifestUnlocked()){switchView('journals');return;}
     renderMoonRitual();renderChakraCheckin();
@@ -1236,6 +1321,142 @@ function saveManifestLog(){
   localStorage.setItem(MANIFEST_LOG_KEY,JSON.stringify(data));
 }
 /* ===================== END MANIFEST JOURNAL ===================== */
+
+/* ===================== 7-WEEK CHAKRA CHALLENGE ===================== */
+const CH_CONFIG = {
+  // Backend that validates purchase codes and serves paid days (not set up yet).
+  API_BASE: '',
+  // Regular prices. Shopify enforces the real price at checkout; these are display only.
+  prices: { week: 13.13, full: 77.77, complete: 111.11 },
+  // Optional limited-time price (display only). Set promo to null to hide.
+  promo: { label: 'Founding Member Price', week: 11.11, full: 44.44, endsAt: '2026-11-09T23:59:00-05:00' },
+  // Paste Shopify checkout links here when the products exist.
+  checkout: { week: '', full: '', complete: '' }
+};
+const CH_DATA = {"free":[{"w":1,"chakra":"Root","color":"#b5432f","name":"Foundation","crystal":"Red Jasper","aff":"I am grounded, stable, and safe","theme":"Foundation, grounding, stability. You learn the Big 5 with correct form and build your base for the six weeks ahead.","day":{"k":"A","title":"Foundation Strength","mins":[20,35],"tea":"Ginger tea (warming, energizing)","oil":"Patchouli","note":"Launch day: hold your crystal, set the intention “I begin my journey with strength and grounding.” Optional evening grounding bath (Epsom, dried ginger, patchouli).","s":[["Centering · 2 min",["Sit tall, hand at the base of your spine. Intention: “I build my foundation today.”"]],["Warm-up · 2 min",["Cat-Cow · 10 rounds"]],["The Big 5 · ~8 min",["Hip Bridges · 15 reps","Clamshells · 20 each side","Side-Lying Leg Lifts · 12 each side","Bird Dog · 8 each side","Single-Leg Balance · 20 sec each leg","Note: Learning the form. “Sit into your hip” on clamshells; hips level on bird dog."]],["Cool-down · 4 min",["Standing quad stretch · 30 sec each","Supine hamstring stretch · 60 sec each","Savasana · 90 sec — “I am grounded and stable”"]]],"l":[["Centering · 5 min",["Sit with your crystal, breathe in the oil, picture red light at the base of the spine. Intention: “I build unshakeable foundation.”"]],["Warm-up · 4 min",["Cat-Cow · 15 rounds","Child's Pose · 60 sec","Gentle spinal twists · 30 sec each side"]],["The Big 5 · ~15 min",["Hip Bridges · 20 reps","Clamshells · 25 each side","Side-Lying Leg Lifts · 15 each side","Bird Dog · 12 each side","Single-Leg Balance · 45 sec each leg","Note: Learning the form. “Sit into your hip” on clamshells; hips level on bird dog."]],["Cool-down · 8 min + Savasana 3 min",["Standing quad stretch · 60 sec each","Supine hamstring stretch · 90 sec each","Figure 4 hip stretch · 90 sec each","Supine twist · 60 sec each","Happy Baby · 90 sec","Savasana · 3 min — “I am rooted in strength”"]]]}},{"w":2,"chakra":"Sacral","color":"#d9622b","name":"Opening","crystal":"Carnelian","aff":"I flow with the creative current of life","theme":"Flow, creativity, emotional opening. Hip mobility joins the Big 5 so hips open while the strength you built stays.","day":{"k":"A","title":"Hip Strength","mins":[20,35],"tea":"Calendula tea","oil":"Sweet orange","note":"Carnelian feels warmer than Red Jasper. Intention: “I open to creative flow.” Hip massage after practice: 2 drops sweet orange in 1 tbsp carrier oil.","s":[["Centering · 2 min",["Hands on lower belly (two fingers below the navel). Intention: “I flow with creativity and joy.”"]],["Warm-up · 2 min",["Cat-Cow · 10 rounds, emphasize hip movement","Hip circles on hands and knees · 5 each way"]],["The Big 5 · ~8 min",["Hip Bridges · 15 reps","Clamshells · 20 each side","Side-Lying Leg Lifts · 12 each side","Bird Dog · 8 each side","Single-Leg Balance · 25 sec each leg","Note: Slow the clamshells: 3 sec up, 3 sec down. Balance goal: 5 sec longer than Week 1."]],["Hip-focused holds · 3 min",["Goddess Pose (wide squat) · 60 sec","Low Lunge · 45 sec each side (blanket under back knee)"]],["Cool-down · 2 min",["Supine Figure 4 · 60 sec each side","Savasana · crystal on lower belly"]]],"l":[["Centering · 5 min",["Carnelian in your hands, orange light two inches below the navel, sweet orange scent. Intention: “I flow with creative possibility.”"]],["Warm-up · 5 min",["Cat-Cow · 15 rounds","Hip circles on hands and knees · 8 each way","Child's Pose, knees wide · 90 sec"]],["The Big 5 · ~15 min",["Hip Bridges · 20 reps","Clamshells · 25 each side","Side-Lying Leg Lifts · 15 each side","Bird Dog · 12 each side","Single-Leg Balance · 50 sec each leg","Note: Slow the clamshells: 3 sec up, 3 sec down. Balance goal: 5 sec longer than Week 1."]],["Hip-focused work · 7 min",["Goddess Pose · 90 sec","Low Lunge · 90 sec each side, optional gentle hip circles"]],["Cool-down · 5 min + Savasana 3 min",["Supine Figure 4 · 90 sec each side","Happy Baby · 90 sec","Supine twist · 30 sec each side","Savasana · 3 min — “I flow with the creative current of life”"]]]}},{"w":3,"chakra":"Solar Plexus","color":"#c79a14","name":"Power","crystal":"Citrine","aff":"I am powerful beyond measure","theme":"Personal power, confidence, will. The core-intensive week and the halfway point. Mental fortitude is the real work.","day":{"k":"A","title":"Core Power","mins":[20,35],"tea":"Chamomile tea (pre-soothe)","oil":"Lemon","note":"This week is hard and you are ready. After practice, switch to peppermint tea; optional turmeric golden milk for recovery.","s":[["Centering · 2 min",["Crystal on the upper belly, below the ribs. Intention: “I am powerful. I am capable.”"]],["Warm-up · 2 min",["Cat-Cow · 10 rounds, belly pulls in on the exhale","Child's Pose 30 sec · Down Dog 30 sec"]],["The Big 5 · ~8 min",["Hip Bridges · 15 reps","Clamshells · 20 each side","Side-Lying Leg Lifts · 12 each side","Bird Dog · 8 each side","Single-Leg Balance · 30 sec each leg","Note: Core stays braced through every rep. Balance goal: 60 sec by Day 5."]],["Core work · 3 min",["Plank · 20 sec, rest 10, 20 sec (forearms or hands; knees down to modify)","Boat Pose · 30 sec (bent knees fine)","Dead Bug · 5 each side"]],["Cool-down · 2 min",["Child's Pose · 60 sec","Savasana · 60 sec"]]],"l":[["Centering · 5 min",["Citrine on the solar plexus, yellow-gold sun at the upper belly. Intention: “I claim my power. I can do hard things.”"]],["Warm-up · 5 min",["Cat-Cow · 15 rounds","Plank prep · 10 sec × 2 (knees down is fine)","Child's Pose 90 sec · Down Dog 45 sec"]],["The Big 5 · ~15 min",["Hip Bridges · 20 reps","Clamshells · 25 each side","Side-Lying Leg Lifts · 15 each side","Bird Dog · 12 each side","Single-Leg Balance · 60 sec each leg","Note: Core stays braced through every rep. Balance goal: 60 sec by Day 5."]],["Core power block · 7 min",["Plank series · forearm 30 sec, high plank 30 sec, forearm 45 sec; rest 15 between","Boat Pose · 45 sec, rest 15, 30 sec","Dead Bug · 8 each side, back stays flat"]],["Cool-down · 5 min + Savasana 3 min",["Child's Pose · 2 min (cool the fire)","Supine twist · 60 sec each side","Knees to chest · 60 sec","Savasana · 3 min — “I am powerful beyond measure”"]]]}},{"w":4,"chakra":"Heart","color":"#2f8f5b","name":"Compassion","crystal":"Rose Quartz","aff":"I give and receive love freely","theme":"Love, compassion, heart opening. A gentler recovery week after Week 3: backbends and chest openers reverse all that forward core work.","day":{"k":"A","title":"Heart Opening Strength","mins":[20,35],"tea":"Rose petal tea","oil":"Rose geranium","note":"Soft energy after Citrine's fire. Optional chest massage with 2 drops rose geranium in 1 tbsp carrier oil (around, not on, the breasts).","s":[["Centering · 2 min",["Lie back, crystal on the heart. Intention: “I am worthy of love. I give and receive love freely.”"]],["Warm-up · 2 min",["Cat-Cow · 10 rounds, emphasize Cow","Child's Pose · 30 sec"]],["The Big 5 · ~8 min",["Hip Bridges · 15 reps","Clamshells · 20 each side","Side-Lying Leg Lifts · 12 each side","Bird Dog · 8 each side","Single-Leg Balance · 30 sec each leg","Note: Maintain your Week 3 gains. At the top of each bridge the chest opens."]],["Heart opening · 3 min",["Sphinx Pose · 60 sec","Cobra · 30 sec × 2 (hips stay down)"]],["Cool-down · 2 min",["Child's Pose · 60 sec","Savasana · 60 sec, crystal on heart"]]],"l":[["Centering · 5 min",["Crystal on heart center, pink-green light at the chest, rose scent. Intention: “I open my heart to love, starting with loving myself.”"]],["Warm-up · 5 min",["Cat-Cow · 15 rounds, emphasize Cow","Puppy Pose · 90 sec","Child's Pose · 90 sec"]],["The Big 5 · ~15 min",["Hip Bridges · 20 reps","Clamshells · 25 each side","Side-Lying Leg Lifts · 15 each side","Bird Dog · 12 each side","Single-Leg Balance · 60 sec each leg","Note: Maintain your Week 3 gains. At the top of each bridge the chest opens."]],["Heart opening · 7 min",["Sphinx · 90 sec","Cobra · 45 sec × 2 with Child's Pose rest","Supported Bridge, block under sacrum · 2 min, arms open"]],["Cool-down · 5 min + Savasana 3 min",["Child's Pose · 2 min","Supine twist · 60 sec each side · Reclined Butterfly · 60 sec","Savasana · 3 min — “I am worthy of love”"]]]}},{"w":5,"chakra":"Throat","color":"#2f72b5","name":"Expression","crystal":"Blue Lace Agate","aff":"I speak my truth with kindness and clarity","theme":"Communication, truth, authentic voice. Neck and shoulder release, throat openers, and sound: humming, chanting, speaking affirmations aloud.","day":{"k":"A","title":"Neck & Shoulder Release","mins":[20,35],"tea":"Peppermint tea","oil":"Peppermint","note":"Speak aloud during balance today. It is brave. Optional neck massage: 1 drop peppermint in 1 tbsp carrier oil, sides of neck only.","s":[["Centering · 2 min",["Crystal at the hollow of the throat; hum softly on the exhale. Intention: “I speak my truth clearly.”"]],["Warm-up · 2 min",["Cat-Cow · 10 rounds with gentle neck circles","Neck rolls · 5 each way, slow"]],["The Big 5 · ~8 min",["Hip Bridges · 15 reps","Clamshells · 20 each side","Side-Lying Leg Lifts · 12 each side","Bird Dog · 8 each side","Single-Leg Balance · 30 sec each leg (speak affirmations aloud)","Note: Speak affirmations aloud while balancing (“I am stable… grounded… clear”). Voice anchors balance."]],["Neck & shoulder release · 3 min",["Neck side bends · 30 sec each","Shoulder shrugs · 10 reps, drop with a sigh (“ahhh”)","Eagle arms · 45 sec each"]],["Cool-down · 2 min",["Seated twist · 30 sec each","Savasana · 60 sec, crystal on throat"]]],"l":[["Centering · 5 min",["Crystal on throat, blue light, peppermint scent; long low hum. Intention: “I find my authentic voice. I speak with courage and compassion.”"]],["Warm-up · 5 min",["Cat-Cow with neck circles and soft humming · 15 rounds","Neck rolls · 8 each way · Thread the Needle · 60 sec each side","Child's Pose · 90 sec"]],["The Big 5 · ~15 min",["Hip Bridges · 20 reps","Clamshells · 25 each side","Side-Lying Leg Lifts · 15 each side","Bird Dog · 12 each side","Single-Leg Balance · 60 sec each leg (speak affirmations aloud)","Note: Speak affirmations aloud while balancing (“I am stable… grounded… clear”). Voice anchors balance."]],["Neck & shoulder release · 7 min",["Neck side bends 60 sec each · chin to chest / look up gently 30 sec each","Shrugs with sound · 15 reps · shoulder rolls 10 forward, 10 back","Eagle arms · 60 sec each · Cow Face arms (strap OK) · 45 sec each"]],["Cool-down · 5 min + Savasana 3 min",["Seated twist, look over shoulder · 90 sec each","Neck and shoulder self-massage · 90 sec · Ragdoll · 60 sec","Savasana · 3 min, head supported — “My voice is heard”"]]]}},{"w":6,"chakra":"Third Eye","color":"#7b4fb8","name":"Wisdom","crystal":"Amethyst","aff":"I see clearly with my inner eye","theme":"Intuition, wisdom, inner vision. The most advanced week: deepest hip opening, longest balances, and meditation woven through.","day":{"k":"A","title":"Deep Opening Strength","mins":[20,35],"tea":"Lavender tea","oil":"Frankincense","note":"Charge your crystal in daylight 2–4 hours; sit 5 min with eyes closed facing the light; journal: what do I need to see clearly?","s":[["Centering · 2 min",["Lie back, crystal on the forehead between the brows. Intention: “I see clearly. I trust my intuition.”"]],["Warm-up · 2 min",["Cat-Cow · 10 rounds, slow and meditative","Child's Pose · 60 sec, third eye to earth"]],["The Big 5 · ~8 min",["Hip Bridges · 15 reps","Clamshells · 20 each side","Side-Lying Leg Lifts · 12 each side","Bird Dog · 8 each side","Single-Leg Balance · 45 sec each leg","Note: Longest balances yet: crystal as your gaze point. Goal: 80 sec by Day 5, 90 sec on Day 6."]],["Deep hip opening · 3 min",["Pigeon · 90 sec each side (or Figure 4); a longer hold than ever before"]],["Cool-down · 2 min",["Child's Pose · 60 sec","Savasana · 60 sec, crystal on forehead"]]],"l":[["Centering · 5 min",["Crystal on third eye, purple-indigo light at the forehead, frankincense scent. Intention: “I awaken my inner vision.”"]],["Warm-up · 5 min",["Cat-Cow · 20 rounds, eyes closed","Puppy Pose · 2 min · Child's Pose · 90 sec"]],["The Big 5 · ~15 min",["Hip Bridges · 20 reps","Clamshells · 25 each side","Side-Lying Leg Lifts · 15 each side","Bird Dog · 12 each side","Single-Leg Balance · 70 sec each leg","Note: Longest balances yet: crystal as your gaze point. Goal: 80 sec by Day 5, 90 sec on Day 6."]],["Deep hip opening · 10 min",["Pigeon · 3–4 min each side; set a timer, fold or stay upright, breathe through intensity","Child's Pose between sides · 30 sec · Lizard Lunge · 90 sec each"]],["Cool-down · 5 min + Savasana 4 min",["Child's Pose · 2 min · Happy Baby · 90 sec · Reclined Butterfly · 90 sec","Savasana · 4 min — “I see. I know. I trust.”"]]]}},{"w":7,"chakra":"Crown","color":"#8b82b5","name":"Integration","crystal":"Clear Quartz","aff":"I am connected to divine consciousness","theme":"Integration, gratitude, completion, rebirth. Gentler physically; the final three Big 5 sessions, a 7-chakra ceremony on Day 6, and a rebirth ceremony on Day 7.","day":{"k":"A","title":"Integration Strength","mins":[20,35],"tea":"Lotus (or lavender) tea","oil":"Frankincense","note":"Set up the 7-crystal altar in chakra order. Reflect: Week 1 vs now. Big 5 #19.","s":[["Centering · 2 min",["Sit at your 7-crystal altar, clear quartz on the crown. Intention: “I am whole. I am complete.”"]],["Warm-up · 2 min",["Cat-Cow · 10 rounds, honoring all seven chakras","Child's Pose · 60 sec, crown to earth"]],["The Big 5 · ~8 min",["Hip Bridges · 15 reps","Clamshells · 20 each side","Side-Lying Leg Lifts · 12 each side","Bird Dog · 8 each side","Single-Leg Balance · 45 sec each leg","Note: Honor your mastery rather than chase numbers. Day 3 75 sec · Day 5 (final session) 90 sec."]],["Crown integration · 3 min",["Seated crown meditation · 2 min: white-violet-gold light pours in at the crown and flows down through all seven chakras"]],["Cool-down · 2 min",["Child's Pose · 60 sec","Savasana · 60 sec, crystal on crown"]]],"l":[["Centering · 5 min",["Altar with all seven crystals and a white or gold candle; light pouring into the crown. Intention: “I honor all seven chakras. I am complete and whole.”"]],["Warm-up · 5 min",["7-chakra Cat-Cow · 21 rounds, 3 per chakra from root to crown","Child's Pose · 2 min"]],["The Big 5 · ~15 min",["Hip Bridges · 20 reps","Clamshells · 25 each side","Side-Lying Leg Lifts · 15 each side","Bird Dog · 12 each side","Single-Leg Balance · 60 sec each leg","Note: Honor your mastery rather than chase numbers. Day 3 75 sec · Day 5 (final session) 90 sec."]],["Crown integration · 7 min",["Legs up wall · 5 min (supported shoulder stand only if experienced)","Seated crown meditation · 2 min: light flows crown → root, then root → crown, a complete circuit"]],["Cool-down · 5 min + Savasana 4 min",["Child's Pose · 2 min · gentle spinal waves · 60 sec · supine twist · 60 sec each","Savasana · 4 min — “I am whole. I am connected to divine consciousness.”"]]]}}],"days":[[{"k":"A","title":"Foundation Strength","mins":[20,35]},{"k":"B","title":"Grounding Flow","mins":[15,25]},{"k":"C","title":"Balance & Stability","mins":[20,35]},{"k":"B","title":"Grounding Flow","mins":[15,25]},{"k":"A","title":"Foundation Strength","mins":[20,35]},{"k":"I","title":"Integration: Complete Root Practice","mins":[30,50]},{"k":"R","title":"Deep Rest & Reflection","mins":[15,25]}],[{"k":"A","title":"Hip Strength","mins":[20,35]},{"k":"B","title":"Creative Flow","mins":[15,25]},{"k":"C","title":"Hip Mobility & Core","mins":[20,35]},{"k":"B","title":"Creative Flow","mins":[15,25]},{"k":"A","title":"Hip Strength","mins":[20,35]},{"k":"I","title":"Integration: Complete Sacral Practice","mins":[30,50]},{"k":"R","title":"Water Flow","mins":[15,25]}],[{"k":"A","title":"Core Power","mins":[20,35]},{"k":"B","title":"Fire Flow","mins":[15,25]},{"k":"C","title":"Power & Balance","mins":[20,35]},{"k":"B","title":"Fire Flow","mins":[15,25]},{"k":"A","title":"Core Power","mins":[20,35]},{"k":"I","title":"Integration: Complete Power Practice","mins":[30,50]},{"k":"R","title":"Inner Fire Meditation","mins":[15,25]}],[{"k":"A","title":"Heart Opening Strength","mins":[20,35]},{"k":"B","title":"Backbend Flow","mins":[15,25]},{"k":"C","title":"Balance & Compassion","mins":[20,35]},{"k":"B","title":"Backbend Flow","mins":[15,25]},{"k":"A","title":"Heart Opening Strength","mins":[20,35]},{"k":"I","title":"Integration: Complete Heart Practice","mins":[30,50]},{"k":"R","title":"Loving-Kindness","mins":[15,25]}],[{"k":"A","title":"Neck & Shoulder Release","mins":[20,35]},{"k":"B","title":"Expression Flow","mins":[15,25]},{"k":"C","title":"Voice & Balance","mins":[20,35]},{"k":"B","title":"Expression Flow","mins":[15,25]},{"k":"A","title":"Neck & Shoulder Release","mins":[20,35]},{"k":"I","title":"Integration: Complete Throat Practice","mins":[30,50]},{"k":"R","title":"Voice Meditation & Sound Healing","mins":[15,25]}],[{"k":"A","title":"Deep Opening Strength","mins":[20,35]},{"k":"B","title":"Intuition Flow","mins":[15,25]},{"k":"C","title":"Advanced Balance & Wisdom","mins":[20,35]},{"k":"B","title":"Intuition Flow","mins":[15,25]},{"k":"A","title":"Deep Opening Strength","mins":[20,35]},{"k":"I","title":"Integration: Complete Third Eye Practice","mins":[30,50]},{"k":"R","title":"Inner Vision & Yoga Nidra","mins":[15,25]}],[{"k":"A","title":"Integration Strength","mins":[20,35]},{"k":"B","title":"Gratitude Flow","mins":[15,25]},{"k":"C","title":"Final Balance Mastery","mins":[20,35]},{"k":"B","title":"Gratitude Flow","mins":[15,25]},{"k":"A","title":"Integration Strength","mins":[20,35]},{"k":"I","title":"Complete 7-Chakra Ceremony","mins":[60,90]},{"k":"R","title":"Rebirth & New Beginning","mins":[20,30]}]]};
+const CH_COLORS = {}; CH_DATA.free.forEach(f => CH_COLORS[f.w] = f.color);
+const CH_KEYS = { ent: 'mtpl_ch_ent', token: 'mtpl_ch_token', start: 'mtpl_ch_start' };
+let chW = 1, chD = 0, chPaid = {};
+
+function chGet(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
+function chSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+function chEnt() { return chGet(CH_KEYS.ent, { full: false, complete: false, weeks: [] }); }
+function chUnlocked(w) { const e = chEnt(); return !!(e.full || e.complete || (e.weeks || []).includes(w)); }
+function chPromoOn() { const p = CH_CONFIG.promo; return !!(p && new Date() < new Date(p.endsAt)); }
+function chMoney(n) { return '$' + n.toFixed(2); }
+
+/* ---- moon dates (Meeus), used to offer a New Moon start ---- */
+function chPhase(k, full) {
+  const R = Math.PI / 180, sn = Math.sin, T = k / 1236.85;
+  let jde = 2451550.09766 + 29.530588861 * k + 0.00015437 * T * T - 0.00000015 * T ** 3 + 0.00000000073 * T ** 4;
+  const E = 1 - 0.002516 * T - 0.0000074 * T * T;
+  const M = R * (2.5534 + 29.1053567 * k - 0.0000014 * T * T), Mp = R * (201.5643 + 385.81693528 * k + 0.0107582 * T * T + 0.00001238 * T ** 3),
+    F = R * (160.7108 + 390.67050284 * k - 0.0016118 * T * T - 0.00000227 * T ** 3), Om = R * (124.7746 - 1.56375588 * k + 0.0020672 * T * T + 0.00000215 * T ** 3);
+  const a = full ? -0.40614 : -0.4072, b = full ? 0.17302 : 0.17241, c = full ? 0.01614 : 0.01608, d = full ? 0.01043 : 0.01039, e = full ? 0.00734 : 0.00739;
+  jde += a * sn(Mp) + b * E * sn(M) + c * sn(2 * Mp) + d * sn(2 * F) + e * E * sn(Mp - M) - 0.00514 * E * sn(Mp + M) + 0.00208 * E * E * sn(2 * M) - 0.00111 * sn(Mp - 2 * F) - 0.00057 * sn(Mp + 2 * F) + 0.00056 * E * sn(2 * Mp + M) - 0.00042 * sn(3 * Mp) + 0.00042 * E * sn(M + 2 * F) + 0.00038 * E * sn(M - 2 * F) - 0.00024 * E * sn(2 * Mp - M) - 0.00017 * sn(Om);
+  return new Date((jde - 2440587.5) * 86400000);
+}
+function chMoons(from, to) {
+  const k0 = Math.floor(((from.getTime() / 86400000 + 2440587.5) - 2451550.09766) / 29.530588861) - 1, out = [];
+  for (let k = k0; k < k0 + 30; k++) for (const f of [0, 1]) { const t = chPhase(k + 0.5 * f, !!f); if (t >= from && t <= to) out.push({ t, type: f ? 'Full' : 'New' }); }
+  return out.sort((x, y) => x.t - y.t);
+}
+const chDay0 = d => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+const chAdd = (d, n) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
+const chYmd = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+const chParse = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+const chFmt = (d, o) => d.toLocaleDateString(undefined, o || { weekday: 'short', month: 'short', day: 'numeric' });
+function chNextNew(from) {
+  const ms = chMoons(chAdd(from, -1), chAdd(from, 45)).filter(x => x.type === 'New');
+  for (const m of ms) if (chDay0(m.t) >= from) return m;
+  return ms[0];
+}
+function chStartDate() {
+  const s = chGet(CH_KEYS.start, null); if (!s) return null;
+  if (s.mode === 'moon') { const m = chNextNew(chParse(s.base)); return chDay0(m.t); }
+  return chParse(s.date);
+}
+function chSetStart(mode) {
+  const today = chYmd(new Date());
+  chSet(CH_KEYS.start, mode === 'moon' ? { mode: 'moon', base: today } : { mode: 'today', date: today });
+  renderChallenge();
+}
+function chPickStart(v) { if (v) { chSet(CH_KEYS.start, { mode: 'pick', date: v }); renderChallenge(); } }
+
+/* ---- rendering ---- */
+function chBlocks(bl) { return (bl || []).map(b => '<b>' + esc(b[0]) + '</b><ul>' + b[1].map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>').join(''); }
+function chDetailHTML(w, i, day, info) {
+  const f = CH_DATA.free[w - 1], n = (w - 1) * 7 + i + 1, st = chStartDate();
+  const dt = st ? chAdd(st, n - 1) : null, mo = dt ? chMoons(dt, chAdd(dt, 1)).filter(m => chDay0(m.t).getTime() === dt.getTime()) : [];
+  const k = info.k, ttl = (('ABC'.includes(k)) ? k + ' · ' : '') + info.title;
+  return '<div class="ch-detail" style="--cc:' + f.color + '"><h3>Day ' + n + (dt ? ' · ' + esc(chFmt(dt, { weekday: 'long', month: 'long', day: 'numeric' })) : '') + '</h3>' +
+    '<div style="font-size:12px;color:var(--muted)">Week ' + w + ': ' + esc(f.chakra) + ' (' + esc(f.name) + ') · ' + esc(ttl) + ' · ' + info.mins[0] + ' / ' + info.mins[1] + ' min</div>' +
+    '<div class="ch-strip"><b>Tea:</b> ' + esc(day.tea) + ' · <b>Oil:</b> ' + esc(day.oil) + ' · <b>Crystal:</b> ' + esc(f.crystal) + '<br><b>Affirmation:</b> “' + esc(f.aff) + '”</div>' +
+    mo.map(m => '<div class="ch-strip">' + (m.type === 'New' ? '🌑 New Moon' : '🌕 Full Moon') + ' today</div>').join('') +
+    '<p style="font-size:12.5px;line-height:1.55;margin:6px 0 10px">' + esc(day.note) + '</p>' +
+    '<div class="ch-cols"><div class="ch-col"><span class="t">SHORT</span>' + chBlocks(day.s) + '</div><div class="ch-col"><span class="t">LONG</span>' + chBlocks(day.l) + '</div></div></div>';
+}
+async function chLoadPaid(w) {
+  if (chPaid[w]) return chPaid[w];
+  const token = chGet(CH_KEYS.token, null);
+  if (!CH_CONFIG.API_BASE || !token) throw new Error('no-backend');
+  const r = await fetch(CH_CONFIG.API_BASE + '/content?week=' + w, { headers: { Authorization: 'Bearer ' + token } });
+  if (!r.ok) throw new Error('http-' + r.status);
+  const j = await r.json(); chPaid[w] = j.days; return j.days;
+}
+function chOffersHTML() {
+  const p = CH_CONFIG.prices, pr = CH_CONFIG.promo, on = chPromoOn(), ent = chEnt();
+  if (ent.full || ent.complete) return '<div class="ch-card"><h3>✨ Full Challenge Unlocked</h3><div class="ch-note">All 49 days are open. Enjoy the journey.</div></div>';
+  const btn = (key, label) => CH_CONFIG.checkout[key] ? '<button class="ch-btn" onclick="window.open(\'' + CH_CONFIG.checkout[key] + '\',\'_blank\',\'noopener\')">' + label + '</button>' : '<button class="ch-btn" disabled>Checkout opens soon</button>';
+  const price = (reg, promo) => on && promo != null ? '<s>' + chMoney(reg) + '</s>' + chMoney(promo) : chMoney(reg);
+  return '<div class="ch-card" id="ch-offers-card"><h3>Unlock the Challenge' + (on ? '<span class="ch-tag">' + esc(pr.label) + '</span>' : '') + '</h3><div class="ch-offers">' +
+    '<div class="ch-offer"><div class="nm">Single Week Pass</div><div class="pr">' + price(p.week, pr && pr.week) + '</div><div class="ds">One full week: 7 days, SHORT &amp; LONG practices.</div>' + btn('week', 'Get a Week') + '</div>' +
+    '<div class="ch-offer best"><div class="nm">Full Challenge<span class="ch-tag">BEST VALUE</span></div><div class="pr">' + price(p.full, pr && pr.full) + '</div><div class="ds">All 7 weeks, 49 days, every chakra.</div>' + btn('full', 'Get the Full Challenge') + '</div>' +
+    '</div><div class="ch-note" style="text-align:center;margin-top:10px">Already purchased? <span class="ch-link" onclick="document.getElementById(\'ch-code-modal\').style.display=\'flex\'">Enter your code</span></div></div>';
+}
+function chStartHTML() {
+  const st = chStartDate(), s = chGet(CH_KEYS.start, null), nn = chNextNew(chDay0(new Date()));
+  let h = '<div class="ch-card"><h3>When do you start?</h3><div class="ch-opts">' +
+    '<div class="ch-opt' + (s && s.mode === 'today' ? ' on' : '') + '" onclick="chSetStart(\'today\')">Start today</div>' +
+    '<div class="ch-opt' + (s && s.mode === 'moon' ? ' on' : '') + '" onclick="chSetStart(\'moon\')">Start on the next New Moon <span style="color:var(--muted);font-size:11.5px">&nbsp;(' + esc(chFmt(nn.t)) + ') as intended</span></div>' +
+    '<div class="ch-opt' + (s && s.mode === 'pick' ? ' on' : '') + '">Pick a date: <input type="date" value="' + (s && s.mode === 'pick' ? s.date : '') + '" onchange="chPickStart(this.value)" style="font:inherit;margin-left:6px"></div></div>';
+  if (st) h += '<div class="ch-note">Day 1: <b>' + esc(chFmt(st, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })) + '</b> &rarr; Day 49: <b>' + esc(chFmt(chAdd(st, 48), { month: 'long', day: 'numeric', year: 'numeric' })) + '</b></div>';
+  else h += '<div class="ch-note">Choose a start to see your dates. Days are numbered 1–7 in each week from your Day 1.</div>';
+  return h + '</div>';
+}
+function chSelect(w, i) { chW = w; chD = i; renderChallenge(); const el = document.getElementById('ch-detail'); if (el && el.scrollIntoView) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+function chTab(w) { chW = w; chD = 0; renderChallenge(); }
+async function renderChallenge() {
+  document.getElementById('ch-start').innerHTML = chStartHTML();
+  document.getElementById('ch-offers').innerHTML = chOffersHTML();
+  document.getElementById('ch-tabs').innerHTML = CH_DATA.free.map(f => '<button class="ch-tab' + (f.w === chW ? ' on' : '') + (f.w === 7 ? ' crown' : '') + '" style="background:' + f.color + ';--tc:' + f.color + '" onclick="chTab(' + f.w + ')">Wk ' + f.w + ' · ' + esc(f.chakra) + '</button>').join('');
+  const f = CH_DATA.free[chW - 1], st = chStartDate(), un = chUnlocked(chW);
+  document.getElementById('ch-days').innerHTML = CH_DATA.days[chW - 1].map((d, i) => {
+    const n = (chW - 1) * 7 + i + 1, dt = st ? chAdd(st, n - 1) : null, open = i === 0 || un;
+    const moon = dt ? chMoons(dt, chAdd(dt, 1)).filter(m => chDay0(m.t).getTime() === dt.getTime()).map(m => '<span class="ch-pill moon">' + (m.type === 'New' ? '🌑 New' : '🌕 Full') + ' Moon</span>').join(' ') : '';
+    return '<div class="ch-day' + (open ? '' : ' locked') + (i === chD ? ' on' : '') + '" style="--cc:' + f.color + '" onclick="chSelect(' + chW + ',' + i + ')"><b>' + (open ? '' : '🔒 ') + 'Day ' + n + '</b>' + (dt ? esc(chFmt(dt)) + '<br>' : '') + esc(('ABC'.includes(d.k) ? d.k + ' · ' : '') + d.title) + (i === 0 && !un ? '<br><span class="ch-pill free">Free preview</span>' : '') + (moon ? '<br>' + moon : '') + '</div>';
+  }).join('');
+  const box = document.getElementById('ch-detail'), info = CH_DATA.days[chW - 1][chD];
+  if (chD === 0) { box.innerHTML = chDetailHTML(chW, 0, f.day, info); return; }
+  if (!un) { box.innerHTML = '<div class="ch-detail ch-lock" style="--cc:' + f.color + '"><div style="font-size:26px">🔒</div><h3>Day ' + ((chW - 1) * 7 + chD + 1) + ' is part of the paid challenge</h3><div class="ch-note">Unlock Week ' + chW + ' or the full challenge to open it.</div><button class="ch-btn" style="max-width:260px;margin-top:10px" onclick="document.getElementById(\'ch-offers-card\').scrollIntoView({behavior:\'smooth\'})">See options</button></div>'; return; }
+  box.innerHTML = '<div class="ch-detail ch-lock" style="--cc:' + f.color + '"><div class="ch-note">Loading your day…</div></div>';
+  try { const days = await chLoadPaid(chW); const dd = days[chD]; if (chW === f.w && dd) box.innerHTML = chDetailHTML(chW, chD, dd, info); }
+  catch (e) { box.innerHTML = '<div class="ch-detail ch-lock" style="--cc:' + f.color + '"><div class="ch-note">We couldn\'t load this day right now. Check your connection and try again.</div><button class="ch-btn" style="max-width:200px;margin-top:10px" onclick="renderChallenge()">Retry</button></div>'; }
+}
+async function chRedeem() {
+  const code = document.getElementById('ch-code-input').value.trim(), err = document.getElementById('ch-code-error');
+  err.textContent = '';
+  if (!code) { err.textContent = 'Please enter your code.'; return; }
+  if (!CH_CONFIG.API_BASE) { err.textContent = 'Code redemption opens soon.'; return; }
+  try {
+    const r = await fetch(CH_CONFIG.API_BASE + '/redeem', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code }) });
+    if (!r.ok) { err.textContent = r.status === 404 || r.status === 401 ? 'That code was not recognized. Please check and try again.' : 'Something went wrong. Please try again.'; return; }
+    const j = await r.json(); chSet(CH_KEYS.token, j.token); chSet(CH_KEYS.ent, j.entitlements); chPaid = {};
+    document.getElementById('ch-code-modal').style.display = 'none'; document.getElementById('ch-code-input').value = '';
+    renderChallenge();
+  } catch (e) { err.textContent = 'Could not reach the server. Please try again.'; }
+}
+/* ===================== END CHAKRA CHALLENGE ===================== */
 
 init();
 </script>
