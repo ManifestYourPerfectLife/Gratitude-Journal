@@ -1368,6 +1368,7 @@ function chReminder() {
   const a = document.createElement('a'); a.href = url; a.download = 'chakra-challenge-reminders.ics'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
   try { if (typeof gtag === 'function') gtag('event', 'challenge_calendar_reminders'); } catch (e) {}
 }
+function chPromoLabel() { const t = chGet('mtpl_ch_trial', null), id = t && t.identity; return 'Ascended ' + (id || 'Manifestor') + ' Price'; }
 function chPromoOn() { const p = CH_CONFIG.promo; return !!(p && new Date() < new Date(p.endsAt)); }
 function chMoney(n) { return '$' + n.toFixed(2); }
 const CH_STATES = ['AL','AK','AZ','AR','CA','CO','CT','DE','DC','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'];
@@ -1378,6 +1379,7 @@ function chTrialHTML() {
   const f = 'width:100%;font:inherit;font-size:13px;padding:10px 12px;border:1px solid var(--border);border-radius:8px;margin-bottom:8px;background:#fff;';
   return '<div class="ch-detail" style="--cc:var(--gold)"><h3>Start your free trial</h3><div class="ch-note" style="margin:4px 0 10px">Day 1 of every week is free. Tell us where to send your free days.</div>' +
     '<input id="ch-t-name" type="text" autocomplete="name" placeholder="Name" value="' + esc(nm) + '" style="' + f + '">' +
+    '<select id="ch-t-id" style="' + f + '"><option value="">I am identifying as…</option><option>Master Manifestor</option><option>Mistress Manifestor</option><option>Manifestor</option></select>' +
     '<input id="ch-t-email" type="email" autocomplete="email" placeholder="Email" value="' + esc(em) + '" style="' + f + '">' +
     '<input id="ch-t-zip" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" placeholder="ZIP code" oninput="chZip(this.value)" style="' + f + '">' +
     '<div id="ch-t-loc" class="ch-note" style="min-height:18px;margin:-2px 0 8px"></div>' +
@@ -1410,11 +1412,13 @@ async function chZip(z) {
 function chTrialSubmit() {
   const v = id => (document.getElementById(id).value || '').trim(), err = document.getElementById('ch-t-err');
   const name = v('ch-t-name'), email = v('ch-t-email'), city = v('ch-t-city'), state = v('ch-t-state'), zip = v('ch-t-zip');
+  const identity = v('ch-t-id');
   if (!name) { err.textContent = 'Please enter your name.'; return; }
+  if (!identity) { err.textContent = 'Please choose how you are identifying.'; return; }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { err.textContent = 'Please enter a valid email.'; return; }
   if (!/^\d{5}$/.test(zip)) { err.textContent = 'Please enter a 5-digit ZIP code.'; return; }
   if (!city || !state) { document.getElementById('ch-t-manual').style.display = 'block'; err.textContent = 'Please wait for your city and state, or enter them.'; return; }
-  const rec = { name, email, city, state, zip, date: todayStr() };
+  const rec = { name, identity, email, city, state, zip, date: todayStr() };
   chSet('mtpl_ch_trial', rec);
   try { if (!localStorage.getItem('mtpl_user_email')) localStorage.setItem('mtpl_user_email', email); if (!localStorage.getItem(NAME_KEY)) localStorage.setItem(NAME_KEY, name); } catch (e) {}
   try {
@@ -1491,7 +1495,7 @@ function chOffersHTML() {
   if (ent.full || ent.complete) return '<div class="ch-card"><h3>✨ Full Challenge Unlocked</h3><div class="ch-note">All 49 days are open. Enjoy the journey.</div></div>';
   const btn = (key, label) => CH_CONFIG.checkout[key] ? '<button class="ch-btn" onclick="window.open(\'' + CH_CONFIG.checkout[key] + '\',\'_blank\',\'noopener\')">' + label + '</button>' : '<button class="ch-btn" disabled>Checkout opens soon</button>';
   const price = (reg, promo) => on && promo != null ? '<s>' + chMoney(reg) + '</s>' + chMoney(promo) : chMoney(reg);
-  return '<div class="ch-card" id="ch-offers-card"><h3>Unlock the Challenge' + (on ? '<span class="ch-tag">' + esc(pr.label) + '</span>' : '') + '</h3><div class="ch-offers">' +
+  return '<div class="ch-card" id="ch-offers-card"><h3>Unlock the Challenge' + (on ? '<span class="ch-tag">' + esc(chPromoLabel()) + '</span>' : '') + '</h3><div class="ch-offers">' +
     '<div class="ch-offer"><div class="nm">Single Week Pass</div><div class="pr">' + price(p.week, pr && pr.week) + '</div><div class="ds">One full week: 7 days, SHORT &amp; LONG practices.</div>' + btn('week', 'Get a Week') + '</div>' +
     '<div class="ch-offer best"><div class="nm">Full Challenge<span class="ch-tag">BEST VALUE</span></div><div class="pr">' + price(p.full, pr && pr.full) + '</div><div class="ds">All 7 weeks, 49 days, every chakra.</div>' + btn('full', 'Get the Full Challenge') + '</div>' +
     '</div><div class="ch-note" style="text-align:center;margin-top:10px">Already purchased? <span class="ch-link" onclick="document.getElementById(\'ch-code-modal\').style.display=\'flex\'">Enter your code</span></div></div>';
