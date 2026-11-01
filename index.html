@@ -1343,10 +1343,11 @@ function chGet(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.
 function chSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
 function chEnt() { return chGet(CH_KEYS.ent, { full: false, complete: false, weeks: [] }); }
 function chUnlocked(w) { const e = chEnt(); return !!(e.full || e.complete || (e.weeks || []).includes(w)); }
-function chWeekOpen(w) {
+function chDayOpen(w, i) {
+  if (i === 0) return true; // each week's Day 1 is the free preview
   const e = chEnt(); if (!(e.full || e.complete)) return true; // single-week passes open right away
-  const st = chStartDate(); if (!st) return w === 1;
-  return chDay0(new Date()).getTime() >= chAdd(st, 7 * (w - 1)).getTime();
+  const st = chStartDate(); if (!st) return false;
+  return chDay0(new Date()).getTime() >= chAdd(st, 7 * (w - 1) + i).getTime();
 }
 function chPromoOn() { const p = CH_CONFIG.promo; return !!(p && new Date() < new Date(p.endsAt)); }
 function chMoney(n) { return '$' + n.toFixed(2); }
@@ -1471,13 +1472,13 @@ async function renderChallenge() {
   document.getElementById('ch-tabs').innerHTML = CH_DATA.free.map(f => '<button class="ch-tab' + (f.w === chW ? ' on' : '') + (f.w === 7 ? ' crown' : '') + '" style="background:' + f.color + ';--tc:' + f.color + '" onclick="chTab(' + f.w + ')">Wk ' + f.w + ' · ' + esc(f.chakra) + '</button>').join('');
   const f = CH_DATA.free[chW - 1], st = chStartDate(), un = chUnlocked(chW);
   document.getElementById('ch-days').innerHTML = CH_DATA.days[chW - 1].map((d, i) => {
-    const n = (chW - 1) * 7 + i + 1, dt = st ? chAdd(st, n - 1) : null, open = i === 0 || (un && chWeekOpen(chW));
+    const n = (chW - 1) * 7 + i + 1, dt = st ? chAdd(st, n - 1) : null, open = i === 0 || (un && chDayOpen(chW, i));
     const moon = dt ? chMoons(dt, chAdd(dt, 1)).filter(m => chDay0(m.t).getTime() === dt.getTime()).map(m => '<span class="ch-pill moon">' + (m.type === 'New' ? '🌑 New' : '🌕 Full') + ' Moon</span>').join(' ') : '';
     return '<div class="ch-day' + (open ? '' : ' locked') + (i === chD ? ' on' : '') + '" style="--cc:' + f.color + '" onclick="chSelect(' + chW + ',' + i + ')"><b>' + (open ? '' : '🔒 ') + 'Day ' + n + '</b>' + (dt ? esc(chFmt(dt)) + '<br>' : '') + esc(('ABC'.includes(d.k) ? d.k + ' · ' : '') + d.title) + (i === 0 && !un ? '<br><span class="ch-pill free">Free preview</span>' : '') + (moon ? '<br>' + moon : '') + '</div>';
   }).join('');
   const box = document.getElementById('ch-detail'), info = CH_DATA.days[chW - 1][chD];
   if (chD === 0) { box.innerHTML = chTrialDone() ? chDetailHTML(chW, 0, f.day, info) : chTrialHTML(); return; }
-  if (un && !chWeekOpen(chW)) { const od = chStartDate() ? chAdd(chStartDate(), 7 * (chW - 1)) : null; box.innerHTML = '<div class="ch-detail ch-lock" style="--cc:' + f.color + '"><div style="font-size:26px">🌙</div><h3>Week ' + chW + ' opens ' + (od ? esc(chFmt(od, { weekday: 'long', month: 'long', day: 'numeric' })) : 'after you finish Week ' + (chW - 1)) + '</h3><div class="ch-note">Each chakra week opens the day after the previous week ends, so you move through the journey one step at a time. Your Day 1 preview stays open.</div></div>'; return; }
+  if (un && !chDayOpen(chW, chD)) { const n = (chW - 1) * 7 + chD + 1, od = chStartDate() ? chAdd(chStartDate(), n - 1) : null; box.innerHTML = '<div class="ch-detail ch-lock" style="--cc:' + f.color + '"><div style="font-size:26px">🌙</div><h3>Day ' + n + (od ? ' opens ' + esc(chFmt(od, { weekday: 'long', month: 'long', day: 'numeric' })) : ' opens once you choose your start date') + '</h3><div class="ch-note">Each day opens the day after the one before it, so you move through the journey one step at a time. Each week\'s Day 1 preview stays open.</div></div>'; return; }
   if (!un) { box.innerHTML = '<div class="ch-detail ch-lock" style="--cc:' + f.color + '"><div style="font-size:26px">🔒</div><h3>Day ' + ((chW - 1) * 7 + chD + 1) + ' is part of the paid challenge</h3><div class="ch-note">Unlock Week ' + chW + ' or the full challenge to open it.</div><button class="ch-btn" style="max-width:260px;margin-top:10px" onclick="document.getElementById(\'ch-offers-card\').scrollIntoView({behavior:\'smooth\'})">See options</button></div>'; return; }
   box.innerHTML = '<div class="ch-detail ch-lock" style="--cc:' + f.color + '"><div class="ch-note">Loading your day…</div></div>';
   try { const days = await chLoadPaid(chW); const dd = days[chD]; if (chW === f.w && dd) box.innerHTML = chDetailHTML(chW, chD, dd, info); }
