@@ -1344,6 +1344,37 @@ function chEnt() { return chGet(CH_KEYS.ent, { full: false, complete: false, wee
 function chUnlocked(w) { const e = chEnt(); return !!(e.full || e.complete || (e.weeks || []).includes(w)); }
 function chPromoOn() { const p = CH_CONFIG.promo; return !!(p && new Date() < new Date(p.endsAt)); }
 function chMoney(n) { return '$' + n.toFixed(2); }
+const CH_STATES = ['AL','AK','AZ','AR','CA','CO','CT','DE','DC','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'];
+function chTrialDone() { const e = chEnt(); return !!(chGet('mtpl_ch_trial', null) || e.full || e.complete || (e.weeks || []).length); }
+function chTrialHTML() {
+  let em = ''; try { em = localStorage.getItem('mtpl_user_email') || ''; } catch (e) {}
+  const f = 'width:100%;font:inherit;font-size:13px;padding:10px 12px;border:1px solid var(--border);border-radius:8px;margin-bottom:8px;background:#fff;';
+  return '<div class="ch-detail" style="--cc:var(--gold)"><h3>Start your free trial</h3><div class="ch-note" style="margin:4px 0 10px">Day 1 of every week is free. Tell us where to send your free days.</div>' +
+    '<input id="ch-t-email" type="email" autocomplete="email" placeholder="Email" value="' + esc(em) + '" style="' + f + '">' +
+    '<input id="ch-t-city" type="text" autocomplete="address-level2" placeholder="City" style="' + f + '">' +
+    '<div style="display:flex;gap:8px"><select id="ch-t-state" autocomplete="address-level1" style="' + f + 'flex:1"><option value="">State</option>' + CH_STATES.map(s => '<option>' + s + '</option>').join('') + '</select>' +
+    '<input id="ch-t-zip" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" placeholder="ZIP code" style="' + f + 'flex:1"></div>' +
+    '<div class="unlock-error" id="ch-t-err" style="min-height:16px"></div>' +
+    '<button class="ch-btn" onclick="chTrialSubmit()">Start Free Trial</button>' +
+    '<div class="ch-note" style="margin-top:8px">By continuing you agree to receive occasional emails from Manifest The Perfect Life. Unsubscribe anytime.</div></div>';
+}
+function chTrialSubmit() {
+  const v = id => (document.getElementById(id).value || '').trim(), err = document.getElementById('ch-t-err');
+  const email = v('ch-t-email'), city = v('ch-t-city'), state = v('ch-t-state'), zip = v('ch-t-zip');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { err.textContent = 'Please enter a valid email.'; return; }
+  if (!city) { err.textContent = 'Please enter your city.'; return; }
+  if (!state) { err.textContent = 'Please choose your state.'; return; }
+  if (!/^\d{5}$/.test(zip)) { err.textContent = 'Please enter a 5-digit ZIP code.'; return; }
+  const rec = { email, city, state, zip, date: todayStr() };
+  chSet('mtpl_ch_trial', rec);
+  try { if (!localStorage.getItem('mtpl_user_email')) localStorage.setItem('mtpl_user_email', email); } catch (e) {}
+  try {
+    const url = localStorage.getItem(SHEET_URL_KEY) || HARDCODED_SHEET_URL;
+    if (url) fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.assign({ type: 'challenge_trial', name: localStorage.getItem(NAME_KEY) || 'Anonymous' }, rec)) }).catch(() => {});
+  } catch (e) {}
+  if (typeof gtag === 'function') gtag('event', 'challenge_trial_signup');
+  renderChallenge();
+}
 
 /* ---- moon dates (Meeus), used to offer a New Moon start ---- */
 function chPhase(k, full) {
@@ -1437,7 +1468,7 @@ async function renderChallenge() {
     return '<div class="ch-day' + (open ? '' : ' locked') + (i === chD ? ' on' : '') + '" style="--cc:' + f.color + '" onclick="chSelect(' + chW + ',' + i + ')"><b>' + (open ? '' : '🔒 ') + 'Day ' + n + '</b>' + (dt ? esc(chFmt(dt)) + '<br>' : '') + esc(('ABC'.includes(d.k) ? d.k + ' · ' : '') + d.title) + (i === 0 && !un ? '<br><span class="ch-pill free">Free preview</span>' : '') + (moon ? '<br>' + moon : '') + '</div>';
   }).join('');
   const box = document.getElementById('ch-detail'), info = CH_DATA.days[chW - 1][chD];
-  if (chD === 0) { box.innerHTML = chDetailHTML(chW, 0, f.day, info); return; }
+  if (chD === 0) { box.innerHTML = chTrialDone() ? chDetailHTML(chW, 0, f.day, info) : chTrialHTML(); return; }
   if (!un) { box.innerHTML = '<div class="ch-detail ch-lock" style="--cc:' + f.color + '"><div style="font-size:26px">🔒</div><h3>Day ' + ((chW - 1) * 7 + chD + 1) + ' is part of the paid challenge</h3><div class="ch-note">Unlock Week ' + chW + ' or the full challenge to open it.</div><button class="ch-btn" style="max-width:260px;margin-top:10px" onclick="document.getElementById(\'ch-offers-card\').scrollIntoView({behavior:\'smooth\'})">See options</button></div>'; return; }
   box.innerHTML = '<div class="ch-detail ch-lock" style="--cc:' + f.color + '"><div class="ch-note">Loading your day…</div></div>';
   try { const days = await chLoadPaid(chW); const dd = days[chD]; if (chW === f.w && dd) box.innerHTML = chDetailHTML(chW, chD, dd, info); }
