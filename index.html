@@ -151,7 +151,7 @@ footer .mail{font-family:'Cinzel',serif;font-size:clamp(14px,3.4vw,19px);letter-
         <ul>
           <li>All 7 weeks, 49 days, every chakra</li>
           <li>Each day opens one at a time, so you move through the journey step by step</li>
-          <li>Or unlock a single week for $13.13</li>
+          <li>Or unlock a single week for <b id="week-price">$13.13</b> <s id="week-was" style="display:none">$13.13</s></li>
         </ul>
         <a class="btn gold app-link" data-go="challenge" data-cta="card_full" href="/app/">See my options</a>
       </div>
@@ -217,6 +217,8 @@ footer .mail{font-family:'Cinzel',serif;font-size:clamp(14px,3.4vw,19px);letter-
     var w = document.getElementById('full-was'); w.style.display = 'inline';
     document.getElementById('promo-badge').style.display = 'inline-block';
     document.getElementById('promo-note').style.display = 'block';
+    document.getElementById('week-price').textContent = '$11.11';
+    document.getElementById('week-was').style.display = 'inline';
   }
 })();
 </script>
