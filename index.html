@@ -1330,7 +1330,7 @@ const CH_CONFIG = {
   // Regular prices. Shopify enforces the real price at checkout; these are display only.
   prices: { week: 13.13, full: 77.77, complete: 111.11 },
   // Optional limited-time price (display only). Set promo to null to hide.
-  promo: { label: 'Founding Member Price', week: 11.11, full: 44.44, endsAt: '2026-11-09T23:59:00-05:00' },
+  promo: { label: 'Ascended Manifestor Price', week: 11.11, full: 44.44, endsAt: '2026-11-09T23:59:00-05:00' },
   // Paste Shopify checkout links here when the products exist.
   checkout: { week: '', full: '', complete: '' }
 };
@@ -1373,30 +1373,53 @@ function chMoney(n) { return '$' + n.toFixed(2); }
 const CH_STATES = ['AL','AK','AZ','AR','CA','CO','CT','DE','DC','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'];
 function chTrialDone() { const e = chEnt(); return !!(chGet('mtpl_ch_trial', null) || e.full || e.complete || (e.weeks || []).length); }
 function chTrialHTML() {
-  let em = ''; try { em = localStorage.getItem('mtpl_user_email') || ''; } catch (e) {}
+  let em = '', nm = ''; try { em = localStorage.getItem('mtpl_user_email') || ''; nm = localStorage.getItem(NAME_KEY) || ''; } catch (e) {}
+  if (nm === 'Anonymous') nm = '';
   const f = 'width:100%;font:inherit;font-size:13px;padding:10px 12px;border:1px solid var(--border);border-radius:8px;margin-bottom:8px;background:#fff;';
   return '<div class="ch-detail" style="--cc:var(--gold)"><h3>Start your free trial</h3><div class="ch-note" style="margin:4px 0 10px">Day 1 of every week is free. Tell us where to send your free days.</div>' +
+    '<input id="ch-t-name" type="text" autocomplete="name" placeholder="Name" value="' + esc(nm) + '" style="' + f + '">' +
     '<input id="ch-t-email" type="email" autocomplete="email" placeholder="Email" value="' + esc(em) + '" style="' + f + '">' +
-    '<input id="ch-t-city" type="text" autocomplete="address-level2" placeholder="City" style="' + f + '">' +
-    '<div style="display:flex;gap:8px"><select id="ch-t-state" autocomplete="address-level1" style="' + f + 'flex:1"><option value="">State</option>' + CH_STATES.map(s => '<option>' + s + '</option>').join('') + '</select>' +
-    '<input id="ch-t-zip" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" placeholder="ZIP code" style="' + f + 'flex:1"></div>' +
+    '<input id="ch-t-zip" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" placeholder="ZIP code" oninput="chZip(this.value)" style="' + f + '">' +
+    '<div id="ch-t-loc" class="ch-note" style="min-height:18px;margin:-2px 0 8px"></div>' +
+    '<div id="ch-t-manual" style="display:none"><input id="ch-t-city" type="text" autocomplete="address-level2" placeholder="City" style="' + f + '">' +
+    '<select id="ch-t-state" autocomplete="address-level1" style="' + f + '"><option value="">State</option>' + CH_STATES.map(s => '<option>' + s + '</option>').join('') + '</select></div>' +
     '<div class="unlock-error" id="ch-t-err" style="min-height:16px"></div>' +
     '<button class="ch-btn" onclick="chTrialSubmit()">Start Free Trial</button>' +
     '<div class="ch-note" style="margin-top:8px">By continuing you agree to receive occasional emails from Manifest The Perfect Life. Unsubscribe anytime.</div></div>';
 }
+let chZipSeq = 0;
+async function chZip(z) {
+  z = (z || '').replace(/\D/g, '').slice(0, 5);
+  const loc = document.getElementById('ch-t-loc'), man = document.getElementById('ch-t-manual'), city = document.getElementById('ch-t-city'), st = document.getElementById('ch-t-state');
+  if (!loc) return;
+  if (z.length < 5) { loc.textContent = ''; return; }
+  const my = ++chZipSeq; loc.textContent = 'Looking up your ZIP…';
+  try {
+    const r = await fetch('https://api.zippopotam.us/us/' + z);
+    if (my !== chZipSeq) return;
+    if (!r.ok) throw new Error('nf');
+    const j = await r.json(), pl = j.places && j.places[0];
+    if (!pl || !CH_STATES.includes(pl['state abbreviation'])) throw new Error('nf');
+    city.value = pl['place name']; st.value = pl['state abbreviation'];
+    loc.textContent = '📍 ' + pl['place name'] + ', ' + pl['state abbreviation']; man.style.display = 'none';
+  } catch (e) {
+    if (my !== chZipSeq) return;
+    loc.textContent = 'We couldn\'t look up that ZIP. Please add your city and state.'; man.style.display = 'block';
+  }
+}
 function chTrialSubmit() {
   const v = id => (document.getElementById(id).value || '').trim(), err = document.getElementById('ch-t-err');
-  const email = v('ch-t-email'), city = v('ch-t-city'), state = v('ch-t-state'), zip = v('ch-t-zip');
+  const name = v('ch-t-name'), email = v('ch-t-email'), city = v('ch-t-city'), state = v('ch-t-state'), zip = v('ch-t-zip');
+  if (!name) { err.textContent = 'Please enter your name.'; return; }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { err.textContent = 'Please enter a valid email.'; return; }
-  if (!city) { err.textContent = 'Please enter your city.'; return; }
-  if (!state) { err.textContent = 'Please choose your state.'; return; }
   if (!/^\d{5}$/.test(zip)) { err.textContent = 'Please enter a 5-digit ZIP code.'; return; }
-  const rec = { email, city, state, zip, date: todayStr() };
+  if (!city || !state) { document.getElementById('ch-t-manual').style.display = 'block'; err.textContent = 'Please wait for your city and state, or enter them.'; return; }
+  const rec = { name, email, city, state, zip, date: todayStr() };
   chSet('mtpl_ch_trial', rec);
-  try { if (!localStorage.getItem('mtpl_user_email')) localStorage.setItem('mtpl_user_email', email); } catch (e) {}
+  try { if (!localStorage.getItem('mtpl_user_email')) localStorage.setItem('mtpl_user_email', email); if (!localStorage.getItem(NAME_KEY)) localStorage.setItem(NAME_KEY, name); } catch (e) {}
   try {
     const url = localStorage.getItem(SHEET_URL_KEY) || HARDCODED_SHEET_URL;
-    if (url) fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.assign({ type: 'challenge_trial', name: localStorage.getItem(NAME_KEY) || 'Anonymous' }, rec)) }).catch(() => {});
+    if (url) fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.assign({ type: 'challenge_trial' }, rec)) }).catch(() => {});
   } catch (e) {}
   if (typeof gtag === 'function') gtag('event', 'challenge_trial_signup');
   renderChallenge();
