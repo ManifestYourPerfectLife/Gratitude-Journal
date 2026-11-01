@@ -98,8 +98,7 @@ footer .mail{font-family:'Cinzel',serif;font-size:clamp(14px,3.4vw,19px);letter-
     <div class="eyebrow">Welcome back</div>
     <h2 style="font-size:clamp(22px,5vw,32px);margin:8px 0 4px">You may now enter</h2>
     <p class="lead" id="aff-text" style="font-style:italic;margin:10px auto 6px"></p>
-    <p class="small" style="margin:0 0 18px">Today&rsquo;s affirmation</p>
-    <div class="btns"><a class="btn dark app-link" data-cta="welcome_journal" href="/app/">Enter my Gratitude Journal</a><a class="btn gold app-link" data-go="challenge" data-cta="welcome_challenge" href="/app/">Enter the Chakra Challenge</a></div>
+    <p class="small" style="margin:0">Today&rsquo;s affirmation</p>
   </div>
 </section>
 
@@ -108,8 +107,8 @@ footer .mail{font-family:'Cinzel',serif;font-size:clamp(14px,3.4vw,19px);letter-
   <h1>Manifesting The Perfect Life</h1>
   <p class="abc">Align · Believe · Create</p>
   <div class="btns">
-    <a class="btn gold app-link" data-go="challenge" data-cta="hero_challenge" href="/app/">7-Week Chakra Challenge Trial</a>
-    <a class="btn ghost app-link" data-cta="hero_journal" href="/app/">Free Gratitude Journal</a>
+    <a class="btn gold app-link" data-go="challenge" data-cta="hero_challenge" data-ret="Enter the Chakra Challenge" href="/app/">7-Week Chakra Challenge Trial</a>
+    <a class="btn ghost app-link" data-cta="hero_journal" data-ret="Enter my Gratitude Journal" href="/app/">Free Gratitude Journal</a>
   </div>
 </header>
 
@@ -197,7 +196,7 @@ footer .mail{font-family:'Cinzel',serif;font-size:clamp(14px,3.4vw,19px);letter-
   <div class="wrap center">
     <h2 style="font-size:clamp(20px,4vw,28px)">Ready to begin?</h2>
     <p class="lead" style="margin-bottom:22px">You are the author of your life. Start your first chapter today.</p>
-    <div class="btns"><a class="btn gold app-link" data-go="challenge" data-cta="bottom_challenge" href="/app/">7-Week Chakra Challenge Trial</a><a class="btn dark app-link" data-cta="bottom_journal" href="/app/">Free Gratitude Journal</a></div>
+    <div class="btns"><a class="btn gold app-link" data-go="challenge" data-cta="bottom_challenge" data-ret="Enter the Chakra Challenge" href="/app/">7-Week Chakra Challenge Trial</a><a class="btn dark app-link" data-cta="bottom_journal" data-ret="Enter my Gratitude Journal" href="/app/">Free Gratitude Journal</a></div>
   </div>
 </section>
 
@@ -277,6 +276,12 @@ footer .mail{font-family:'Cinzel',serif;font-size:clamp(14px,3.4vw,19px);letter-
     localStorage.setItem('mtpl_last_aff', i);
     document.getElementById('aff-text').textContent = '\u201C' + A[i] + '\u201D';
     document.getElementById('welcome-back').style.display = 'block';
+    // Returning visitors: the trial / free buttons are replaced by Enter buttons (never both).
+    var rb = document.querySelectorAll('[data-ret]');
+    for (var k = 0; k < rb.length; k++) {
+      rb[k].textContent = rb[k].getAttribute('data-ret');
+      rb[k].setAttribute('data-cta', rb[k].getAttribute('data-cta').replace(/^(hero|bottom)_/, '$1_returning_'));
+    }
   } catch (e) {}
 })();
 </script>
