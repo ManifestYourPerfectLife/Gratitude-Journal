@@ -1026,28 +1026,34 @@ const WM_KEY='mtpl_weekly_manifest';
 function weekKey(){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-d.getDay());return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function saveWeekly(){try{localStorage.setItem(WM_KEY,JSON.stringify({week:weekKey(),text:document.getElementById('f-weekly').value}));}catch(e){}}
 function loadWeekly(){try{const w=JSON.parse(localStorage.getItem(WM_KEY)||'null');if(w&&w.week===weekKey()){document.getElementById('f-weekly').value=w.text||'';}}catch(e){}}
+let wmSeen=[];
 function genWeekly(){
   const v=id=>(document.getElementById(id).value||'').trim();
-  const clean=t=>t.replace(/^(i (will|am|want to|'ll)\s+)/i,'').replace(/[.!]+$/,'').toLowerCase();
-  const areas=[
-    {k:'mental',label:'Mind',t:v('f-mental'),
-      tpl:[x=>'Clarity and calm come easily to me as I '+x+' this week.',x=>'My mind is focused, open and at peace every time I '+x+'.']},
-    {k:'spiritual',label:'Spirit',t:v('f-spiritual'),
-      tpl:[x=>'I feel guided and connected to my higher self every time I '+x+'.',x=>'Divine timing supports me as I '+x+' this week.']},
-    {k:'physical',label:'Body',t:v('f-physical'),
-      tpl:[x=>'My body thanks me, and I feel strong and nourished, each time I '+x+'.',x=>'I feel energized and grateful in my body when I '+x+'.']},
-    {k:'business',label:'Business',t:v('f-business'),
-      tpl:[x=>'Abundance and opportunity flow to me as I '+x+'.',x=>'I take aligned action, and money and momentum follow, as I '+x+'.']}
-  ].filter(a=>a.t);
-  const out=[];const day=new Date().getDate();
-  areas.forEach((a,i)=>{const x=clean(a.t);out.push({label:a.label,text:a.tpl[(day+i)%2](x)});});
-  if(areas.length>1){out.push({label:'Whole Self',text:'This week I align mind, spirit, body and purpose, and everything I need meets me along the way.'});}
-  if(!out.length){out.push({label:'Start Here',text:'This week I am open to receiving more than I imagined, and I take one aligned step each day.'});
-    out.push({label:'Start Here',text:'I am grateful, grounded and ready for what is coming to me.'});}
+  const clean=t=>t.replace(/^(i (will|am|want to|'ll)\s+|to\s+)/i,'').replace(/[.!]+$/,'').toLowerCase();
+  const T={
+    Mind:[x=>'Clarity and calm come easily to me as I '+x+' this week.',x=>'My mind is focused, open and at peace every time I '+x+'.',x=>'I trust my thoughts and make wise decisions as I '+x+'.',x=>'Every time I '+x+', my mind grows lighter and more creative.'],
+    Spirit:[x=>'I feel guided and connected to my higher self every time I '+x+'.',x=>'Divine timing supports me as I '+x+' this week.',x=>'The universe meets me halfway each time I '+x+'.',x=>'I am protected, loved and aligned as I '+x+'.'],
+    Body:[x=>'My body thanks me, and I feel strong and nourished, each time I '+x+'.',x=>'I feel energized and grateful in my body when I '+x+'.',x=>'Every time I '+x+', I honor my body and my energy rises.',x=>'My body is healing, strengthening and thriving as I '+x+'.'],
+    Business:[x=>'Abundance and opportunity flow to me as I '+x+'.',x=>'I take aligned action, and money and momentum follow, as I '+x+'.',x=>'The right people and opportunities find me as I '+x+'.',x=>'Every time I '+x+', my business grows with ease.']
+  };
+  const ids={Mind:'f-mental',Spirit:'f-spiritual',Body:'f-physical',Business:'f-business'};
+  const pool=[];
+  Object.keys(T).forEach(k=>{const t=v(ids[k]);if(!t)return;const x=clean(t);T[k].forEach(f=>pool.push({label:k,text:f(x)}));});
+  const whole=['This week I align mind, spirit, body and purpose, and everything I need meets me along the way.',
+    'I am grateful, grounded and ready for everything coming to me this week.',
+    'I move through this week with faith, focus and joy, and I receive more than I imagined.',
+    'Every day this week, I show up as the author of my life.'];
+  whole.forEach(t=>pool.push({label:'Whole Self',text:t}));
+  const fresh=pool.filter(o=>!wmSeen.includes(o.text));
+  const src=fresh.length>=3?fresh:(wmSeen=[],pool);
+  for(let i=src.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[src[i],src[j]]=[src[j],src[i]];}
+  const n=Math.min(src.length,3+Math.floor(Math.random()*3));
+  const out=src.slice(0,n);out.forEach(o=>wmSeen.push(o.text));
   const list=document.getElementById('wm-list');list.innerHTML='';
   out.forEach(o=>{const b=document.createElement('button');b.type='button';b.className='wm-chip';
     const sm=document.createElement('small');sm.textContent=o.label;b.appendChild(sm);b.appendChild(document.createTextNode(o.text));
     b.onclick=()=>{document.getElementById('f-weekly').value=o.text;saveWeekly();};list.appendChild(b);});
+  document.querySelector('.wm-gen').innerHTML='&#10024; Show New Suggestions';
 }
 function loadTodayForm(){loadWeekly();
   const te=entries.find(e=>e.date===todayStr());
