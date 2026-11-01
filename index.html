@@ -17,14 +17,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
 <script>
-// Returning visitors and installed-app launches go straight to the journal. Add ?landing=1 to see this page anyway.
+// The home-screen app opens straight into the journal. The website always shows this page. Add ?landing=1 to see it inside the app too.
 (function () {
   try {
     var q = location.search;
     if (/[?&]landing=1\b/.test(q)) return;
     var installed = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
-    var returning = !!(localStorage.getItem('mtpl_gratitude_journal_v1') || localStorage.getItem('mtpl_user_name'));
-    if (installed || returning) location.replace('/app/' + q + location.hash);
+    if (installed) location.replace('/app/' + q + location.hash);
   } catch (e) {}
 })();
 </script>
@@ -93,6 +92,16 @@ footer .mail{font-family:'Cinzel',serif;font-size:clamp(14px,3.4vw,19px);letter-
 </style>
 </head>
 <body>
+
+<section id="welcome-back" style="display:none;background:linear-gradient(180deg,#fffdf8,#fcf3dc);border-bottom:1px solid var(--line);padding:30px 0 34px">
+  <div class="wrap center">
+    <div class="eyebrow">Welcome back</div>
+    <h2 style="font-size:clamp(22px,5vw,32px);margin:8px 0 4px">You may now enter</h2>
+    <p class="lead" id="aff-text" style="font-style:italic;margin:10px auto 6px"></p>
+    <p class="small" style="margin:0 0 18px">Today&rsquo;s affirmation</p>
+    <div class="btns"><a class="btn dark app-link" data-cta="welcome_journal" href="/app/">Enter my Gratitude Journal</a><a class="btn gold app-link" data-go="challenge" data-cta="welcome_challenge" href="/app/">Enter the Chakra Challenge</a></div>
+  </div>
+</section>
 
 <header class="hero">
   <img src="/icon-512.png" alt="Manifesting The Perfect Life lotus logo" width="132" height="132">
@@ -220,6 +229,51 @@ footer .mail{font-family:'Cinzel',serif;font-size:clamp(14px,3.4vw,19px);letter-
     document.getElementById('week-price').textContent = '$11.11';
     document.getElementById('week-was').style.display = 'inline';
   }
+})();
+
+// Returning visitors see a welcome band with a fresh affirmation each visit.
+(function () {
+  try {
+    var returning = !!(localStorage.getItem('mtpl_gratitude_journal_v1') || localStorage.getItem('mtpl_user_name'));
+    if (!returning && !/[?&]welcome=1\b/.test(location.search)) return;
+    var A = [
+      'I am the author of my life, and today I write it with love.',
+      'I align my body, my mind and my spirit with what I am creating.',
+      'I believe in the life I am manifesting.',
+      'My foundation is steady. I am safe, grounded and supported.',
+      'I move with ease, and my body is wise.',
+      'I welcome joy and I allow it to flow through me.',
+      'I trust my own power to create change.',
+      'Every small step I take is shaping something beautiful.',
+      'I give and receive love freely.',
+      'My voice matters, and I speak my truth with kindness.',
+      'I trust my intuition and I follow its guidance.',
+      'I release what no longer serves me and make room for what does.',
+      'I am worthy of the life I am dreaming into being.',
+      'Gratitude opens the door to more of what I love.',
+      'I am exactly where I need to be, and I am becoming.',
+      'My energy is aligned, my heart is open, my path is clear.',
+      'I choose peace, and peace chooses me.',
+      'Today I plant seeds that my future self will thank me for.',
+      'I honor my pace. Gentle progress is still progress.',
+      'I am strong, I am steady and I am enough.',
+      'The universe is conspiring in my favor.',
+      'I create the life I desire one intentional day at a time.',
+      'My body is healing, and I support it with care.',
+      'I am connected to something greater, and I am never alone.',
+      'I am a magnet for good things, and I am ready to receive.',
+      'Each new moon, I begin again with clarity and courage.',
+      'I rise, I root, I bloom.',
+      'My thoughts are seeds, and I plant only the ones I want to grow.',
+      'I am grateful for today, and excited for what is unfolding.',
+      'I am the author of my life, and the next chapter is mine.'
+    ];
+    var last = parseInt(localStorage.getItem('mtpl_last_aff'), 10), i;
+    do { i = Math.floor(Math.random() * A.length); } while (i === last && A.length > 1);
+    localStorage.setItem('mtpl_last_aff', i);
+    document.getElementById('aff-text').textContent = '\u201C' + A[i] + '\u201D';
+    document.getElementById('welcome-back').style.display = 'block';
+  } catch (e) {}
 })();
 </script>
 </body>
