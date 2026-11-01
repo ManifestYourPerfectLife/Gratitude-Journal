@@ -733,6 +733,7 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
     <div class="ch-tabs" id="ch-tabs"></div>
     <div class="ch-days" id="ch-days"></div>
     <div id="ch-detail"></div>
+    <div id="ch-shop"></div>
     <div class="ch-soon"><div class="ic">📦</div><div class="tt">Affirmation Box &middot; Coming Soon</div><div class="ss">Crystals, herbs and oils for each chakra week, plus herb and oil infographics. Stay tuned.</div></div>
     <div id="ch-code-modal" class="unlock-modal" style="display:none">
       <div class="unlock-box">
@@ -1349,6 +1350,32 @@ function chDayOpen(w, i) {
   const st = chStartDate(); if (!st) return false;
   return chDay0(new Date()).getTime() >= chAdd(st, 7 * (w - 1) + i).getTime();
 }
+const CH_SHOP = [
+  { herbs: ['Dandelion root', 'Ashwagandha', 'Ginger (or burdock root)'], oils: ['Patchouli', 'Cedarwood', 'Vetiver'], crystal: 'Red Jasper' },
+  { herbs: ['Calendula', 'Hibiscus', 'Cinnamon (or damiana)'], oils: ['Sweet Orange', 'Ylang Ylang', 'Sandalwood'], crystal: 'Carnelian' },
+  { herbs: ['Chamomile', 'Peppermint', 'Lemon balm', 'Turmeric'], oils: ['Lemon', 'Grapefruit', 'Bergamot'], crystal: 'Citrine' },
+  { herbs: ['Rose petals', 'Hawthorn', 'Jasmine', 'Motherwort'], oils: ['Rose geranium', 'Lavender', 'Eucalyptus'], crystal: 'Rose Quartz' },
+  { herbs: ['Peppermint', 'Licorice root', 'Sage', 'Slippery elm'], oils: ['Peppermint', 'Eucalyptus', 'Tea tree'], crystal: 'Blue Lace Agate' },
+  { herbs: ['Lavender', 'Mugwort', 'Gotu kola', 'Eyebright'], oils: ['Lavender', 'Frankincense', 'Clary sage'], crystal: 'Amethyst' },
+  { herbs: ['Lotus (or lavender)', 'Holy basil (tulsi)', 'White tea'], oils: ['Frankincense', 'Sandalwood', 'Myrrh'], crystal: 'Clear Quartz' }
+];
+function chShopText(w) { const c = CH_SHOP[w - 1], f = CH_DATA.free[w - 1]; return 'Week ' + w + ' · ' + f.chakra + ' Chakra\nHerbs: ' + c.herbs.join(', ') + '\nOils: ' + c.oils.join(', ') + '\nCrystal: ' + c.crystal; }
+function chShopHTML() {
+  const f = CH_DATA.free[chW - 1], c = CH_SHOP[chW - 1], st = chStartDate();
+  const by = st ? chAdd(st, 7 * (chW - 1) - 7) : null, li = a => a.map(x => '<li>' + esc(x) + '</li>').join('');
+  return '<div class="ch-card" style="--cc:' + f.color + ';border-left:4px solid ' + f.color + '"><h3>🛒 Week ' + chW + ' Shopping List · ' + esc(f.chakra) + '</h3>' +
+    '<div class="ch-cols"><div class="ch-col"><span class="t">HERBS</span><ul style="margin:6px 0 0 16px;font-size:13px">' + li(c.herbs) + '</ul></div>' +
+    '<div class="ch-col"><span class="t">OILS</span><ul style="margin:6px 0 0 16px;font-size:13px">' + li(c.oils) + '</ul></div></div>' +
+    '<div class="ch-strip" style="margin-top:8px"><b>Crystal:</b> ' + esc(c.crystal) + '</div>' +
+    '<div class="ch-note" style="margin-top:6px">' + (by ? 'Gather these by <b>' + esc(chFmt(by, { weekday: 'long', month: 'long', day: 'numeric' })) + '</b>, a week before this chakra week opens. ' : 'Pick a start date to see when to gather these. ') + 'Your calendar reminders include a shopping-list alert a week ahead.</div>' +
+    '<button class="ch-btn" style="width:auto;display:inline-block;padding:6px 14px;margin-top:8px" onclick="chShopCopy()">Copy all 7 lists</button> <span id="ch-shop-msg" class="ch-note"></span></div>';
+}
+function chShopCopy() {
+  const t = [1, 2, 3, 4, 5, 6, 7].map(chShopText).join('\n\n'), m = document.getElementById('ch-shop-msg');
+  const ok = () => { if (m) m.textContent = 'Copied!'; };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(ok, () => { if (m) m.textContent = 'Could not copy.'; });
+  else { const a = document.createElement('textarea'); a.value = t; document.body.appendChild(a); a.select(); try { document.execCommand('copy'); ok(); } catch (e) {} a.remove(); }
+}
 function chReminder() {
   const st = chStartDate(); if (!st) return;
   const tv = (document.getElementById('ch-rem-time') || {}).value || '07:00', hm = tv.split(':'), H = parseInt(hm[0], 10) || 7, M = parseInt(hm[1], 10) || 0;
@@ -1362,6 +1389,13 @@ function chReminder() {
     L.push('BEGIN:VEVENT', 'UID:mtpl-challenge-' + n + '-' + fmt(st, 0, 0) + '@manifestingtheperfectlife.org', 'DTSTAMP:' + stamp, 'DTSTART:' + fmt(d, H, M), 'DTEND:' + fmt(end, end.getHours(), end.getMinutes()),
       'SUMMARY:' + t, 'DESCRIPTION:Open your day: ' + location.origin + location.pathname + '\\nYou Are The Author of Your Life.',
       'BEGIN:VALARM', 'TRIGGER:PT0M', 'ACTION:DISPLAY', 'DESCRIPTION:' + t, 'END:VALARM', 'END:VEVENT');
+  }
+  const dOnly = d => d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()), today0 = chDay0(new Date());
+  for (let w = 1; w <= 7; w++) {
+    let d = chAdd(st, 7 * (w - 1) - 7); if (d < today0) d = today0;
+    const t = '🛒 Shopping list: Week ' + w + ' · ' + CH_DATA.free[w - 1].chakra, txt = chShopText(w).replace(/\n/g, '\\n');
+    L.push('BEGIN:VEVENT', 'UID:mtpl-shop-' + w + '-' + fmt(st, 0, 0) + '@manifestingtheperfectlife.org', 'DTSTAMP:' + stamp, 'DTSTART;VALUE=DATE:' + dOnly(d), 'DTEND;VALUE=DATE:' + dOnly(chAdd(d, 1)),
+      'SUMMARY:' + t, 'DESCRIPTION:Gather these for the week ahead:\\n' + txt, 'BEGIN:VALARM', 'TRIGGER:PT9H', 'ACTION:DISPLAY', 'DESCRIPTION:' + t, 'END:VALARM', 'END:VEVENT');
   }
   L.push('END:VCALENDAR');
   const url = URL.createObjectURL(new Blob([L.join('\r\n')], { type: 'text/calendar' }));
@@ -1507,7 +1541,7 @@ function chStartHTML() {
     '<div class="ch-opt' + (s && s.mode === 'moon' ? ' on' : '') + '" onclick="chSetStart(\'moon\')">Start on the next New Moon <span style="color:var(--muted);font-size:11.5px">&nbsp;(' + esc(chFmt(nn.t)) + ') as intended</span></div>' +
     '<div class="ch-opt' + (s && s.mode === 'pick' ? ' on' : '') + '">Pick a date: <input type="date" value="' + (s && s.mode === 'pick' ? s.date : '') + '" onchange="chPickStart(this.value)" style="font:inherit;margin-left:6px"></div></div>';
   if (st) h += '<div class="ch-note">Day 1: <b>' + esc(chFmt(st, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })) + '</b> &rarr; Day 49: <b>' + esc(chFmt(chAdd(st, 48), { month: 'long', day: 'numeric', year: 'numeric' })) + '</b></div>';
-  if (st) h += '<div class="ch-note" style="margin-top:10px">📅 Daily reminder at <input type="time" id="ch-rem-time" value="07:00" style="font:inherit;margin:0 6px"> <button class="ch-btn" style="width:auto;display:inline-block;padding:6px 14px" onclick="chReminder()">Add all 49 days to my calendar</button></div>';
+  if (st) h += '<div class="ch-note" style="margin-top:10px">📅 Daily reminder at <input type="time" id="ch-rem-time" value="07:00" style="font:inherit;margin:0 6px"> <button class="ch-btn" style="width:auto;display:inline-block;padding:6px 14px" onclick="chReminder()">Add all 49 days + shopping reminders to my calendar</button></div>';
   if (!st) h += '<div class="ch-note">Choose a start to see your dates. Days are numbered 1–7 in each week from your Day 1.</div>';
   return h + '</div>';
 }
@@ -1516,6 +1550,7 @@ function chTab(w) { chW = w; chD = 0; renderChallenge(); }
 async function renderChallenge() {
   document.getElementById('ch-start').innerHTML = chStartHTML();
   document.getElementById('ch-offers').innerHTML = chOffersHTML();
+  document.getElementById('ch-shop').innerHTML = chShopHTML();
   document.getElementById('ch-tabs').innerHTML = CH_DATA.free.map(f => '<button class="ch-tab' + (f.w === chW ? ' on' : '') + (f.w === 7 ? ' crown' : '') + '" style="background:' + f.color + ';--tc:' + f.color + '" onclick="chTab(' + f.w + ')">Wk ' + f.w + ' · ' + esc(f.chakra) + '</button>').join('');
   const f = CH_DATA.free[chW - 1], st = chStartDate(), un = chUnlocked(chW);
   document.getElementById('ch-days').innerHTML = CH_DATA.days[chW - 1].map((d, i) => {
