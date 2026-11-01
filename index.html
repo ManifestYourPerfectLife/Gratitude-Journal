@@ -1349,6 +1349,25 @@ function chDayOpen(w, i) {
   const st = chStartDate(); if (!st) return false;
   return chDay0(new Date()).getTime() >= chAdd(st, 7 * (w - 1) + i).getTime();
 }
+function chReminder() {
+  const st = chStartDate(); if (!st) return;
+  const tv = (document.getElementById('ch-rem-time') || {}).value || '07:00', hm = tv.split(':'), H = parseInt(hm[0], 10) || 7, M = parseInt(hm[1], 10) || 0;
+  const pad = n => String(n).padStart(2, '0');
+  const fmt = (d, h, m) => d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()) + 'T' + pad(h) + pad(m) + '00';
+  const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '');
+  const L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Manifesting The Perfect Life//Chakra Challenge//EN', 'CALSCALE:GREGORIAN'];
+  for (let n = 1; n <= 49; n++) {
+    const w = Math.ceil(n / 7), d = chAdd(st, n - 1), c = CH_DATA.free[w - 1], t = 'Chakra Challenge: Day ' + n + ' · ' + c.chakra + ' (Week ' + w + ')';
+    const end = new Date(d.getFullYear(), d.getMonth(), d.getDate(), H, M + 30);
+    L.push('BEGIN:VEVENT', 'UID:mtpl-challenge-' + n + '-' + fmt(st, 0, 0) + '@manifestingtheperfectlife.org', 'DTSTAMP:' + stamp, 'DTSTART:' + fmt(d, H, M), 'DTEND:' + fmt(end, end.getHours(), end.getMinutes()),
+      'SUMMARY:' + t, 'DESCRIPTION:Open your day: ' + location.origin + location.pathname + '\\nYou Are The Author of Your Life.',
+      'BEGIN:VALARM', 'TRIGGER:PT0M', 'ACTION:DISPLAY', 'DESCRIPTION:' + t, 'END:VALARM', 'END:VEVENT');
+  }
+  L.push('END:VCALENDAR');
+  const url = URL.createObjectURL(new Blob([L.join('\r\n')], { type: 'text/calendar' }));
+  const a = document.createElement('a'); a.href = url; a.download = 'chakra-challenge-reminders.ics'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+  try { if (typeof gtag === 'function') gtag('event', 'challenge_calendar_reminders'); } catch (e) {}
+}
 function chPromoOn() { const p = CH_CONFIG.promo; return !!(p && new Date() < new Date(p.endsAt)); }
 function chMoney(n) { return '$' + n.toFixed(2); }
 const CH_STATES = ['AL','AK','AZ','AR','CA','CO','CT','DE','DC','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'];
@@ -1461,7 +1480,8 @@ function chStartHTML() {
     '<div class="ch-opt' + (s && s.mode === 'moon' ? ' on' : '') + '" onclick="chSetStart(\'moon\')">Start on the next New Moon <span style="color:var(--muted);font-size:11.5px">&nbsp;(' + esc(chFmt(nn.t)) + ') as intended</span></div>' +
     '<div class="ch-opt' + (s && s.mode === 'pick' ? ' on' : '') + '">Pick a date: <input type="date" value="' + (s && s.mode === 'pick' ? s.date : '') + '" onchange="chPickStart(this.value)" style="font:inherit;margin-left:6px"></div></div>';
   if (st) h += '<div class="ch-note">Day 1: <b>' + esc(chFmt(st, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })) + '</b> &rarr; Day 49: <b>' + esc(chFmt(chAdd(st, 48), { month: 'long', day: 'numeric', year: 'numeric' })) + '</b></div>';
-  else h += '<div class="ch-note">Choose a start to see your dates. Days are numbered 1–7 in each week from your Day 1.</div>';
+  if (st) h += '<div class="ch-note" style="margin-top:10px">📅 Daily reminder at <input type="time" id="ch-rem-time" value="07:00" style="font:inherit;margin:0 6px"> <button class="ch-btn" style="width:auto;display:inline-block;padding:6px 14px" onclick="chReminder()">Add all 49 days to my calendar</button></div>';
+  if (!st) h += '<div class="ch-note">Choose a start to see your dates. Days are numbered 1–7 in each week from your Day 1.</div>';
   return h + '</div>';
 }
 function chSelect(w, i) { chW = w; chD = i; renderChallenge(); const el = document.getElementById('ch-detail'); if (el && el.scrollIntoView) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
