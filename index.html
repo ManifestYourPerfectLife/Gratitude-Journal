@@ -17,14 +17,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
 <script>
-// Returning visitors and installed-app launches go straight to the journal. Add ?landing=1 to see this page anyway.
+// The home-screen app opens straight into the journal. The website always shows this page. Add ?landing=1 to see it inside the app too.
 (function () {
   try {
     var q = location.search;
     if (/[?&]landing=1\b/.test(q)) return;
     var installed = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
-    var returning = !!(localStorage.getItem('mtpl_gratitude_journal_v1') || localStorage.getItem('mtpl_user_name'));
-    if (installed || returning) location.replace('/app/' + q + location.hash);
+    if (installed) location.replace('/app/' + q + location.hash);
   } catch (e) {}
 })();
 </script>
@@ -93,6 +92,16 @@ footer .mail{font-family:'Cinzel',serif;font-size:clamp(14px,3.4vw,19px);letter-
 </style>
 </head>
 <body>
+
+<section id="welcome-back" style="display:none;background:linear-gradient(180deg,#fffdf8,#fcf3dc);border-bottom:1px solid var(--line);padding:30px 0 34px">
+  <div class="wrap center">
+    <div class="eyebrow">Welcome back</div>
+    <h2 style="font-size:clamp(22px,5vw,32px);margin:8px 0 4px">You may now enter</h2>
+    <p class="lead" id="aff-text" style="font-style:italic;margin:10px auto 6px"></p>
+    <p class="small" style="margin:0 0 18px">Today&rsquo;s affirmation</p>
+    <div class="btns"><a class="btn dark app-link" data-cta="welcome_journal" href="/app/">Enter my Gratitude Journal</a><a class="btn gold app-link" data-go="challenge" data-cta="welcome_challenge" href="/app/">Enter the Chakra Challenge</a></div>
+  </div>
+</section>
 
 <header class="hero">
   <img src="/icon-512.png" alt="Manifesting The Perfect Life lotus logo" width="132" height="132">
@@ -220,6 +229,55 @@ footer .mail{font-family:'Cinzel',serif;font-size:clamp(14px,3.4vw,19px);letter-
     document.getElementById('week-price').textContent = '$11.11';
     document.getElementById('week-was').style.display = 'inline';
   }
+})();
+
+// Returning visitors see a welcome band with a fresh affirmation each visit.
+(function () {
+  try {
+    var returning = !!(localStorage.getItem('mtpl_gratitude_journal_v1') || localStorage.getItem('mtpl_user_name'));
+    if (!returning && !/[?&]welcome=1\b/.test(location.search)) return;
+    var A = [
+      'I am grateful for the small things, because they are the big things.',
+      'My pen turns my thoughts into intentions.',
+      'Every page I write is a promise to my future self.',
+      'I notice the good, and the good multiplies.',
+      'Gratitude is my daily doorway to abundance.',
+      'I write it down, I believe it, I create it.',
+      'Today I find three things to be thankful for, and then I find three more.',
+      'My journal is a mirror, and I like what I see growing.',
+      'I am the author of my life, and gratitude is my favorite ink.',
+      'I give thanks for this breath, this body and this moment.',
+      'Thankfulness softens my heart and clears my mind.',
+      'I turn the page with hope, and I begin again with love.',
+      'What I appreciate, appreciates.',
+      'My words on the page become the life I am living.',
+      'I am thankful for how far I have come and open to where I am going.',
+      'Gratitude turns what I have into enough, and enough into more.',
+      'Root: my feet meet the earth, and the earth holds me.',
+      'Root: I take up space, and I belong here.',
+      'Sacral: I flow like water, and creativity moves through me.',
+      'Sacral: I welcome pleasure, play and passion into my day.',
+      'Solar Plexus: I stand in my power and shine my own light.',
+      'Solar Plexus: I take bold, kind action toward what I want.',
+      'Heart: my heart is wide open, and love finds me everywhere.',
+      'Heart: I breathe in compassion, and I breathe out judgment.',
+      'Throat: I speak my truth with clarity and ease.',
+      'Throat: my voice is a gift, and I use it with intention.',
+      'Third Eye: I trust my inner vision to show me the way.',
+      'Third Eye: I quiet the noise and listen to my wisdom.',
+      'Crown: I am connected to the infinite, and I am at peace.',
+      'Crown: I surrender to the flow of life, and I am held.',
+      'On my mat I breathe, I stretch and I come home to myself.',
+      'With every inhale I gather light, with every exhale I let go.',
+      'My body is my temple, and I move it with love.',
+      'I bend without breaking. I am strong and flexible, in body and in spirit.'
+    ];
+    var last = parseInt(localStorage.getItem('mtpl_last_aff'), 10), i;
+    do { i = Math.floor(Math.random() * A.length); } while (i === last && A.length > 1);
+    localStorage.setItem('mtpl_last_aff', i);
+    document.getElementById('aff-text').textContent = '\u201C' + A[i] + '\u201D';
+    document.getElementById('welcome-back').style.display = 'block';
+  } catch (e) {}
 })();
 </script>
 </body>
