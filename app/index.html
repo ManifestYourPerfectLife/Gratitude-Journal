@@ -207,6 +207,15 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
   font-family:'Cinzel',serif;letter-spacing:2px;}
 .ig-divider svg{flex-shrink:0;}
 
+
+.wm-card{background:rgba(255,255,255,0.6);border:1px solid var(--border);border-radius:14px;padding:16px;}
+.wm-intro{font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:12px;}
+.wm-gen{width:100%;padding:11px;border-radius:10px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-family:Jost,sans-serif;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;}
+.wm-gen:hover{background:rgba(201,149,58,0.1);}
+.wm-list{margin-top:12px;display:flex;flex-direction:column;gap:8px;}
+.wm-chip{text-align:left;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--cream);color:var(--text);font-family:Jost,sans-serif;font-size:13.5px;line-height:1.5;cursor:pointer;}
+.wm-chip:hover{border-color:var(--gold);}
+.wm-chip small{display:block;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:2px;}
 .intentions-card{background:rgba(255,255,255,0.6);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:10px;}
 .intention-row{display:flex;gap:10px;align-items:center;margin-bottom:8px;}
 .intention-row:last-child{margin-bottom:0;}
@@ -614,6 +623,21 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
       </div>
     </div>
 
+
+    <!-- WEEKLY MANIFESTATION -->
+    <div class="field" style="margin-top:14px">
+      <div class="section-label">Weekly Manifestation</div>
+      <div class="wm-card">
+        <div class="wm-intro">Based on your intentions, tap for suggestions. Choose one to anchor your week, or write your own.</div>
+        <button class="wm-gen" type="button" onclick="genWeekly()">&#10024; Generate Suggestions</button>
+        <div class="wm-list" id="wm-list"></div>
+        <div class="voice-field" style="margin-top:12px">
+          <input type="text" id="f-weekly" placeholder="This week I am manifesting..." oninput="saveWeekly()"/>
+          <button class="mic-btn" onclick="startVoice('f-weekly', this)">&#127897;&#65039;</button>
+        </div>
+      </div>
+    </div>
+
     <div style="margin-top:24px">
       <button class="save-btn" id="save-btn" onclick="saveEntry()">Save Today's Entry</button>
       <div class="sync-indicator" id="sync-status"></div>
@@ -997,7 +1021,35 @@ function calcStreak(){
   while(true){const ds=d.toISOString().split('T')[0];if(!entries.find(e=>e.date===ds))break;s++;d.setDate(d.getDate()-1);}
   return s;
 }
-function loadTodayForm(){
+
+const WM_KEY='mtpl_weekly_manifest';
+function weekKey(){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-d.getDay());return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function saveWeekly(){try{localStorage.setItem(WM_KEY,JSON.stringify({week:weekKey(),text:document.getElementById('f-weekly').value}));}catch(e){}}
+function loadWeekly(){try{const w=JSON.parse(localStorage.getItem(WM_KEY)||'null');if(w&&w.week===weekKey()){document.getElementById('f-weekly').value=w.text||'';}}catch(e){}}
+function genWeekly(){
+  const v=id=>(document.getElementById(id).value||'').trim();
+  const clean=t=>t.replace(/^(i (will|am|want to|'ll)\s+)/i,'').replace(/[.!]+$/,'').toLowerCase();
+  const areas=[
+    {k:'mental',label:'Mind',t:v('f-mental'),
+      tpl:[x=>'Clarity and calm come easily to me as I '+x+' this week.',x=>'My mind is focused, open and at peace every time I '+x+'.']},
+    {k:'spiritual',label:'Spirit',t:v('f-spiritual'),
+      tpl:[x=>'I feel guided and connected to my higher self every time I '+x+'.',x=>'Divine timing supports me as I '+x+' this week.']},
+    {k:'physical',label:'Body',t:v('f-physical'),
+      tpl:[x=>'My body thanks me, and I feel strong and nourished, each time I '+x+'.',x=>'I feel energized and grateful in my body when I '+x+'.']},
+    {k:'business',label:'Business',t:v('f-business'),
+      tpl:[x=>'Abundance and opportunity flow to me as I '+x+'.',x=>'I take aligned action, and money and momentum follow, as I '+x+'.']}
+  ].filter(a=>a.t);
+  const out=[];const day=new Date().getDate();
+  areas.forEach((a,i)=>{const x=clean(a.t);out.push({label:a.label,text:a.tpl[(day+i)%2](x)});});
+  if(areas.length>1){out.push({label:'Whole Self',text:'This week I align mind, spirit, body and purpose, and everything I need meets me along the way.'});}
+  if(!out.length){out.push({label:'Start Here',text:'This week I am open to receiving more than I imagined, and I take one aligned step each day.'});
+    out.push({label:'Start Here',text:'I am grateful, grounded and ready for what is coming to me.'});}
+  const list=document.getElementById('wm-list');list.innerHTML='';
+  out.forEach(o=>{const b=document.createElement('button');b.type='button';b.className='wm-chip';
+    const sm=document.createElement('small');sm.textContent=o.label;b.appendChild(sm);b.appendChild(document.createTextNode(o.text));
+    b.onclick=()=>{document.getElementById('f-weekly').value=o.text;saveWeekly();};list.appendChild(b);});
+}
+function loadTodayForm(){loadWeekly();
   const te=entries.find(e=>e.date===todayStr());
   if(te){['gratitude','mental','spiritual','physical','business','mental_checkin','spiritual_checkin','physical_checkin','proud'].forEach(k=>{
     const el=document.getElementById('f-'+k.replace('_','-'));
