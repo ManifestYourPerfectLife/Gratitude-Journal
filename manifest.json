@@ -2,7 +2,7 @@
   "name": "Manifesting The Perfect Life ~ Gratitude Journal",
   "short_name": "Daily Gratitude",
   "description": "Your daily gratitude journal. Align. Believe. Create.",
-  "start_url": "/",
+  "start_url": "/app/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#08060f",
