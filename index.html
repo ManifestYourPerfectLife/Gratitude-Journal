@@ -93,22 +93,21 @@ footer .mail{font-family:'Cinzel',serif;font-size:clamp(14px,3.4vw,19px);letter-
 </head>
 <body>
 
-<section id="welcome-back" style="display:none;background:linear-gradient(180deg,#fffdf8,#fcf3dc);border-bottom:1px solid var(--line);padding:30px 0 34px">
+<section id="welcome-back" style="display:none;background:linear-gradient(180deg,#fffdf8,#fcf3dc);border-bottom:1px solid var(--line);padding:26px 0">
   <div class="wrap center">
-    <div class="eyebrow">Welcome back</div>
-    <h2 style="font-size:clamp(22px,5vw,32px);margin:8px 0 4px">You may now enter</h2>
-    <p class="lead" id="aff-text" style="font-style:italic;margin:10px auto 6px"></p>
-    <p class="small" style="margin:0">Today&rsquo;s affirmation</p>
+    <p class="lead" id="aff-text" style="font-style:italic;margin:0 auto 8px"></p>
+    <div class="eyebrow" id="aff-label"></div>
   </div>
 </section>
 
 <header class="hero">
+  <div id="enter-line" style="display:none;font-family:'Cinzel',serif;font-size:clamp(22px,5vw,32px);letter-spacing:.06em;color:var(--gold-l);margin:0 0 22px;text-transform:uppercase">You may now enter</div>
   <img src="/icon-512.png" alt="Manifesting The Perfect Life lotus logo" width="132" height="132">
   <h1>Manifesting The Perfect Life</h1>
   <p class="abc">Align · Believe · Create</p>
   <div class="btns">
-    <a class="btn gold app-link" data-go="challenge" data-cta="hero_challenge" data-ret="Enter the Chakra Challenge" href="/app/">7-Week Chakra Challenge Trial</a>
-    <a class="btn ghost app-link" data-cta="hero_journal" data-ret="Enter my Gratitude Journal" href="/app/">Free Gratitude Journal</a>
+    <a class="btn gold app-link" data-go="challenge" data-cta="hero_challenge" data-ret="Chakra Challenge" href="/app/">7-Week Chakra Challenge Trial</a>
+    <a class="btn ghost app-link" data-cta="hero_journal" data-ret="Gratitude Journal" href="/app/">Free Gratitude Journal</a>
   </div>
 </header>
 
@@ -196,7 +195,7 @@ footer .mail{font-family:'Cinzel',serif;font-size:clamp(14px,3.4vw,19px);letter-
   <div class="wrap center">
     <h2 style="font-size:clamp(20px,4vw,28px)">Ready to begin?</h2>
     <p class="lead" style="margin-bottom:22px">You are the author of your life. Start your first chapter today.</p>
-    <div class="btns"><a class="btn gold app-link" data-go="challenge" data-cta="bottom_challenge" data-ret="Enter the Chakra Challenge" href="/app/">7-Week Chakra Challenge Trial</a><a class="btn dark app-link" data-cta="bottom_journal" data-ret="Enter my Gratitude Journal" href="/app/">Free Gratitude Journal</a></div>
+    <div class="btns"><a class="btn gold app-link" data-go="challenge" data-cta="bottom_challenge" data-ret="Chakra Challenge" href="/app/">7-Week Chakra Challenge Trial</a><a class="btn dark app-link" data-cta="bottom_journal" data-ret="Gratitude Journal" href="/app/">Free Gratitude Journal</a></div>
   </div>
 </section>
 
@@ -236,50 +235,55 @@ footer .mail{font-family:'Cinzel',serif;font-size:clamp(14px,3.4vw,19px);letter-
     var returning = !!(localStorage.getItem('mtpl_gratitude_journal_v1') || localStorage.getItem('mtpl_user_name'));
     if (!returning && !/[?&]welcome=1\b/.test(location.search)) return;
     var A = [
-      'I am grateful for the small things, because they are the big things.',
-      'My pen turns my thoughts into intentions.',
-      'Every page I write is a promise to my future self.',
-      'I notice the good, and the good multiplies.',
-      'Gratitude is my daily doorway to abundance.',
-      'I write it down, I believe it, I create it.',
-      'Today I find three things to be thankful for, and then I find three more.',
-      'My journal is a mirror, and I like what I see growing.',
-      'I am the author of my life, and gratitude is my favorite ink.',
-      'I give thanks for this breath, this body and this moment.',
-      'Thankfulness softens my heart and clears my mind.',
-      'I turn the page with hope, and I begin again with love.',
-      'What I appreciate, appreciates.',
-      'My words on the page become the life I am living.',
-      'I am thankful for how far I have come and open to where I am going.',
-      'Gratitude turns what I have into enough, and enough into more.',
-      'Root: my feet meet the earth, and the earth holds me.',
-      'Root: I take up space, and I belong here.',
-      'Sacral: I flow like water, and creativity moves through me.',
-      'Sacral: I welcome pleasure, play and passion into my day.',
-      'Solar Plexus: I stand in my power and shine my own light.',
-      'Solar Plexus: I take bold, kind action toward what I want.',
-      'Heart: my heart is wide open, and love finds me everywhere.',
-      'Heart: I breathe in compassion, and I breathe out judgment.',
-      'Throat: I speak my truth with clarity and ease.',
-      'Throat: my voice is a gift, and I use it with intention.',
-      'Third Eye: I trust my inner vision to show me the way.',
-      'Third Eye: I quiet the noise and listen to my wisdom.',
-      'Crown: I am connected to the infinite, and I am at peace.',
-      'Crown: I surrender to the flow of life, and I am held.',
-      'On my mat I breathe, I stretch and I come home to myself.',
-      'With every inhale I gather light, with every exhale I let go.',
-      'My body is my temple, and I move it with love.',
-      'I bend without breaking. I am strong and flexible, in body and in spirit.'
+      ['Gratitude Affirmation', '', 'I am grateful for the small things, because they are the big things.'],
+      ['Gratitude Affirmation', '', 'My pen turns my thoughts into intentions.'],
+      ['Gratitude Affirmation', '', 'Every page I write is a promise to my future self.'],
+      ['Gratitude Affirmation', '', 'I notice the good, and the good multiplies.'],
+      ['Gratitude Affirmation', '', 'Gratitude is my daily doorway to abundance.'],
+      ['Gratitude Affirmation', '', 'I write it down, I believe it, I create it.'],
+      ['Gratitude Affirmation', '', 'Today I find three things to be thankful for, and then I find three more.'],
+      ['Gratitude Affirmation', '', 'My journal is a mirror, and I like what I see growing.'],
+      ['Gratitude Affirmation', '', 'I am the author of my life, and gratitude is my favorite ink.'],
+      ['Gratitude Affirmation', '', 'I give thanks for this breath, this body and this moment.'],
+      ['Gratitude Affirmation', '', 'Thankfulness softens my heart and clears my mind.'],
+      ['Gratitude Affirmation', '', 'I turn the page with hope, and I begin again with love.'],
+      ['Gratitude Affirmation', '', 'What I appreciate, appreciates.'],
+      ['Gratitude Affirmation', '', 'My words on the page become the life I am living.'],
+      ['Gratitude Affirmation', '', 'I am thankful for how far I have come and open to where I am going.'],
+      ['Gratitude Affirmation', '', 'Gratitude turns what I have into enough, and enough into more.'],
+      ['Root Chakra Affirmation', '#b5432f', 'My feet meet the earth, and the earth holds me.'],
+      ['Root Chakra Affirmation', '#b5432f', 'I take up space, and I belong here.'],
+      ['Sacral Chakra Affirmation', '#d9622b', 'I flow like water, and creativity moves through me.'],
+      ['Sacral Chakra Affirmation', '#d9622b', 'I welcome pleasure, play and passion into my day.'],
+      ['Solar Plexus Chakra Affirmation', '#c79a14', 'I stand in my power and shine my own light.'],
+      ['Solar Plexus Chakra Affirmation', '#c79a14', 'I take bold, kind action toward what I want.'],
+      ['Heart Chakra Affirmation', '#2f8f5b', 'My heart is wide open, and love finds me everywhere.'],
+      ['Heart Chakra Affirmation', '#2f8f5b', 'I breathe in compassion, and I breathe out judgment.'],
+      ['Throat Chakra Affirmation', '#2f72b5', 'I speak my truth with clarity and ease.'],
+      ['Throat Chakra Affirmation', '#2f72b5', 'My voice is a gift, and I use it with intention.'],
+      ['Third Eye Chakra Affirmation', '#7b4fb8', 'I trust my inner vision to show me the way.'],
+      ['Third Eye Chakra Affirmation', '#7b4fb8', 'I quiet the noise and listen to my wisdom.'],
+      ['Crown Chakra Affirmation', 'crown', 'I am connected to the infinite, and I am at peace.'],
+      ['Crown Chakra Affirmation', 'crown', 'I surrender to the flow of life, and I am held.'],
+      ['Yoga Affirmation', '', 'On my mat I breathe, I stretch and I come home to myself.'],
+      ['Yoga Affirmation', '', 'With every inhale I gather light, with every exhale I let go.'],
+      ['Yoga Affirmation', '', 'My body is my temple, and I move it with love.'],
+      ['Yoga Affirmation', '', 'I bend without breaking. I am strong and flexible, in body and in spirit.']
     ];
     var last = parseInt(localStorage.getItem('mtpl_last_aff'), 10), i;
     do { i = Math.floor(Math.random() * A.length); } while (i === last && A.length > 1);
     localStorage.setItem('mtpl_last_aff', i);
-    document.getElementById('aff-text').textContent = '\u201C' + A[i] + '\u201D';
+    document.getElementById('aff-text').textContent = '\u201C' + A[i][2] + '\u201D';
+    var lb = document.getElementById('aff-label'); lb.textContent = A[i][0];
+    var c = A[i][1];
+    if (c === 'crown') { lb.style.cssText = 'background:linear-gradient(120deg,#8f7ad6,#4aa3d8,#d977b8,#46b98a,#d6a82a);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent'; }
+    else if (c) { lb.style.color = c; }
+    document.getElementById('enter-line').style.display = 'block';
     document.getElementById('welcome-back').style.display = 'block';
     // Returning visitors: the trial / free buttons are replaced by Enter buttons (never both).
     var rb = document.querySelectorAll('[data-ret]');
     for (var k = 0; k < rb.length; k++) {
-      rb[k].textContent = rb[k].getAttribute('data-ret');
+      rb[k].textContent = rb[k].getAttribute('data-ret'); rb[k].className = 'btn gold app-link';
       rb[k].setAttribute('data-cta', rb[k].getAttribute('data-cta').replace(/^(hero|bottom)_/, '$1_returning_'));
     }
   } catch (e) {}
