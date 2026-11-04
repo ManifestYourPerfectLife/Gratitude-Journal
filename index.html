@@ -89,7 +89,7 @@ footer a{color:var(--gold-l)}
 footer .mail{font-family:'Cinzel',serif;font-size:clamp(14px,3.4vw,19px);letter-spacing:.06em;color:var(--gold-l);text-decoration:none;word-break:break-all}
 .legal{max-width:720px;margin:22px auto 0;font-size:12.5px;line-height:1.55;color:#b7a5d0}
 @media(max-width:720px){.pillars,.grid2,.steps{grid-template-columns:1fr}section{padding:42px 0}.hero{padding:36px 20px 54px}}
-</style>
+.divider{height:30px;background:radial-gradient(900px 200px at 50% -40%,#4b2470 0%,var(--plum) 60%,#1c0a2d 100%);position:relative}.divider:after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:linear-gradient(90deg,var(--root),var(--sacral),var(--solar),var(--heart),var(--throat),var(--eye),#e9e2f7)}</style>
 </head>
 <body>
 
@@ -123,6 +123,17 @@ footer .mail{font-family:'Cinzel',serif;font-size:clamp(14px,3.4vw,19px);letter-
     </div>
   </div>
 </section>
+
+<div class="divider"></div>
+<section><div class="wrap"><div style="max-width:560px;margin:0 auto">
+      <div class="card">
+        <div class="eyebrow">Free · Always</div>
+        <h3>The Daily Gratitude Journal</h3>
+        <p>Your daily check-in for gratitude, intentions and wins, with moon rituals and a planner. Install it on your phone like any app, and your entries stay private on your device.</p>
+        <a class="btn dark dl-link" data-cta="card_journal" href="/download/">Download the journal</a>
+      </div>
+    </div></div></section>
+<div class="divider"></div>
 
 <section class="band" id="challenge">
   <div class="wrap">
@@ -159,24 +170,14 @@ footer .mail{font-family:'Cinzel',serif;font-size:clamp(14px,3.4vw,19px);letter-
   </div>
 </section>
 
-<section>
-  <div class="wrap">
-    <div class="grid2">
-      <div class="card">
-        <div class="eyebrow">Free · Always</div>
-        <h3>The Daily Gratitude Journal</h3>
-        <p>Your daily check-in for gratitude, intentions and wins, with moon rituals and a planner. Install it on your phone like any app, and your entries stay private on your device.</p>
-        <a class="btn dark app-link" data-cta="card_journal" href="/app/">Open the journal</a>
-      </div>
+<section><div class="wrap"><div style="max-width:560px;margin:0 auto">
       <div class="card">
         <div class="eyebrow">Blossom's Medicinal Gardens</div>
         <h3>An Energetically Aligned herbal wellness brand</h3>
         <p>Herbs, oils and crystals, chosen with intention for each chakra. The Affirmation Box that pairs them with the Challenge is on its way.</p>
         <div class="soon" style="padding:14px;margin:0"><b>📦 Affirmation Box · Coming Soon</b></div>
       </div>
-    </div>
-  </div>
-</section>
+    </div></div></section>
 
 <section class="band" style="padding:46px 0">
   <div class="wrap center">
@@ -198,6 +199,10 @@ footer .mail{font-family:'Cinzel',serif;font-size:clamp(14px,3.4vw,19px);letter-
 (function () {
   var q = location.search.replace(/[?&]landing=1\b/, '');
   var params = new URLSearchParams(q);
+  document.querySelectorAll('.dl-link').forEach(function (a) {
+    var s = params.toString(); a.href = '/download/' + (s ? '?' + s : '');
+    a.addEventListener('click', function () { try { gtag('event', 'landing_cta', { cta: a.dataset.cta }); } catch (e) {} });
+  });
   document.querySelectorAll('.app-link').forEach(function (a) {
     var p = new URLSearchParams(params.toString());
     if (a.dataset.go) p.set('go', a.dataset.go);
