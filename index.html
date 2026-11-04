@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Manifesting The Perfect Life · You Are The Author of Your Life</title>
-<meta name="description" content="A daily gratitude journal and a 7-week knee-friendly chakra challenge from Blossom's Medicinal Gardens, an Energetically Aligned herbal wellness brand. Align · Believe · Create.">
+<meta name="description" content="A daily gratitude journal and a 7-week chakra challenge from Blossom's Medicinal Gardens, an Energetically Aligned herbal wellness brand. A knee-friendly practice for every day. Align · Believe · Create.">
 <meta name="theme-color" content="#2d1045">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Manifesting The Perfect Life">
-<meta property="og:description" content="Free gratitude journal + a 7-week knee-friendly chakra challenge. Align · Believe · Create.">
+<meta property="og:description" content="Free gratitude journal + a 7-week chakra challenge. A knee-friendly daily practice. Align · Believe · Create.">
 <meta property="og:image" content="https://www.manifestingtheperfectlife.org/icon-512.png">
 <meta property="og:url" content="https://www.manifestingtheperfectlife.org/">
 <link rel="icon" href="/icon-192.png">
@@ -127,9 +127,8 @@ footer .mail{font-family:'Cinzel',serif;font-size:clamp(14px,3.4vw,19px);letter-
 <section class="band" id="challenge">
   <div class="wrap">
     <div class="center">
-      <div class="eyebrow">New · 7-Week Chakra Challenge</div>
-      <h2 style="margin-top:8px;font-size:clamp(22px,4.4vw,32px)">The 7-Week Knee-Friendly Chakra Challenge</h2>
-      <p class="lead">One chakra a week, from Root to Crown. A daily practice with a SHORT and a LONG version, gentle on the knees, with a tea, an oil and an affirmation for every day.</p>
+      <h2 style="margin-top:0;font-size:clamp(22px,4.4vw,32px)">The 7-Week Chakra Challenge</h2>
+      <p class="lead">One chakra a week, from Root to Crown. A knee-friendly daily practice with a SHORT and a LONG version, with a tea, an oil and an affirmation for every day.</p>
       <div class="chakras" aria-label="The seven chakra weeks">
         <span class="chip" style="background:var(--root)">1 · Root</span><span class="chip" style="background:var(--sacral)">2 · Sacral</span>
         <span class="chip" style="background:var(--solar)">3 · Solar Plexus</span><span class="chip" style="background:var(--heart)">4 · Heart</span>
@@ -138,7 +137,7 @@ footer .mail{font-family:'Cinzel',serif;font-size:clamp(14px,3.4vw,19px);letter-
       </div>
     </div>
 
-    <div class="grid2">
+    <div style="max-width:560px;margin:28px auto 0">
       <div class="card">
         <span class="badge">Free to try</span>
         <h3>Week 1 is on us</h3>
@@ -149,18 +148,6 @@ footer .mail{font-family:'Cinzel',serif;font-size:clamp(14px,3.4vw,19px);letter-
           <li>Calendar reminders and a shopping list for each chakra week</li>
         </ul>
         <a class="btn dark app-link" data-go="challenge" data-cta="card_trial" href="/app/">Get my free days</a>
-      </div>
-      <div class="card feature">
-        <span class="badge" id="promo-badge" style="display:none">Ascended Manifestor Price</span>
-        <h3>The Full 7-Week Challenge</h3>
-        <div class="price"><span class="big" id="full-price">$77.77</span><s id="full-was" style="display:none">$77.77</s></div>
-        <p class="small" id="promo-note" style="display:none">Intro pricing through Nov 9.</p>
-        <ul>
-          <li>All 7 weeks, 49 days, every chakra</li>
-          <li>Each day opens one at a time, so you move through the journey step by step</li>
-          <li>Or unlock a single week for <b id="week-price">$13.13</b> <s id="week-was" style="display:none">$13.13</s></li>
-        </ul>
-        <a class="btn gold app-link" data-go="challenge" data-cta="card_full" href="/app/">See my options</a>
       </div>
     </div>
 
@@ -218,15 +205,6 @@ footer .mail{font-family:'Cinzel',serif;font-size:clamp(14px,3.4vw,19px);letter-
     a.href = '/app/' + (s ? '?' + s : '');
     a.addEventListener('click', function () { try { gtag('event', 'landing_cta', { cta: a.dataset.cta }); } catch (e) {} });
   });
-  // Intro price shows only until Nov 9, 2026 (end of day, Eastern)
-  if (new Date() < new Date('2026-11-09T23:59:00-05:00')) {
-    document.getElementById('full-price').textContent = '$44.44';
-    var w = document.getElementById('full-was'); w.style.display = 'inline';
-    document.getElementById('promo-badge').style.display = 'inline-block';
-    document.getElementById('promo-note').style.display = 'block';
-    document.getElementById('week-price').textContent = '$11.11';
-    document.getElementById('week-was').style.display = 'inline';
-  }
 })();
 
 // Returning visitors see a welcome band with a fresh affirmation each visit.

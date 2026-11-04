@@ -737,7 +737,7 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
       <div class="store-card-top">
         <div class="store-icon">🪷</div>
         <div>
-          <div class="store-title">7-Week Knee-Friendly Chakra Challenge</div>
+          <div class="store-title">7-Week Chakra Challenge</div>
           <div class="store-sub">49 Days &middot; SHORT &amp; LONG Practices &middot; Moon-Aligned</div>
         </div>
         <div class="store-tag store-tag-locked" id="challenge-tag">Free Day 1s</div>
@@ -751,7 +751,7 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
   <!-- CHAKRA CHALLENGE VIEW -->
   <div class="view" id="view-challenge">
     <div style="margin-bottom:14px;"><span onclick="switchView('journals')" style="font-size:12px;color:var(--purple);cursor:pointer;font-family:'Jost',sans-serif;letter-spacing:0.5px;">&larr; Journals</span></div>
-    <div class="ch-hero"><h2>7-Week Knee-Friendly Chakra Challenge</h2><p>One chakra a week. Daily practice with a SHORT and a LONG version, gentle on the knees. Align &middot; Believe &middot; Create.</p></div>
+    <div class="ch-hero"><h2>7-Week Chakra Challenge</h2><p>One chakra a week. A knee-friendly daily practice with a SHORT and a LONG version. Align &middot; Believe &middot; Create.</p></div>
     <div id="ch-start"></div>
     <div class="ch-tabs" id="ch-tabs"></div>
     <div class="ch-days" id="ch-days"></div>
@@ -1467,11 +1467,41 @@ function chPromoOn() { const p = CH_CONFIG.promo; return !!(p && new Date() < ne
 function chMoney(n) { return '$' + n.toFixed(2); }
 const CH_STATES = ['AL','AK','AZ','AR','CA','CO','CT','DE','DC','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'];
 function chTrialDone() { const e = chEnt(); return !!(chGet('mtpl_ch_trial', null) || e.full || e.complete || (e.weeks || []).length); }
+let chSigninMode = false;
+function chSigninShow(on) { chSigninMode = !!on; renderChallenge(); }
+function chSigninHTML() {
+  let em = ''; try { em = localStorage.getItem('mtpl_user_email') || ''; } catch (e) {}
+  const f = 'width:100%;font:inherit;font-size:13px;padding:10px 12px;border:1px solid var(--border);border-radius:8px;margin-bottom:8px;background:#fff;';
+  return '<div class="ch-detail" style="--cc:var(--gold)"><h3>Welcome back</h3><div class="ch-note" style="margin:4px 0 10px">Enter the email you used to sign up and your free days will open.</div>' +
+    '<input id="ch-s-email" type="email" autocomplete="email" placeholder="The email you signed up with" value="' + esc(em) + '" style="' + f + '">' +
+    '<div class="unlock-error" id="ch-s-err" style="min-height:16px"></div>' +
+    '<button class="ch-btn" id="ch-s-btn" onclick="chSigninSubmit()">Open my free days</button>' +
+    '<div class="ch-note" style="margin-top:12px;text-align:center">New here? <a href="#" onclick="chSigninShow(false);return false" style="color:var(--violet);font-weight:600">Start your free trial</a></div></div>';
+}
+async function chSigninSubmit() {
+  const email = (document.getElementById('ch-s-email').value || '').trim().toLowerCase(), err = document.getElementById('ch-s-err'), btn = document.getElementById('ch-s-btn');
+  err.textContent = '';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { err.textContent = 'Please enter a valid email.'; return; }
+  if (!chApi()) { err.textContent = 'We couldn\'t check right now. Please start your free trial below.'; return; }
+  btn.disabled = true; btn.textContent = 'Checking…';
+  try {
+    const r = await fetch(chApi(), { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ type: 'challenge_lookup', email: email }) });
+    const j = await r.json();
+    if (j && j.found) {
+      chSet('mtpl_ch_trial', { name: j.name || '', identity: j.identity || '', email: email, date: todayStr(), restored: true });
+      try { if (!localStorage.getItem('mtpl_user_email')) localStorage.setItem('mtpl_user_email', email); } catch (e) {}
+      chSigninMode = false; renderChallenge(); return;
+    }
+    err.textContent = 'We couldn\'t find that email. Tap "Start your free trial" to sign up.';
+  } catch (e) { err.textContent = 'We couldn\'t check right now. Please try again, or start your free trial.'; }
+  btn.disabled = false; btn.textContent = 'Open my free days';
+}
 function chTrialHTML() {
+  if (chSigninMode) return chSigninHTML();
   let em = '', nm = ''; try { em = localStorage.getItem('mtpl_user_email') || ''; nm = localStorage.getItem(NAME_KEY) || ''; } catch (e) {}
   if (nm === 'Anonymous') nm = '';
   const f = 'width:100%;font:inherit;font-size:13px;padding:10px 12px;border:1px solid var(--border);border-radius:8px;margin-bottom:8px;background:#fff;';
-  return '<div class="ch-detail" style="--cc:var(--gold)"><h3>Start your free trial</h3><div class="ch-note" style="margin:4px 0 10px">Week 1 is free, plus Day 1 of every other week. Tell us where to send your free days.</div>' +
+  return '<div class="ch-detail" style="--cc:var(--gold)"><h3>Start your free trial</h3><div style="text-align:center;margin:0 0 12px;padding:10px;border:1px dashed var(--gold);border-radius:12px;background:#fffaf0;font-size:14px">Already signed up? <a href="#" onclick="chSigninShow(true);return false" style="color:var(--violet);font-weight:600">Enter your email</a></div><div class="ch-note" style="margin:4px 0 10px">Week 1 is free, plus Day 1 of every other week. Tell us where to send your free days.</div>' +
     '<input id="ch-t-name" type="text" autocomplete="name" placeholder="Name" value="' + esc(nm) + '" style="' + f + '">' +
     '<select id="ch-t-id" style="' + f + '"><option value="">I am identifying as…</option><option>Master Manifestor</option><option>Mistress Manifestor</option><option>Manifestor</option></select>' +
     '<input id="ch-t-email" type="email" autocomplete="email" placeholder="Email" value="' + esc(em) + '" style="' + f + '">' +
@@ -1611,7 +1641,7 @@ function chSelect(w, i) { chW = w; chD = i; renderChallenge(); const el = docume
 function chTab(w) { chW = w; chD = 0; renderChallenge(); }
 async function renderChallenge() {
   document.getElementById('ch-start').innerHTML = chStartHTML();
-  document.getElementById('ch-offers').innerHTML = chOffersHTML();
+  document.getElementById('ch-offers').innerHTML = chTrialDone() ? chOffersHTML() : ''; // prices appear only after signup
   document.getElementById('ch-shop').innerHTML = chShopHTML();
   document.getElementById('ch-tabs').innerHTML = CH_DATA.free.map(f => '<button class="ch-tab' + (f.w === chW ? ' on' : '') + (f.w === 7 ? ' crown' : '') + '" style="background:' + f.color + ';--tc:' + f.color + '" onclick="chTab(' + f.w + ')">Wk ' + f.w + ' · ' + esc(f.chakra) + '</button>').join('');
   const f = CH_DATA.free[chW - 1], st = chStartDate(), un = chUnlocked(chW);
