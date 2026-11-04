@@ -89,7 +89,7 @@ footer a{color:var(--gold-l)}
 footer .mail{font-family:'Cinzel',serif;font-size:clamp(14px,3.4vw,19px);letter-spacing:.06em;color:var(--gold-l);text-decoration:none;word-break:break-all}
 .legal{max-width:720px;margin:22px auto 0;font-size:12.5px;line-height:1.55;color:#b7a5d0}
 @media(max-width:720px){.pillars,.grid2,.steps{grid-template-columns:1fr}section{padding:42px 0}.hero{padding:36px 20px 54px}}
-.divider{height:30px;background:radial-gradient(900px 200px at 50% -40%,#4b2470 0%,var(--plum) 60%,#1c0a2d 100%);position:relative}.divider:after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:linear-gradient(90deg,var(--root),var(--sacral),var(--solar),var(--heart),var(--throat),var(--eye),#e9e2f7)}</style>
+.divider{height:30px;background:radial-gradient(900px 200px at 50% -40%,#4b2470 0%,var(--plum) 60%,#1c0a2d 100%);position:relative}.divider:after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:linear-gradient(90deg,var(--root),var(--sacral),var(--solar),var(--heart),var(--throat),var(--eye),#e9e2f7)}#ready .btn.dark{color:#e6c36a}</style>
 </head>
 <body>
 
@@ -106,8 +106,8 @@ footer .mail{font-family:'Cinzel',serif;font-size:clamp(14px,3.4vw,19px);letter-
   <h1>Manifesting The Perfect Life</h1>
   <p class="abc">Align · Believe · Create</p>
   <div class="btns">
+    <a class="btn gold app-link" data-cta="hero_journal" data-ret="Gratitude Journal" href="/app/">Free Gratitude Journal</a>
     <a class="btn gold app-link" data-go="challenge" data-cta="hero_challenge" data-ret="Chakra Challenge" href="/app/">7-Week Chakra Challenge Trial</a>
-    <a class="btn ghost app-link" data-cta="hero_journal" data-ret="Gratitude Journal" href="/app/">Free Gratitude Journal</a>
   </div>
 </header>
 
@@ -179,11 +179,11 @@ footer .mail{font-family:'Cinzel',serif;font-size:clamp(14px,3.4vw,19px);letter-
       </div>
     </div></div></section>
 
-<section class="band" style="padding:46px 0">
+<section class="band" id="ready" style="padding:46px 0">
   <div class="wrap center">
     <h2 style="font-size:clamp(20px,4vw,28px)">Ready to begin?</h2>
     <p class="lead" style="margin-bottom:22px">You are the author of your life. Start your first chapter today.</p>
-    <div class="btns"><a class="btn gold app-link" data-go="challenge" data-cta="bottom_challenge" data-ret="Chakra Challenge" href="/app/">7-Week Chakra Challenge Trial</a><a class="btn dark app-link" data-cta="bottom_journal" data-ret="Gratitude Journal" href="/app/">Free Gratitude Journal</a></div>
+    <div class="btns"><a class="btn dark app-link" data-cta="bottom_journal" data-ret="Gratitude Journal" href="/app/">Free Gratitude Journal</a><a class="btn dark app-link" data-go="challenge" data-cta="bottom_challenge" data-ret="Chakra Challenge" href="/app/">7-Week Chakra Challenge Trial</a></div>
   </div>
 </section>
 
@@ -266,7 +266,7 @@ footer .mail{font-family:'Cinzel',serif;font-size:clamp(14px,3.4vw,19px);letter-
     // Returning visitors: the trial / free buttons are replaced by Enter buttons (never both).
     var rb = document.querySelectorAll('[data-ret]');
     for (var k = 0; k < rb.length; k++) {
-      rb[k].textContent = rb[k].getAttribute('data-ret'); rb[k].className = 'btn gold app-link';
+      rb[k].textContent = rb[k].getAttribute('data-ret');
       rb[k].setAttribute('data-cta', rb[k].getAttribute('data-cta').replace(/^(hero|bottom)_/, '$1_returning_'));
     }
   } catch (e) {}
