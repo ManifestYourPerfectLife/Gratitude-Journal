@@ -742,7 +742,7 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
         </div>
         <div class="store-tag store-tag-locked" id="challenge-tag">Free Day 1s</div>
       </div>
-      <div style="font-size:12.5px;color:var(--muted);line-height:1.6;margin:6px 0 12px;">Try all of Week 1 free, plus Day 1 of every other week. Unlock a single week or the full challenge.</div>
+      <div style="font-size:12.5px;color:var(--muted);line-height:1.6;margin:6px 0 12px;">Try all of Week 1 free. Unlock a single week or the full challenge.</div>
       <button class="store-btn" onclick="switchView('challenge')">Open the Challenge</button>
     </div>
 
@@ -1405,7 +1405,7 @@ function chHasAccess(w) { const e = chEnt(); return !!(e.full || e.complete || (
 function chUnlocked(w) { return w === 1 || chHasAccess(w); } // Week 1 (Root) is free for everyone
 function chPaced(w) { const e = chEnt(); if (e.full || e.complete) return true; if ((e.weeks || []).includes(w)) return false; return w === 1; }
 function chDayOpen(w, i) {
-  if (i === 0) return true; // each week's Day 1 is the free preview
+  if (i === 0 && w === 1) return true; // Week 1 is the free week
   if (!chPaced(w)) return true; // single-week passes open right away
   const st = chStartDate(); if (!st) return false;
   return chDay0(new Date()).getTime() >= chAdd(st, 7 * (w - 1) + i).getTime();
@@ -1501,7 +1501,7 @@ function chTrialHTML() {
   let em = '', nm = ''; try { em = localStorage.getItem('mtpl_user_email') || ''; nm = localStorage.getItem(NAME_KEY) || ''; } catch (e) {}
   if (nm === 'Anonymous') nm = '';
   const f = 'width:100%;font:inherit;font-size:13px;padding:10px 12px;border:1px solid var(--border);border-radius:8px;margin-bottom:8px;background:#fff;';
-  return '<div class="ch-detail" style="--cc:var(--gold)"><h3>Start your free trial</h3><div style="text-align:center;margin:0 0 12px;padding:10px;border:1px dashed var(--gold);border-radius:12px;background:#fffaf0;font-size:14px">Already signed up? <a href="#" onclick="chSigninShow(true);return false" style="color:var(--violet);font-weight:600">Enter your email</a></div><div class="ch-note" style="margin:4px 0 10px">Week 1 is free, plus Day 1 of every other week. Tell us where to send your free days.</div>' +
+  return '<div class="ch-detail" style="--cc:var(--gold)"><h3>Start your free trial</h3><div style="text-align:center;margin:0 0 12px;padding:10px;border:1px dashed var(--gold);border-radius:12px;background:#fffaf0;font-size:14px">Already signed up? <a href="#" onclick="chSigninShow(true);return false" style="color:var(--violet);font-weight:600">Enter your email</a></div><div class="ch-note" style="margin:4px 0 10px">Week 1 is free. Tell us where to send your free days.</div>' +
     '<input id="ch-t-name" type="text" autocomplete="name" placeholder="Name" value="' + esc(nm) + '" style="' + f + '">' +
     '<select id="ch-t-id" style="' + f + '"><option value="">I am identifying as…</option><option>Master Manifestor</option><option>Mistress Manifestor</option><option>Manifestor</option></select>' +
     '<input id="ch-t-email" type="email" autocomplete="email" placeholder="Email" value="' + esc(em) + '" style="' + f + '">' +
@@ -1646,13 +1646,13 @@ async function renderChallenge() {
   document.getElementById('ch-tabs').innerHTML = CH_DATA.free.map(f => '<button class="ch-tab' + (f.w === chW ? ' on' : '') + (f.w === 7 ? ' crown' : '') + '" style="background:' + f.color + ';--tc:' + f.color + '" onclick="chTab(' + f.w + ')">Wk ' + f.w + ' · ' + esc(f.chakra) + '</button>').join('');
   const f = CH_DATA.free[chW - 1], st = chStartDate(), un = chUnlocked(chW);
   document.getElementById('ch-days').innerHTML = CH_DATA.days[chW - 1].map((d, i) => {
-    const n = (chW - 1) * 7 + i + 1, dt = st ? chAdd(st, n - 1) : null, open = i === 0 || (un && chDayOpen(chW, i));
+    const n = (chW - 1) * 7 + i + 1, dt = st ? chAdd(st, n - 1) : null, open = (i === 0 && chW === 1) || (un && chDayOpen(chW, i));
     const moon = dt ? chMoons(dt, chAdd(dt, 1)).filter(m => chDay0(m.t).getTime() === dt.getTime()).map(m => '<span class="ch-pill moon">' + (m.type === 'New' ? '🌑 New' : '🌕 Full') + ' Moon</span>').join(' ') : '';
-    return '<div class="ch-day' + (open ? '' : ' locked') + (i === chD ? ' on' : '') + '" style="--cc:' + f.color + '" onclick="chSelect(' + chW + ',' + i + ')"><b>' + (open ? '' : '🔒 ') + 'Day ' + n + '</b>' + (dt ? esc(chFmt(dt)) + '<br>' : '') + esc(('ABC'.includes(d.k) ? d.k + ' · ' : '') + d.title) + (chW === 1 && !chHasAccess(1) ? '<br><span class="ch-pill free">Free week</span>' : (i === 0 && !un ? '<br><span class="ch-pill free">Free preview</span>' : '')) + (moon ? '<br>' + moon : '') + '</div>';
+    return '<div class="ch-day' + (open ? '' : ' locked') + (i === chD ? ' on' : '') + '" style="--cc:' + f.color + '" onclick="chSelect(' + chW + ',' + i + ')"><b>' + (open ? '' : '🔒 ') + 'Day ' + n + '</b>' + (dt ? esc(chFmt(dt)) + '<br>' : '') + esc(('ABC'.includes(d.k) ? d.k + ' · ' : '') + d.title) + (chW === 1 && !chHasAccess(1) ? '<br><span class="ch-pill free">Free week</span>' : '') + (moon ? '<br>' + moon : '') + '</div>';
   }).join('');
   const box = document.getElementById('ch-detail'), info = CH_DATA.days[chW - 1][chD];
-  if (chD === 0) { box.innerHTML = chTrialDone() ? chDetailHTML(chW, 0, f.day, info) : chTrialHTML(); return; }
-  if (un && !chDayOpen(chW, chD)) { const n = (chW - 1) * 7 + chD + 1, od = chStartDate() ? chAdd(chStartDate(), n - 1) : null; box.innerHTML = '<div class="ch-detail ch-lock" style="--cc:' + f.color + '"><div style="font-size:26px">🌙</div><h3>Day ' + n + (od ? ' opens ' + esc(chFmt(od, { weekday: 'long', month: 'long', day: 'numeric' })) : ' opens once you choose your start date') + '</h3><div class="ch-note">Each day opens the day after the one before it, so you move through the journey one step at a time. Each week\'s Day 1 preview stays open.</div></div>'; return; }
+  if (chD === 0 && chW === 1) { box.innerHTML = chTrialDone() ? chDetailHTML(chW, 0, f.day, info) : chTrialHTML(); return; }
+  if (un && !chDayOpen(chW, chD)) { const n = (chW - 1) * 7 + chD + 1, od = chStartDate() ? chAdd(chStartDate(), n - 1) : null; box.innerHTML = '<div class="ch-detail ch-lock" style="--cc:' + f.color + '"><div style="font-size:26px">🌙</div><h3>Day ' + n + (od ? ' opens ' + esc(chFmt(od, { weekday: 'long', month: 'long', day: 'numeric' })) : ' opens once you choose your start date') + '</h3><div class="ch-note">Each day opens the day after the one before it, so you move through the journey one step at a time.</div></div>'; return; }
   if (chW === 1 && !chHasAccess(1) && !chTrialDone()) { box.innerHTML = chTrialHTML(); return; }
   if (!un) { box.innerHTML = '<div class="ch-detail ch-lock" style="--cc:' + f.color + '"><div style="font-size:26px">🔒</div><h3>Day ' + ((chW - 1) * 7 + chD + 1) + ' is part of the paid challenge</h3><div class="ch-note">Unlock Week ' + chW + ' or the full challenge to open it.</div><button class="ch-btn" style="max-width:260px;margin-top:10px" onclick="document.getElementById(\'ch-offers-card\').scrollIntoView({behavior:\'smooth\'})">See options</button></div>'; return; }
   box.innerHTML = '<div class="ch-detail ch-lock" style="--cc:' + f.color + '"><div class="ch-note">Loading your day…</div></div>';
