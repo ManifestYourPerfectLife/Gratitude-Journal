@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mtpl-journal-v9';
+const CACHE_NAME = 'mtpl-journal-v10';
  
 self.addEventListener('install', function(event) {
   self.skipWaiting();
