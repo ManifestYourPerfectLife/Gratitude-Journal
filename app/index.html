@@ -548,10 +548,10 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
       </div>
     </div>
     <div class="nav">
-      <button class="nav-btn active" onclick="switchView('journal')">📝 Today</button>
+      <button class="nav-btn active" onclick="switchView('journals')">🌙 Journals</button>
+      <button class="nav-btn" onclick="switchView('journal')">📝 Today</button>
       <button class="nav-btn" onclick="switchView('log')">📖 Log</button>
       <button class="nav-btn" onclick="switchView('patterns')">✦ Accountability</button>
-      <button class="nav-btn" onclick="switchView('journals')">🌙 Journals</button>
     </div>
   </div>
 </div>
@@ -559,7 +559,7 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
 <div class="main">
 
   <!-- JOURNAL VIEW -->
-  <div class="view active" id="view-journal">
+  <div class="view" id="view-journal">
     <div class="notice notice-success" id="saved-notice" style="display:none">✓ Entry saved. You are manifesting the perfect life. 🌱</div>
     <div class="notice notice-sheets" id="sheets-notice" style="display:none">📊 Entry also sent to your Google Sheet!</div>
     <div class="notice notice-error" id="sheets-error" style="display:none">⚠️ Saved locally — Google Sheets sync failed.</div>
@@ -702,7 +702,7 @@ textarea:focus,input[type=text]:focus{border-color:rgba(201,149,58,0.45);box-sha
   </div>
 
   <!-- JOURNALS STOREFRONT VIEW -->
-  <div class="view" id="view-journals">
+  <div class="view active" id="view-journals">
 
     <div class="section-label">Your Journals</div>
     <div class="store-card" id="store-card-gratitude">
@@ -1208,7 +1208,7 @@ function switchView(id){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('view-'+id).classList.add('active');
-  const navIdx=['journal','log','patterns','journals'].indexOf((id==='manifest'||id==='challenge')?'journals':id);
+  const navIdx=['journals','journal','log','patterns'].indexOf((id==='manifest'||id==='challenge')?'journals':id);
   if(navIdx>-1)document.querySelectorAll('.nav-btn')[navIdx].classList.add('active');
   if(id==='patterns')renderPatterns();
   if(id==='journals')renderJournalsStorefront();
